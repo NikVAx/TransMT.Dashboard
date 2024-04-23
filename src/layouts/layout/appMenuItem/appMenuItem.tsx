@@ -83,9 +83,14 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       <a
         tabIndex={0}
         onClick={(e) => itemClick(e)}
-        className={classNames(item!.class, "p-ripple", {
-          "active-route": isActiveRoute,
-        }, styles.ripple)}
+        className={classNames(
+          item!.class,
+          "p-ripple",
+          {
+            "active-route": isActiveRoute,
+          },
+          styles.ripple
+        )}
       >
         <i className={classNames(styles.layout_menuitem_icon, item!.icon)}></i>
         <span className={styles.layoutMenuItemText}>{item!.label}</span>
@@ -104,6 +109,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
 
   return (
     <li
+      tabIndex={item?.disabled ? 0 : 5}
       className={classNames(
         { [styles.layout_root_menuitem]: props.root },
         { [styles.active_menuitem]: active },
@@ -111,7 +117,12 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       )}
     >
       {props.root && item!.visible !== false && (
-        <div className={styles.layout_menuitem_root_text}>{item!.label}</div>
+        <div
+          tabIndex={item?.disabled ? 0 : 5}
+          className={styles.layout_menuitem_root_text}
+        >
+          {item!.label}
+        </div>
       )}
 
       {item!.visible !== false ? <MenuLink /> : null}
