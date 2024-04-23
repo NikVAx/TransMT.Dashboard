@@ -1,0 +1,155 @@
+.layout-menu {
+  margin: 0;
+  margin-left: 1rem;
+  width: 16rem;
+  padding: 0;
+  list-style-type: none;
+  user-select: none;
+
+  .layout-root-menuitem {
+    /* appMenuItem.module.css : layoutMenuItemRootText
+
+      > .layout-menuitem-root-text {
+        font-size: 0.857rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--surface-700);
+        margin: 0.75rem 0;
+      }
+      */
+
+    > a {
+      display: none;
+    }
+  }
+
+  li.active-menuitem {
+    > a {
+      .layout-submenu-toggler {
+        transform: rotate(-180deg);
+      }
+    }
+
+    > ul {
+      max-height: auto;
+    }
+  }
+
+  li.disabled-menuitem {
+    > a {
+      opacity: 0.5;
+      cursor: auto;
+    }
+
+    > a:hover {
+      background-color: transparent;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    a {
+      display: flex;
+      align-items: center;
+      position: relative;
+      outline: 0 none;
+      color: var(--text-color);
+      cursor: pointer;
+      padding: 0.75rem 1rem;
+
+      /*
+      .layout-menuitem-icon {
+        margin-right: 0.5rem;
+      }
+      */
+      .layout-submenu-toggler {
+        font-size: 75%;
+        margin-left: auto;
+      }
+
+      &.rotated-icon {
+        .layout-menuitem-icon {
+          transform: rotate(90deg);
+        }
+      }
+
+      &.active-route {
+        font-weight: 700;
+        color: var(--primary-color);
+      }
+
+      &:hover {
+        background-color: var(--surface-hover);
+        border-radius: var(--border-radius);
+      }
+
+      &:focus {
+        background-color: var(--surface-300);
+        /*@include focused-inset();*/
+      }
+    }
+
+    ul {
+      overflow: hidden;
+      max-height: 0;
+
+      li {
+        a {
+          margin-left: 1rem;
+        }
+
+        li {
+          a {
+            margin-left: 2rem;
+          }
+
+          li {
+            a {
+              margin-left: 2.5rem;
+            }
+
+            li {
+              a {
+                margin-left: 3rem;
+              }
+
+              li {
+                a {
+                  margin-left: 3.5rem;
+                }
+
+                li {
+                  a {
+                    margin-left: 4rem;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.layout-submenu-enter-active {
+  max-height: 1000px !important;
+  transition: max-height 1s ease-in-out;
+}
+
+.layout-submenu-enter-done {
+  max-height: 1000px !important;
+}
+
+.layout-submenu-exit {
+  max-height: 1000px !important;
+}
+
+.layout-submenu-exit-active {
+  overflow: hidden;
+  max-height: 0 !important;
+  transition: max-height 0.45s cubic-bezier(0, 1, 0, 1);
+}
