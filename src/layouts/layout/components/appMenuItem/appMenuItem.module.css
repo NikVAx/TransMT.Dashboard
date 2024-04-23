@@ -36,15 +36,15 @@
     }
   }
 
-  &.active-route {
-    font-weight: 700;
-    color: var(--primary-color);
-  }
-
   &:hover {
     background-color: var(--surface-hover);
     border-radius: var(--border-radius);
   }
+}
+
+.active_route {
+  font-weight: 700;
+  color: var(--primary-color);
 }
 
 .disabled_menuitem a:focus {

@@ -87,7 +87,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
           item!.class,
           "p-ripple",
           {
-            "active-route": isActiveRoute,
+            [styles.active_route]: isActiveRoute,
           },
           styles.ripple
         )}
