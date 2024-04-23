@@ -28,7 +28,9 @@ const MenuLink = ({ item, onClick, isActiveRoute }: MenuLinkProps) => {
         [styles.active_route]: isActiveRoute,
       })}
     >
-      <i className={classNames(styles.layout_menuitem_icon, item!.icon)}></i>
+      <i className={classNames(styles.layout_menuitem_icon, item!.icon, {
+        [styles.active_route_icon] : isActiveRoute
+      })}></i>
       <span className={styles.layoutMenuItemText}>{item!.label}</span>
       {item!.items && (
         <i
@@ -131,7 +133,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       {props.root && item!.visible !== false && (
         <div
           tabIndex={item?.disabled ? 0 : 5}
-          className={styles.layout_menuitem_root_text}
+          className={styles.layoutMenuItemRootText}
         >
           {item!.label}
         </div>

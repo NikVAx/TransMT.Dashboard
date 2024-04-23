@@ -1,4 +1,4 @@
-.layout_menuitem_root_text {
+.layoutMenuItemRootText {
   font-size: 0.857rem;
   text-transform: uppercase;
   font-weight: 700;
@@ -42,10 +42,6 @@
   }
 }
 
-.disabled_menuitem a:focus {
-  background-color: transparent;
-}
-
 .layout_menuitem_icon {
   margin-right: 0.5rem;
 }
@@ -71,6 +67,10 @@
 .disabled_menuitem > a {
   opacity: 0.5;
   cursor: auto;
+}
+
+.disabled_menuitem a:focus {
+  background-color: transparent;
 }
 
 .disabled_menuitem > a:hover {
@@ -100,6 +100,11 @@
 }
 
 .submenu_wrapper a.active_route {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.active_route_icon {
   font-weight: 700;
   color: var(--primary-color);
 }
