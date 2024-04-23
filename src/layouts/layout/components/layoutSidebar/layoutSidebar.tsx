@@ -1,6 +1,6 @@
-import styles from "./layout.module.css";
-import { useLayout } from "./context/layout.hooks";
-import { AppMenu } from "./appMenu/appMenu";
+import styles from "../../layout.module.css";
+import { useLayout } from "../../context/layout.hooks";
+import { AppMenu } from "../appMenu/appMenu";
 import { Sidebar } from "primereact/sidebar";
 
 export function LayoutSidebar() {

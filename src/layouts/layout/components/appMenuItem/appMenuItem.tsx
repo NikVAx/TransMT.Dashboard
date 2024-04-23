@@ -6,7 +6,7 @@ import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
 import { Ripple } from "primereact/ripple";
 import styles from "./appMenuItem.module.css";
-import "../menu.css";
+import "../../menu.css";
 
 export const AppMenuitem = (props: AppMenuItemProps) => {
   const navigate = useNavigate();

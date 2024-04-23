@@ -1,5 +1,5 @@
 import { mock } from "@/app/mock";
-import { IAppMenuItem } from "./appMenuItem/appMenuItem.types";
+import { IAppMenuItem } from "../components/appMenuItem/appMenuItem.types";
 
 export const appMenuConfig: IAppMenuItem[] = [
   {

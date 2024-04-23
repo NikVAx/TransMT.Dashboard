@@ -1,4 +1,4 @@
-import { appMenuConfig } from "../menu.config";
+import { appMenuConfig } from "../../config/menu.config";
 import { MenuProvider } from "./appMenu.context";
 import { AppMenuitem } from "../appMenuItem/appMenuItem";
 import s from "./appMenu.module.css";

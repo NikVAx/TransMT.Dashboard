@@ -1,5 +1,5 @@
-import styles from "./layout.module.css";
-import { useLayout } from "./context/layout.hooks";
+import styles from "../../layout.module.css";
+import { useLayout } from "../../context/layout.hooks";
 import { PropsWithChildren } from "react";
 
 export function LayoutContent({ children }: PropsWithChildren) {

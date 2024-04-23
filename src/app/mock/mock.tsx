@@ -1,4 +1,4 @@
-import { IAppMenuItem } from "@/layouts/layout/appMenuItem/appMenuItem.types";
+import { IAppMenuItem } from "@/layouts/layout/components/appMenuItem/appMenuItem.types";
 import { Card } from "primereact/card";
 
 const createArray = (size: number) => {

@@ -1,8 +1,8 @@
 import styles from "./layout.module.css";
 import { PropsWithChildren } from "react";
-import { LayoutTopbar } from "./layoutTopbar";
-import { LayoutContent } from "./layoutContent";
-import { LayoutSidebar } from "./layoutSidebar";
+import { LayoutTopbar } from "./components/layoutTopbar/layoutTopbar";
+import { LayoutContent } from "./components/layoutContent/layoutContent";
+import { LayoutSidebar } from "./components/layoutSidebar/layoutSidebar";
 
 export function Layout({ children }: PropsWithChildren) {
   return (
