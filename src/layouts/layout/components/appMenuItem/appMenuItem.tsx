@@ -6,7 +6,6 @@ import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
 import { Ripple } from "primereact/ripple";
 import styles from "./appMenuItem.module.css";
-import "../../menu.css";
 
 export const AppMenuitem = (props: AppMenuItemProps) => {
   const navigate = useNavigate();
@@ -58,7 +57,12 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
   const subMenu = item!.items && item!.visible !== false && (
     <CSSTransition
       timeout={{ enter: 1000, exit: 450 }}
-      classNames="layout-submenu"
+      classNames={{
+        enterActive: styles.layoutSubmenuEnterActive,
+        enterDone: styles.layoutSubmenuEnterDone,
+        exit: styles.layoutSubmenuExit,
+        exitActive: styles.layoutSubmenuExitActive
+      }}
       in={props.root ? true : active}
       key={item!.label}
     >
