@@ -22,7 +22,7 @@
   border-right-style: solid;
   border-right-width: 1px;
 
-  /*transition: 0.2s;*/
+  transition: width 0.2s ease-in-out;
 }
 
 .sidebarMenuContainer {
@@ -62,5 +62,5 @@
 
   height: 100%;
 
-  /*transition: 0.2s;*/
+  transition: padding 0.2s ease-in-out;
 }

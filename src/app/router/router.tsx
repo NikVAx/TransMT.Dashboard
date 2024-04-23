@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
       </Layout>
     ),
     children: [
-      { path: "/pages/cards", element: <>{mock.cards(20)}</> },
+      { path: "/pages/cards", element: <>{mock.cards(70)}</> },
       { path: "/pages/full", element: <PageWidthTemplate /> },
       { path: "/pages/:id", element: <PageUseParamsTemplate /> },
     ],
