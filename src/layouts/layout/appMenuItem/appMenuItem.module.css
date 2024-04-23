@@ -19,7 +19,9 @@
     transform: rotate(-180deg);
   }
 }
-.layoutMenuItemText {flex: 1 1 auto}
+.layoutMenuItemText {
+  flex: 1 1 auto;
+}
 .active_menuitem > ul {
   max-height: auto;
 }
@@ -37,6 +39,7 @@
   margin: 0;
   padding: 0;
   list-style-type: none;
+  padding-right: 10px;
 }
 
 .submenu_wrapper a {

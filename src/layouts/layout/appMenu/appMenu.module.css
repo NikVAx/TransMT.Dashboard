@@ -5,6 +5,7 @@
   padding: 0;
   list-style-type: none;
   user-select: none;
+  padding-right: 10px;
 }
 
 .layoutMenu ul {
