@@ -1,11 +1,47 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppMenuItemProps } from "./appMenuItem.types";
-import { useContext, useEffect } from "react";
+import { AppMenuItemProps, IAppMenuItem } from "./appMenuItem.types";
+import { useContext, useEffect, useMemo } from "react";
 import { MenuContext } from "../appMenu/appMenu.context";
 import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
 import { Ripple } from "primereact/ripple";
 import styles from "./appMenuItem.module.css";
+
+type MenuLinkProps = {
+  item: IAppMenuItem;
+  onClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  isActiveRoute: boolean;
+};
+
+const MenuLink = ({ item, onClick, isActiveRoute }: MenuLinkProps) => {
+
+  const hasHref = useMemo(() =>{
+    return item.disabled || item.items !== undefined;    
+  }, [item]) 
+
+  return (
+    <a
+      href={hasHref ? undefined : item.to}
+      tabIndex={0}
+      onClick={(e) => onClick(e)}
+      className={classNames(item!.class, "p-ripple", {
+        [styles.active_route]: isActiveRoute,
+      })}
+    >
+      <i className={classNames(styles.layout_menuitem_icon, item!.icon)}></i>
+      <span className={styles.layoutMenuItemText}>{item!.label}</span>
+      {item!.items && (
+        <i
+          className={classNames(
+            "pi pi-fw pi-angle-down",
+            styles.layout_submenu_toggler
+          )}
+        ></i>
+      )}
+      <Ripple />
+    </a>
+  );
+};
 
 export const AppMenuitem = (props: AppMenuItemProps) => {
   const navigate = useNavigate();
@@ -15,7 +51,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
   const key = props.parentKey
     ? props.parentKey + "-" + props.index
     : String(props.index);
-  const isActiveRoute = item!.to && pathname === item!.to;
+  const isActiveRoute = (item!.to && pathname === item!.to) as boolean;
   const active = activeMenu === key || activeMenu.startsWith(key + "-");
 
   const onRouteChange = (url: string) => {
@@ -31,9 +67,10 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
   const itemClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
+    event.preventDefault();
+
     //avoid processing disabled items
     if (item!.disabled) {
-      event.preventDefault();
       return;
     }
 
@@ -61,7 +98,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
         enterActive: styles.layoutSubmenuEnterActive,
         enterDone: styles.layoutSubmenuEnterDone,
         exit: styles.layoutSubmenuExit,
-        exitActive: styles.layoutSubmenuExitActive
+        exitActive: styles.layoutSubmenuExitActive,
       }}
       in={props.root ? true : active}
       key={item!.label}
@@ -82,35 +119,6 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
     </CSSTransition>
   );
 
-  const MenuLink = () => {
-    return (
-      <a
-        tabIndex={0}
-        onClick={(e) => itemClick(e)}
-        className={classNames(
-          item!.class,
-          "p-ripple",
-          {
-            [styles.active_route]: isActiveRoute,
-          },
-          styles.ripple
-        )}
-      >
-        <i className={classNames(styles.layout_menuitem_icon, item!.icon)}></i>
-        <span className={styles.layoutMenuItemText}>{item!.label}</span>
-        {item!.items && (
-          <i
-            className={classNames(
-              "pi pi-fw pi-angle-down",
-              styles.layout_submenu_toggler
-            )}
-          ></i>
-        )}
-        <Ripple />
-      </a>
-    );
-  };
-
   return (
     <li
       tabIndex={item?.disabled ? 0 : 5}
@@ -129,7 +137,13 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
         </div>
       )}
 
-      {item!.visible !== false ? <MenuLink /> : null}
+      {item!.visible !== false && item !== undefined ? (
+        <MenuLink
+          item={item}
+          onClick={itemClick}
+          isActiveRoute={isActiveRoute}
+        />
+      ) : null}
 
       {subMenu}
     </li>
