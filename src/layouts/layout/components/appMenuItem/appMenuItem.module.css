@@ -42,11 +42,6 @@
   }
 }
 
-.active_route {
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
 .disabled_menuitem a:focus {
   background-color: transparent;
 }
@@ -104,7 +99,7 @@
   }
 }
 
-.submenu_wrapper a.active-route {
+.submenu_wrapper a.active_route {
   font-weight: 700;
   color: var(--primary-color);
 }
@@ -113,10 +108,6 @@
   background-color: var(--surface-hover);
   border-radius: var(--border-radius);
 }
-
-/* .submenu_wrapper a:focus {
-  background-color: var(--surface-300);
- } */
 
 .disabled_menuitem a:hover {
   background: transparent;
@@ -150,25 +141,4 @@
 
 .submenu_wrapper ul li li li li li li a {
   margin-left: 4rem;
-}
-
-/* CSSTransition classNames */
-
-.layoutSubmenuEnterActive {
-  max-height: 1000px !important;
-  transition: max-height 1s ease-in-out;
-}
-
-.layoutSubmenuEnterDone {
-  max-height: 1000px !important;
-}
-
-.layoutSubmenuExit {
-  max-height: 1000px !important;
-}
-
-.layoutSubmenuExitActive {
-  overflow: hidden;
-  max-height: 0 !important;
-  transition: max-height 0.45s cubic-bezier(0, 1, 0, 1);
 }

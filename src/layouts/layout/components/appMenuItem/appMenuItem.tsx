@@ -36,7 +36,7 @@ const MenuLink = ({ item, onClick, isActiveRoute }: MenuLinkProps) => {
             "pi pi-fw pi-angle-down",
             styles.layout_submenu_toggler
           )}
-        ></i>
+        />
       )}
       <Ripple />
     </a>

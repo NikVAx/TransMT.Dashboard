@@ -47,7 +47,6 @@ export const appMenuConfig: IAppMenuItem[] = [
         label: "Button",
         icon: "pi pi-fw pi-mobile",
         to: "/pages/3",
-        class: "rotated-icon",
       },
       {
         id: "/pages/gm/4",
