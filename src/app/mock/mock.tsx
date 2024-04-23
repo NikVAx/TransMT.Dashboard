@@ -7,7 +7,7 @@ const createArray = (size: number) => {
 
 function cards(count: number) {
   return createArray(count).map((value) => (
-    <Card title={`TITLE OF CARD #${value}`} style={{ margin: "10px" }}>
+    <Card title={`TITLE OF CARD #${value}`} style={{ margin: "10px" }} key={value}>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
       veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
@@ -32,9 +32,10 @@ function routes(
     const id = index + 1 + value;
 
     return {
+      id: `/pages/tree/${id}`,
       label: `Submenu ${id}`,
       icon: "pi pi-fw pi-bookmark",
-      to: `/pages/${id}`,
+      to: `/pages/tree/${id}`,
       items: routes(count, deep - 1, 10 * id),
     } as IAppMenuItem;
   });

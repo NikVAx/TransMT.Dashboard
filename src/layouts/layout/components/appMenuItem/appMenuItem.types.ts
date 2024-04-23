@@ -4,6 +4,8 @@ export type MenuCommandProps = {
 };
 
 export interface IAppMenuItem {
+    id: string,
+
     label: string;
     icon?: string;
     to?: string;

@@ -9,7 +9,7 @@ export function AppMenu() {
       <ul className={s.layoutMenu}>
         {appMenuConfig.map((item, i) => {
           return !item?.seperator ? (
-            <AppMenuitem item={item} root={true} index={i} key={item.label} />
+            <AppMenuitem item={item} root={true} index={i} key={item.id} />
           ) : (
             <li className="menu-separator"></li>
           );
