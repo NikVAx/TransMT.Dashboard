@@ -19,7 +19,7 @@
     transform: rotate(-180deg);
   }
 }
-
+.layoutMenuItemText {flex: 1 1 auto}
 .active_menuitem > ul {
   max-height: auto;
 }

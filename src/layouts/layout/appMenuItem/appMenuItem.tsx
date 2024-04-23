@@ -85,7 +85,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
         onClick={(e) => itemClick(e)}
         className={classNames(item!.class, "p-ripple", {
           "active-route": isActiveRoute,
-        })}
+        }, styles.ripple)}
       >
         <i className={classNames(styles.layout_menuitem_icon, item!.icon)}></i>
         <span className={styles.layoutMenuItemText}>{item!.label}</span>
