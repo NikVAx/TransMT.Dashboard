@@ -1,13 +1,12 @@
 import { appMenuConfig } from "../menu.config";
 import { MenuProvider } from "./appMenu.context";
 import { AppMenuitem } from "../appMenuItem/appMenuItem";
-
-import "../menu.css";
+import s from "./appMenu.module.css";
 
 export function AppMenu() {
   return (
     <MenuProvider>
-      <ul className="layout-menu">
+      <ul className={s.layoutMenu}>
         {appMenuConfig.map((item, i) => {
           return !item?.seperator ? (
             <AppMenuitem item={item} root={true} index={i} key={item.label} />

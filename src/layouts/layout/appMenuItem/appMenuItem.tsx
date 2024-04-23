@@ -5,8 +5,7 @@ import { MenuContext } from "../appMenu/appMenu.context";
 import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
 import { Ripple } from "primereact/ripple";
-
-import styles from "./appMenuItem.module.css"
+import styles from "./appMenuItem.module.css";
 import "../menu.css";
 
 export const AppMenuitem = (props: AppMenuItemProps) => {
@@ -19,6 +18,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
     : String(props.index);
   const isActiveRoute = item!.to && pathname === item!.to;
   const active = activeMenu === key || activeMenu.startsWith(key + "-");
+
   const onRouteChange = (url: string) => {
     if (item!.to && item!.to === url) {
       setActiveMenu(key);
@@ -62,7 +62,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       in={props.root ? true : active}
       key={item!.label}
     >
-      <ul>
+      <ul className={styles.submenu_wrapper}>
         {item!.items.map((child, i) => {
           return (
             <AppMenuitem
@@ -87,10 +87,15 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
           "active-route": isActiveRoute,
         })}
       >
-        <i className={classNames(styles.layoutMenuItemIcon, item!.icon)}></i>
+        <i className={classNames(styles.layout_menuitem_icon, item!.icon)}></i>
         <span className={styles.layoutMenuItemText}>{item!.label}</span>
         {item!.items && (
-          <i className="pi pi-fw pi-angle-down layout-submenu-toggler"></i>
+          <i
+            className={classNames(
+              "pi pi-fw pi-angle-down",
+              styles.layout_submenu_toggler
+            )}
+          ></i>
         )}
         <Ripple />
       </a>
@@ -99,14 +104,14 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
 
   return (
     <li
-      className={classNames({
-        "layout-root-menuitem": props.root,
-        "active-menuitem": active,
-        "disabled-menuitem": item?.disabled
-      })}
+      className={classNames(
+        { [styles.layout_root_menuitem]: props.root },
+        { [styles.active_menuitem]: active },
+        { [styles.disabled_menuitem]: item?.disabled }
+      )}
     >
       {props.root && item!.visible !== false && (
-        <div className={styles.layoutMenuItemRootText}>{item!.label}</div>
+        <div className={styles.layout_menuitem_root_text}>{item!.label}</div>
       )}
 
       {item!.visible !== false ? <MenuLink /> : null}

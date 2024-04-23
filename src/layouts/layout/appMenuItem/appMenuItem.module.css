@@ -1,4 +1,4 @@
-.layoutMenuItemRootText {
+.layout_menuitem_root_text {
   font-size: 0.857rem;
   text-transform: uppercase;
   font-weight: 700;
@@ -6,10 +6,95 @@
   margin: 0.75rem 0;
 }
 
-.layoutMenuItemText {
-  
+.layout_menuitem_icon {
+  margin-right: 0.5rem;
 }
 
-.layoutMenuItemIcon {
-  margin-right: 0.5rem;
+.layout_root_menuitem > a {
+  display: none;
+}
+
+.active_menuitem > a {
+  .layout_submenu_toggler {
+    transform: rotate(-180deg);
+  }
+}
+
+.active_menuitem > ul {
+  max-height: auto;
+}
+
+.disabled_menuitem > a {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+.disabled_menuitem > a:hover {
+  background-color: transparent;
+}
+
+.submenu_wrapper {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.submenu_wrapper a {
+  display: flex;
+  align-items: center;
+  position: relative;
+  outline: 0 none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+}
+
+.submenu_wrapper a.rotated-icon {
+  .layout-menuitem-icon {
+    transform: rotate(90deg);
+  }
+}
+
+.submenu_wrapper a.active-route {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.submenu_wrapper a:hover {
+  background-color: var(--surface-hover);
+  border-radius: var(--border-radius);
+}
+
+.submenu_wrapper a:focus {
+  background-color: var(--surface-300);
+  /*@include focused-inset();*/
+}
+
+.submenu_wrapper ul {
+  overflow: hidden;
+  max-height: 0;
+}
+
+.submenu_wrapper ul li a {
+  margin-left: 1rem;
+}
+
+.submenu_wrapper ul li li a {
+  margin-left: 2rem;
+}
+
+.submenu_wrapper ul li li li a {
+  margin-left: 2.5rem;
+}
+
+.submenu_wrapper ul li li li li a {
+  margin-left: 3rem;
+}
+
+.submenu_wrapper ul li li li li li a {
+  margin-left: 3.5rem;
+}
+
+.submenu_wrapper ul li li li li li li a {
+  margin-left: 4rem;
 }
