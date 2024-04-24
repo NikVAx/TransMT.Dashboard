@@ -140,7 +140,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
         </div>
       )}
 
-      {item!.visible !== false && item !== undefined ? (
+      {!props.root && item!.visible !== false && item !== undefined ? (
         <MenuLink item={item} onClick={itemClick} isActive={isActiveRoute} />
       ) : null}
 

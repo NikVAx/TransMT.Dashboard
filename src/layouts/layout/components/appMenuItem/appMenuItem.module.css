@@ -101,11 +101,6 @@
   border-radius: var(--border-radius);
 }
 
-.submenuWrapper a:focus:not(:hover) {
-  background-color: var(--surface-200);
-  border-radius: var(--border-radius);
-}
-
 .submenuWrapper ul {
   overflow: hidden;
   max-height: 0;
