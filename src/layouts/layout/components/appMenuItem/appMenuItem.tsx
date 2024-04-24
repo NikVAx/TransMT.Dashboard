@@ -23,8 +23,9 @@ const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
       href={hasHref ? undefined : item.to}
       tabIndex={item?.disabled ? -1 : 5}
       onClick={(e) => onClick(e)}
-      className={classNames("p-ripple", {
+      className={classNames({
         [styles.activeRoute]: isActive,
+        "p-ripple": !item.disabled
       })}
     >
       <i
@@ -41,7 +42,7 @@ const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
           )}
         />
       )}
-      <Ripple />
+      { !item.disabled ? <Ripple /> : null }
     </a>
   );
 };
