@@ -16,10 +16,6 @@
   margin: 0;
   padding: 0;
   list-style-type: none;
-  &:focus {
-    background-color: var(--surface-300);
-    /*@include focused-inset();*/
-  }
 }
 
 .layout_root_menuitem a {
@@ -30,11 +26,6 @@
   color: var(--text-color);
   cursor: pointer;
   padding: 0.75rem 1rem;
-
-  .layout-submenu-toggler {
-    font-size: 75%;
-    margin-left: auto;
-  }
 
   &:hover {
     background-color: var(--surface-hover);
@@ -50,12 +41,10 @@
   display: none;
 }
 
-/* submenu wrapper styles */
+/* active menu items styles */
 
-.active_menuitem > a {
-  .layout_submenu_toggler {
-    transform: rotate(-180deg);
-  }
+.active_menuitem > a .submenuTogglerIcon {
+  transform: rotate(-180deg);
 }
 
 .active_menuitem > ul {
@@ -78,12 +67,6 @@
   color: var(--text-color);
   cursor: pointer;
   padding: 0.75rem 1rem;
-}
-
-.submenuWrapper a.rotated-icon {
-  .layout-menuitem-icon {
-    transform: rotate(90deg);
-  }
 }
 
 .submenuWrapper a.activeRoute {

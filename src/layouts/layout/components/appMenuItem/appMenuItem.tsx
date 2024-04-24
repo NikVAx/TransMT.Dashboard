@@ -23,7 +23,7 @@ const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
       href={hasHref ? undefined : item.to}
       tabIndex={item?.disabled ? -1 : 5}
       onClick={(e) => onClick(e)}
-      className={classNames(item!.class, "p-ripple", {
+      className={classNames("p-ripple", {
         [styles.activeRoute]: isActive,
       })}
     >
@@ -37,7 +37,7 @@ const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
         <i
           className={classNames(
             "pi pi-fw pi-angle-down",
-            styles.layout_submenu_toggler
+            styles.submenuTogglerIcon
           )}
         />
       )}
@@ -70,11 +70,13 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
   const itemClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
-    event.preventDefault();
-
-    //avoid processing disabled items
     if (item!.disabled) {
+      event.preventDefault();
       return;
+    }
+
+    if (!event.ctrlKey) {
+      event.preventDefault();
     }
 
     //execute command
@@ -132,10 +134,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       )}
     >
       {props.root && item!.visible !== false && (
-        <div
-          tabIndex={-1}
-          className={styles.menuItemRootText}
-        >
+        <div tabIndex={-1} className={styles.menuItemRootText}>
           {item!.label}
         </div>
       )}

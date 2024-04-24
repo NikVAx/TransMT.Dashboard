@@ -11,7 +11,6 @@ export interface IAppMenuItem {
     to?: string;
     items?: IAppMenuItem[];
 
-    class?: string;
     seperator?: boolean;
     
     visible?: boolean;
