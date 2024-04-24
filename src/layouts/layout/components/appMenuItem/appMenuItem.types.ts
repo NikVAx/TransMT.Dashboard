@@ -16,9 +16,6 @@ export interface IAppMenuItem {
     visible?: boolean;
     disabled?: boolean;
 
-    badge?: 'UPDATED' | 'NEW';
-    badgeClass?: string;
-
     command?: ({ originalEvent, item }: MenuCommandProps) => void;
 }
 

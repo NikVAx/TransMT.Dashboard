@@ -114,7 +114,6 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
             <AppMenuitem
               item={child}
               index={i}
-              className={child.badgeClass}
               parentKey={key}
               key={child.label}
             />
