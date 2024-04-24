@@ -37,17 +37,17 @@
   margin-right: 0.5rem;
 }
 
-.layout_root_menuitem > a {
+.rootMenuItem > a {
   display: none;
 }
 
 /* active menu items styles */
 
-.active_menuitem > a .submenuTogglerIcon {
+.activeMenuItem > a .submenuTogglerIcon {
   transform: rotate(-180deg);
 }
 
-.active_menuitem > ul {
+.activeMenuItem > ul {
   max-height: auto;
 }
 

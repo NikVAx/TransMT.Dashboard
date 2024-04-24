@@ -6,7 +6,7 @@ import s from "./appMenu.module.css";
 export function AppMenu() {
   return (
     <MenuProvider>
-      <ul className={s.layoutMenu}>
+      <ul className={s.appMenu}>
         {appMenuConfig.map((item, i) => {
           return !item?.seperator ? (
             <AppMenuitem item={item} root={true} index={i} key={item.id} />

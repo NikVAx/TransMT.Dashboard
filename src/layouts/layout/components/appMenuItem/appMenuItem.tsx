@@ -128,8 +128,8 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
     <li
       tabIndex={-1}
       className={classNames(
-        { [styles.layout_root_menuitem]: props.root },
-        { [styles.active_menuitem]: active },
+        { [styles.rootMenuItem]: props.root },
+        { [styles.activeMenuItem]: active },
         { [styles.disabledMenuItem]: item?.disabled }
       )}
     >
