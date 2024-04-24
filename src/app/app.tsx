@@ -8,9 +8,13 @@ import "primeicons/primeicons.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router/router";
 
+const primeReactConfig = {
+  ripple: true,
+};
+
 export function App() {
   return (
-    <PrimeReactProvider>
+    <PrimeReactProvider value={primeReactConfig}>
       <LayoutProvider>
         <RouterProvider router={router} />
       </LayoutProvider>

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppMenuItemProps, IAppMenuItem } from "./appMenuItem.types";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useRef } from "react";
 import { MenuContext } from "../appMenu/appMenu.context";
 import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
@@ -96,8 +96,11 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
     }
   };
 
+  const nodeRef = useRef(null);
+
   const subMenu = item!.items && item!.visible !== false && (
     <CSSTransition
+      nodeRef={nodeRef}
       timeout={{ enter: 1000, exit: 450 }}
       classNames={{
         enterActive: styles.layoutSubmenuEnterActive,
@@ -108,7 +111,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       in={props.root ? true : active}
       key={item!.label}
     >
-      <ul className={styles.submenuWrapper}>
+      <ul ref={nodeRef} className={styles.submenuWrapper}>
         {item!.items.map((child, i) => {
           return (
             <AppMenuitem
