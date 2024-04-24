@@ -1,10 +1,16 @@
-.layoutMenuItemRootText {
+.menuItemRootText {
   font-size: 0.857rem;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--surface-700);
   margin: 0.75rem 0;
 }
+
+.menuItemText {
+  flex: 1 1 auto;
+}
+
+/* layout root menuitem styles */
 
 .layout_root_menuitem {
   margin: 0;
@@ -30,19 +36,13 @@
     margin-left: auto;
   }
 
-  &.rotated-icon {
-    .layout-menuitem-icon {
-      transform: rotate(90deg);
-    }
-  }
-
   &:hover {
     background-color: var(--surface-hover);
     border-radius: var(--border-radius);
   }
 }
 
-.layout_menuitem_icon {
+.menuItemIcon {
   margin-right: 0.5rem;
 }
 
@@ -50,40 +50,27 @@
   display: none;
 }
 
+/* submenu wrapper styles */
+
 .active_menuitem > a {
   .layout_submenu_toggler {
     transform: rotate(-180deg);
   }
 }
 
-.layoutMenuItemText {
-  flex: 1 1 auto;
-}
-
 .active_menuitem > ul {
   max-height: auto;
 }
 
-.disabled_menuitem > a {
-  opacity: 0.5;
-  cursor: auto;
-}
+/* submenu wrapper styles */
 
-.disabled_menuitem a:focus {
-  background-color: transparent;
-}
-
-.disabled_menuitem > a:hover {
-  background-color: transparent;
-}
-
-.submenu_wrapper {
+.submenuWrapper {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
 
-.submenu_wrapper a {
+.submenuWrapper a {
   display: flex;
   align-items: center;
   position: relative;
@@ -93,59 +80,79 @@
   padding: 0.75rem 1rem;
 }
 
-.submenu_wrapper a.rotated-icon {
+.submenuWrapper a.rotated-icon {
   .layout-menuitem-icon {
     transform: rotate(90deg);
   }
 }
 
-.submenu_wrapper a.active_route {
+.submenuWrapper a.activeRoute {
   font-weight: 700;
   color: var(--primary-color);
 }
 
-.active_route_icon {
+.submenuWrapper i.activeRouteIcon {
   font-weight: 700;
   color: var(--primary-color);
 }
 
-.submenu_wrapper a:hover {
+.submenuWrapper a:hover {
   background-color: var(--surface-hover);
   border-radius: var(--border-radius);
 }
 
-.disabled_menuitem a:hover {
-  background: transparent;
-  cursor: auto;
+.submenuWrapper a:focus:not(:hover) {
+  background-color: var(--surface-200);
+  border-radius: var(--border-radius);
 }
 
-.submenu_wrapper ul {
+.submenuWrapper ul {
   overflow: hidden;
   max-height: 0;
 }
 
-.submenu_wrapper ul li a {
+.submenuWrapper ul li a {
   margin-left: 1rem;
 }
 
-.submenu_wrapper ul li li a {
+.submenuWrapper ul li li a {
   margin-left: 2rem;
 }
 
-.submenu_wrapper ul li li li a {
+.submenuWrapper ul li li li a {
   margin-left: 2.5rem;
 }
 
-.submenu_wrapper ul li li li li a {
+.submenuWrapper ul li li li li a {
   margin-left: 3rem;
 }
 
-.submenu_wrapper ul li li li li li a {
+.submenuWrapper ul li li li li li a {
   margin-left: 3.5rem;
 }
 
-.submenu_wrapper ul li li li li li li a {
+.submenuWrapper ul li li li li li li a {
   margin-left: 4rem;
+}
+
+/* disabled menuitem styles */
+
+.disabledMenuItem > a {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+.disabledMenuItem a:focus {
+  background-color: transparent;
+}
+
+.disabledMenuItem > a:hover {
+  background-color: transparent;
+}
+
+.disabledMenuItem a:hover {
+  background: transparent;
+  cursor: auto;
 }
 
 /* CSSTransition classNames */

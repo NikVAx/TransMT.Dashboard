@@ -10,28 +10,29 @@ import styles from "./appMenuItem.module.css";
 type MenuLinkProps = {
   item: IAppMenuItem;
   onClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
-  isActiveRoute: boolean;
+  isActive: boolean;
 };
 
-const MenuLink = ({ item, onClick, isActiveRoute }: MenuLinkProps) => {
-
-  const hasHref = useMemo(() =>{
-    return item.disabled || item.items !== undefined;    
-  }, [item]) 
+const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
+  const hasHref = useMemo(() => {
+    return item.disabled || item.items !== undefined;
+  }, [item]);
 
   return (
     <a
       href={hasHref ? undefined : item.to}
-      tabIndex={0}
+      tabIndex={item?.disabled ? -1 : 5}
       onClick={(e) => onClick(e)}
       className={classNames(item!.class, "p-ripple", {
-        [styles.active_route]: isActiveRoute,
+        [styles.activeRoute]: isActive,
       })}
     >
-      <i className={classNames(styles.layout_menuitem_icon, item!.icon, {
-        [styles.active_route_icon] : isActiveRoute
-      })}></i>
-      <span className={styles.layoutMenuItemText}>{item!.label}</span>
+      <i
+        className={classNames(styles.menuItemIcon, item!.icon, {
+          [styles.activeRouteIcon]: isActive,
+        })}
+      ></i>
+      <span className={styles.menuItemText}>{item!.label}</span>
       {item!.items && (
         <i
           className={classNames(
@@ -105,7 +106,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       in={props.root ? true : active}
       key={item!.label}
     >
-      <ul className={styles.submenu_wrapper}>
+      <ul className={styles.submenuWrapper}>
         {item!.items.map((child, i) => {
           return (
             <AppMenuitem
@@ -123,28 +124,24 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
 
   return (
     <li
-      tabIndex={item?.disabled ? 0 : 5}
+      tabIndex={-1}
       className={classNames(
         { [styles.layout_root_menuitem]: props.root },
         { [styles.active_menuitem]: active },
-        { [styles.disabled_menuitem]: item?.disabled }
+        { [styles.disabledMenuItem]: item?.disabled }
       )}
     >
       {props.root && item!.visible !== false && (
         <div
-          tabIndex={item?.disabled ? 0 : 5}
-          className={styles.layoutMenuItemRootText}
+          tabIndex={-1}
+          className={styles.menuItemRootText}
         >
           {item!.label}
         </div>
       )}
 
       {item!.visible !== false && item !== undefined ? (
-        <MenuLink
-          item={item}
-          onClick={itemClick}
-          isActiveRoute={isActiveRoute}
-        />
+        <MenuLink item={item} onClick={itemClick} isActive={isActiveRoute} />
       ) : null}
 
       {subMenu}

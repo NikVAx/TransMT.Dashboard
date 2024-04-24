@@ -37,6 +37,7 @@ function routes(
       icon: "pi pi-fw pi-bookmark",
       to: `/pages/tree/${id}`,
       items: routes(count, deep - 1, 10 * id),
+      disabled: id === 11
     } as IAppMenuItem;
   });
 }
