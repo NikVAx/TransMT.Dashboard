@@ -2,14 +2,15 @@
   background-color: var(--surface-ground);
   display: flex;
   position: relative;
-
+  overflow: hidden;
   height: 100dvh;
+  padding-top: 4rem;
 }
 
 .layoutSidebar {
   border-radius: 0px;
   z-index: 1;
-  padding-top: 60px;
+  padding-top: 4rem;
   position: fixed;
 
   display: flex;
@@ -28,6 +29,7 @@
 .sidebarMenuContainer {
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 6rem;
 }
 
 .layoutTopbar {
@@ -49,18 +51,15 @@
   top: 0;
   left: 0;
   width: calc(100% - var(--scrollbar-width, 0px));
-  height: 60px;
+  height: 4rem;
 }
 
 .layoutContent {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-
+  overflow: auto;
   position: relative;
-  padding-top: 60px;
-
-  height: 100%;
-
+  height: calc(100dvh - 4rem);
   transition: padding 0.2s ease-in-out;
 }
