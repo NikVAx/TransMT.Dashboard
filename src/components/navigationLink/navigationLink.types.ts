@@ -8,4 +8,5 @@ export interface NavigationLinkProps
   > {
   disabled?: boolean;
   to?: string;
+  navigate?: boolean
 }

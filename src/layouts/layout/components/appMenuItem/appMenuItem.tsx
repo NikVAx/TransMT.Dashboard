@@ -1,54 +1,13 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { AppMenuItemProps, IAppMenuItem } from "./appMenuItem.types";
-import { useContext, useEffect, useMemo, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import { AppMenuItemProps } from "./appMenuItem.types";
+import { useContext, useEffect, useRef } from "react";
 import { MenuContext } from "../appMenu/appMenu.context";
 import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
-import { Ripple } from "primereact/ripple";
 import styles from "./appMenuItem.module.css";
-
-type MenuLinkProps = {
-  item: IAppMenuItem;
-  onClick: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
-  isActive: boolean;
-};
-
-const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
-  const hasHref = useMemo(() => {
-    return item.disabled || item.items !== undefined;
-  }, [item]);
-
-  return (
-    <a
-      href={hasHref ? undefined : item.to}
-      tabIndex={item?.disabled ? -1 : 5}
-      onClick={(e) => onClick(e)}
-      className={classNames({
-        [styles.activeRoute]: isActive,
-        "p-ripple": !item.disabled
-      })}
-    >
-      <i
-        className={classNames(styles.menuItemIcon, item!.icon, {
-          [styles.activeRouteIcon]: isActive,
-        })}
-      ></i>
-      <span className={styles.menuItemText}>{item!.label}</span>
-      {item!.items && (
-        <i
-          className={classNames(
-            "pi pi-fw pi-angle-down",
-            styles.submenuTogglerIcon
-          )}
-        />
-      )}
-      { !item.disabled ? <Ripple /> : null }
-    </a>
-  );
-};
+import { MenuLink } from "../menuLink";
 
 export const AppMenuitem = (props: AppMenuItemProps) => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { activeMenu, setActiveMenu } = useContext(MenuContext);
   const item = props.item;
@@ -71,15 +30,7 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
   const itemClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
-    if (item!.disabled) {
-      event.preventDefault();
-      return;
-    }
-
-    if (!event.ctrlKey) {
-      event.preventDefault();
-    }
-
+    
     //execute command
     if (item!.command) {
       item!.command({ originalEvent: event, item: item! });
@@ -90,10 +41,6 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
       setActiveMenu(active ? (props.parentKey as string) : key);
     } else {
       setActiveMenu(key);
-    }
-
-    if (item?.to !== undefined && item.items === undefined) {
-      navigate(item.to);
     }
   };
 

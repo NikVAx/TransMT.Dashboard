@@ -5,9 +5,10 @@ export const NavigationLink = ({
   onClick = undefined,
   to = undefined,
   disabled = false,
+  navigate = true,
   ...props
 }: NavigationLinkProps) => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
 
   const onClickHandler = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -17,9 +18,9 @@ export const NavigationLink = ({
       return;
     }
 
-    if (!event.ctrlKey && to !== undefined && !disabled) {
+    if (!event.ctrlKey && to !== undefined && !disabled && navigate) {
       event.preventDefault();
-      navigate(to);
+      _navigate(to);
     }
 
     if (onClick !== undefined) {
@@ -27,10 +28,12 @@ export const NavigationLink = ({
     }
   };
 
+  const isHref = !disabled && to !== undefined && navigate;
+
   return (
     <a
       {...props}
-      href={!disabled ?? to !== undefined ? to : undefined}
+      href={isHref ? to : undefined}
       onClick={onClickHandler}
     >
       {props.children}
