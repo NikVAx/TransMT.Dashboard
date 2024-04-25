@@ -1,6 +1,6 @@
 import { Layout } from "@/layouts/layout";
 import { Outlet, createBrowserRouter } from "react-router-dom";
-import { mock, PageWidthTemplate, PageUseParamsTemplate } from "@/app/mock";
+import { mock, PageUseParamsTemplate } from "@/app/mock";
 
 export const router = createBrowserRouter([
   {
@@ -14,8 +14,7 @@ export const router = createBrowserRouter([
       </Layout>
     ),
     children: [
-      { path: "/pages/cards", element: <>{mock.cards(70)}</> },
-      { path: "/pages/full", element: <PageWidthTemplate /> },
+      { path: "/pages/example/cards", element: <>{mock.cards(70)}</> },
       { path: "/pages/:id", element: <PageUseParamsTemplate /> },
       { path: "/pages/:tag/:id", element: <PageUseParamsTemplate /> },
     ],

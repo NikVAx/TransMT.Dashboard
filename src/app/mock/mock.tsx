@@ -33,16 +33,16 @@ function routes(
 
     return {
       id: `/pages/tree/${id}`,
-      label: `Submenu ${id}`,
+      label: `Submenu ${[...Array.from(String(id), Number)].join(".")}`,
       icon: "pi pi-fw pi-bookmark",
       to: `/pages/tree/${id}`,
       items: routes(count, deep - 1, 10 * id),
-      disabled: id === 11
+      disabled: id % 3 == 0
     } as IAppMenuItem;
   });
 }
 
 export const mock = {
   cards: cards,
-  routes: routes,
+  routesTree: routes,
 };
