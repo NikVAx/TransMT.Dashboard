@@ -35,6 +35,7 @@
 
 .menuItemIcon {
   margin-right: 0.5rem;
+  min-width: 1.5rem;
 }
 
 .rootMenuItem > a {
