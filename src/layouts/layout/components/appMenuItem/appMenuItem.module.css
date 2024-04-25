@@ -117,21 +117,14 @@
 /* disabled menuitem styles */
 
 .disabledMenuItem > a {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: auto;
+  pointer-events: none;
+  user-select: none;
 }
 
-.disabledMenuItem a:focus {
-  background-color: transparent;
-}
-
-.disabledMenuItem > a:hover {
-  background-color: transparent;
-}
-
-.disabledMenuItem a:hover {
-  background: transparent;
-  cursor: auto;
+.disabledMenuItem a:focus-visible {
+  outline: 0;
 }
 
 /* CSSTransition classNames */
