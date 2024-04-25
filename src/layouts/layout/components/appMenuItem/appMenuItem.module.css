@@ -1,0 +1,156 @@
+.menuItemRootText {
+  font-size: 0.857rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--surface-700);
+  margin: 0.75rem 0;
+}
+
+.menuItemText {
+  flex: 1 1 auto;
+}
+
+/* layout root menuitem styles */
+
+.layout_root_menuitem {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.layout_root_menuitem a {
+  display: flex;
+  align-items: center;
+  position: relative;
+  outline: 0 none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+
+  &:hover {
+    background-color: var(--surface-hover);
+    border-radius: var(--border-radius);
+  }
+}
+
+.menuItemIcon {
+  margin-right: 0.5rem;
+  min-width: 1.5rem;
+}
+
+.rootMenuItem > a {
+  display: none;
+}
+
+/* active menu items styles */
+
+.activeMenuItem > a .submenuTogglerIcon {
+  transform: rotate(-180deg);
+}
+
+.activeMenuItem > ul {
+  max-height: auto;
+}
+
+/* submenu wrapper styles */
+
+.submenuWrapper {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.submenuWrapper a {
+  display: flex;
+  align-items: center;
+  position: relative;
+  outline: 0 none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+}
+
+.submenuWrapper a.activeRoute {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.submenuWrapper i.activeRouteIcon {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.submenuWrapper a:hover {
+  background-color: var(--surface-hover);
+  border-radius: var(--border-radius);
+}
+
+.submenuWrapper ul {
+  overflow: hidden;
+  max-height: 0;
+}
+
+.submenuWrapper ul li a {
+  margin-left: 1rem;
+}
+
+.submenuWrapper ul li li a {
+  margin-left: 2rem;
+}
+
+.submenuWrapper ul li li li a {
+  margin-left: 2.5rem;
+}
+
+.submenuWrapper ul li li li li a {
+  margin-left: 3rem;
+}
+
+.submenuWrapper ul li li li li li a {
+  margin-left: 3.5rem;
+}
+
+.submenuWrapper ul li li li li li li a {
+  margin-left: 4rem;
+}
+
+/* disabled menuitem styles */
+
+.disabledMenuItem > a {
+  opacity: 0.5;
+  cursor: auto;
+}
+
+.disabledMenuItem a:focus {
+  background-color: transparent;
+}
+
+.disabledMenuItem > a:hover {
+  background-color: transparent;
+}
+
+.disabledMenuItem a:hover {
+  background: transparent;
+  cursor: auto;
+}
+
+/* CSSTransition classNames */
+
+.layoutSubmenuEnterActive {
+  max-height: 1000px !important;
+  transition: max-height 1s ease-in-out;
+}
+
+.layoutSubmenuEnterDone {
+  max-height: 1000px !important;
+}
+
+.layoutSubmenuExit {
+  max-height: 1000px !important;
+}
+
+.layoutSubmenuExitActive {
+  overflow: hidden;
+  max-height: 0 !important;
+  transition: max-height 0.45s cubic-bezier(0, 1, 0, 1);
+}
