@@ -1,10 +1,6 @@
+import { FormRule } from "@/shared/types";
 import { InputTextProps } from "primereact/inputtext";
-import { FieldErrors, FieldValues, RegisterOptions } from "react-hook-form";
-
-type FormRule = Omit<
-  RegisterOptions<FieldValues, string>,
-  "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
->;
+import { FieldErrors } from "react-hook-form";
 
 export interface FormInputTextProps extends InputTextProps {
   name: string;

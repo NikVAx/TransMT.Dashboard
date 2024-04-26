@@ -1,14 +1,10 @@
+import { FormRule } from "@/shared/types";
 import { PasswordProps } from "primereact/password";
-import { FieldErrors, FieldValues, RegisterOptions } from "react-hook-form";
-
-type FormRule = Omit<
-  RegisterOptions<FieldValues, string>,
-  "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
->;
+import { FieldErrors } from "react-hook-form";
 
 export interface FormInputPasswordProps extends PasswordProps {
   name: string;
   errors?: FieldErrors<any>;
   rules?: FormRule;
-  label?: string
+  label?: string;
 }
