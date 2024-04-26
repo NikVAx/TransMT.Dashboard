@@ -19,9 +19,9 @@ export const appMenuConfig: IAppMenuItem[] = [
     label: "Pages",
     items: [
       {
-        id: "/pages/example/no-icon",
-        label: "Menu Item No Icon",
-        to: "/pages/example/no-icon",
+        id: "/pages/example/form",
+        label: "Пример формы",
+        to: "/pages/example/form",
       },
       {
         id: "/pages/example/cards",
