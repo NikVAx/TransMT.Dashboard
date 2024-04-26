@@ -18,7 +18,7 @@ export const FormInputText = ({
     <>
       <span className="p-float-label">
         <Controller
-          name="username"
+          name={name}
           control={control}
           rules={rules}
           render={({ field, fieldState }) => (
