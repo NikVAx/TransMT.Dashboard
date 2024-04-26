@@ -9,6 +9,10 @@ export const FormInputErrorMessage = ({ name }: FormInputErrorMessageProps) => {
   if (errors[name] === undefined || errors[name]?.message === undefined) {
     return null;
   } else {
-    return <small className="p-error">{errors[name]?.message as string}</small>;
+    return (
+      <small className="p-error" style={{ paddingLeft: "0.8rem" }}>
+        {errors[name]?.message as string}
+      </small>
+    );
   }
 };

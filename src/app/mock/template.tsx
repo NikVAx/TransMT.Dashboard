@@ -34,19 +34,21 @@ export const PageUseFormExample = () => {
         padding: "4rem",
         display: "flex",
         flexDirection: "column",
-        gap: "2rem",
+        gap: "1rem",
       }}
     >
       <FormInputText
         name="username"
         label="Имя пользователя"
         rules={{ required: "Имя пользователя - обязательное поле." }}
+        style={{width: "100%"}}
       />
 
       <FormInputPassword
         name="password"
         label="Пароль"
         rules={{ required: "Пароль - обязательное для заполнения поле." }}
+        style={{width: "100%"}}
       />
 
       <Button type="submit" label="Submit" />

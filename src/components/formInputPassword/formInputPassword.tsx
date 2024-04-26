@@ -29,7 +29,15 @@ export const FormInputPassword = ({
               id={field.name}
               {...field}
               className={classNames({ "p-invalid": fieldState.invalid })}
+              pt={{
+                input: {
+                  style: {
+                    width: "100%",
+                  },
+                },
+              }}
               feedback={feedback}
+              title={label}
             />
           )}
         />
