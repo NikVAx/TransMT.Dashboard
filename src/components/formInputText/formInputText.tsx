@@ -2,6 +2,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { FormInputTextProps } from "./formInputText.types";
 import { classNames } from "primereact/utils";
 import { InputText } from "primereact/inputtext";
+import { FormInputErrorMessage } from "..";
 
 export const FormInputText = ({
   name,
@@ -15,7 +16,7 @@ export const FormInputText = ({
   } = useFormContext();
 
   return (
-    <>
+    <div className="field">
       <span className="p-float-label">
         <Controller
           name={name}
@@ -40,11 +41,7 @@ export const FormInputText = ({
           {label}
         </label>
       </span>
-      {errors !== undefined && errors[name] && (
-        <small className="p-error">
-          {errors !== undefined && (errors[name]?.message as string)}
-        </small>
-      )}
-    </>
+      <FormInputErrorMessage name={name} />
+    </div>
   );
 };
