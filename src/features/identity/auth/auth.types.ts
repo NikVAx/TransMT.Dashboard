@@ -6,10 +6,6 @@ export interface ILoginDto {
   password: string;
 }
 
-export interface ILoginException {
-
-}
-
 export interface IUserWithRoles extends IUser {
   roles: IRole[];
 }

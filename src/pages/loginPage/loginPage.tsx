@@ -1,21 +1,31 @@
 import styles from "./loginPage.module.css";
 import { Button } from "primereact/button";
-import { SubmitErrorHandler, SubmitHandler } from "react-hook-form";
-import { FormInputText, FormWrapper } from "@/components";
+import { SubmitHandler } from "react-hook-form";
+import { FormInputPassword, FormInputText, FormWrapper } from "@/components";
+import { ILoginDto, STATES } from "@/features";
+import { useStore } from "@/app/store";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface ILoginDto {
-  username: string;
-  password: string;
-}
+export const LoginPage = observer(() => {
+  const authStore = useStore((store) => store.authStore);
 
-export const LoginPage = () => {
   const onSubmit: SubmitHandler<ILoginDto> = (data) => {
-    console.log(data);
+    console.log("onSubmit", data);
+
+    authStore.login(data);
   };
 
-  const onError: SubmitErrorHandler<ILoginDto> = (errors) => {
-    console.log(errors);
-  };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authStore.state === STATES.DONE) {
+      navigate("/");
+    } else if (authStore.state === STATES.ERROR) {
+      alert("Неверное имя пользователя или пароль");
+    }
+  }, [authStore.state]);
 
   const defaultValue = {
     username: "",
@@ -27,7 +37,6 @@ export const LoginPage = () => {
       <FormWrapper
         className={styles.formWrapper}
         onSubmit={onSubmit}
-        onError={onError}
         defaultValues={defaultValue}
       >
         <h1>Авторизация</h1>
@@ -39,14 +48,18 @@ export const LoginPage = () => {
             required: "Имя пользователя - обязательное поле.",
           }}
         />
-        <FormInputText
+        <FormInputPassword
           name="password"
           label="Пароль"
           style={{ width: "100%" }}
           rules={{ required: "Пароль - обязательное поле." }}
         />
-        <Button type="submit" label="Войти" />
+        <Button
+          type="submit"
+          label="Войти"
+          loading={authStore.state === STATES.LOADING}
+        />
       </FormWrapper>
     </div>
   );
-};
+});
