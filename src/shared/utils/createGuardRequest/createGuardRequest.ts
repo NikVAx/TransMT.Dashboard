@@ -1,9 +1,11 @@
-import { AnyFunction, IInvalidResponse, IResponse } from ".";
+import { AnyArgsFunction, IInvalidResponse, IResponse } from ".";
 
-export function createGuardRequest<F extends AnyFunction>(request: F) {
-  return async <E>(
-    ...args: Parameters<F>
-  ): Promise<IResponse<Awaited<ReturnType<F>>, E>> => {
+export function createGuardRequest<
+  S = any,
+  E = unknown,
+  F extends AnyArgsFunction<S> = AnyArgsFunction<S>
+>(request: F) {
+  return async (...args: Parameters<F>): Promise<IResponse<Awaited<S>, E>> => {
     try {
       const response = await request(...args);
       return [true, response];
