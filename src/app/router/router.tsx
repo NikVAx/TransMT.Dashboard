@@ -1,11 +1,16 @@
-import { Layout } from "@/layouts/layout";
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import { mock, PageUseFormExample, PageUseParamsTemplate } from "@/app/mock";
+import { Layout } from "@/layouts";
+import { LoginPage } from "@/pages";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
   {
     element: (
