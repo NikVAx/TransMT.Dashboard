@@ -1,0 +1,1 @@
+export type States = "loading" | "done" | "failed";;
