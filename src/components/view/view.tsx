@@ -6,9 +6,10 @@ export const View = ({
   className,
   children,
   variant = "section",
+  ...props
 }: ViewProps) => {
   return (
-    <div className={classNames(className, styles.view)} data-variant={variant}>
+    <div {...props} className={classNames(className, styles.view)} data-variant={variant}>
       {children}
     </div>
   );

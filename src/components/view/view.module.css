@@ -1,5 +1,4 @@
 .view {
-  height: 100%;
   border: 1px solid var(--surface-border);
   border-radius: var(--border-radius);
 }
