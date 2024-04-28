@@ -19,6 +19,8 @@ export function LayoutSidebar() {
           width: isSidebarOpen
             ? config.sidebarOpenWidth
             : config.sidebarClosedWidth,
+          borderWidth: isSidebarOpen 
+            ? "1px" : "0"
         }}
       >
         <Content />
