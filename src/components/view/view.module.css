@@ -1,0 +1,13 @@
+.view {
+  height: 100%;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--border-radius);
+}
+
+.view[data-variant="section"] {
+  background-color: var(--surface-section);
+}
+
+.view[data-variant="ground"] {
+  background-color: var(--surface-ground);
+}
