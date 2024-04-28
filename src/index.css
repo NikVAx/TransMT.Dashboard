@@ -17,10 +17,12 @@ body {
 
 a {
   text-decoration: none;
-  color: var(--primary-color);
 }
 
 .p-ink-active {
   background-color: var(--primary-color);
   opacity: 0.2;
 }
+ .p-tabmenu-nav {
+  white-space: nowrap;
+ }

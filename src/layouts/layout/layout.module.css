@@ -35,7 +35,7 @@
 .layoutTopbar {
   z-index: 10;
   grid-area: topbar;
-  padding: 1rem;
+  padding: 1rem 2rem;
 
   background-color: var(--surface-ground);
 

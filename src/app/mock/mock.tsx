@@ -1,9 +1,7 @@
-import { IAppMenuItem } from "@/layouts/layout/components/appMenuItem/appMenuItem.types";
-import { Card } from "primereact/card";
 
-const createArray = (size: number) => {
-  return Array.from(Array(size).keys());
-};
+import { IAppMenuItem } from "@/layouts/layout/components/appMenuItem";
+import { createArray } from "@/shared/utils";
+import { Card } from "primereact/card";
 
 function cards(count: number) {
   return createArray(count).map((value) => (

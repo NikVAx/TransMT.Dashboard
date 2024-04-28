@@ -1,20 +1,25 @@
 import styles from "./loginPage.module.css";
 import { Button } from "primereact/button";
-import { SubmitErrorHandler, SubmitHandler } from "react-hook-form";
-import { FormInputText, FormWrapper } from "@/components";
+import { SubmitHandler } from "react-hook-form";
+import { FormInputPassword, FormInputText, FormWrapper } from "@/components";
+import { ILoginDto, STATES } from "@/features";
+import { useStore } from "@/app/store";
+import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 
-interface ILoginDto {
-  username: string;
-  password: string;
-}
+export const LoginPage = observer(() => {
+  const authStore = useStore((store) => store.authStore);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
+    console.log("onSubmit", data);
 
-export const LoginPage = () => {
-  const onSubmit: SubmitHandler<ILoginDto> = (data) => {
-    console.log(data);
-  };
+    const status = await authStore.login(data);
 
-  const onError: SubmitErrorHandler<ILoginDto> = (errors) => {
-    console.log(errors);
+    if (status) {
+      navigate("/");
+    } else {
+      alert("Неверное имя пользователя или пароль");
+    }
   };
 
   const defaultValue = {
@@ -27,7 +32,6 @@ export const LoginPage = () => {
       <FormWrapper
         className={styles.formWrapper}
         onSubmit={onSubmit}
-        onError={onError}
         defaultValues={defaultValue}
       >
         <h1>Авторизация</h1>
@@ -39,14 +43,18 @@ export const LoginPage = () => {
             required: "Имя пользователя - обязательное поле.",
           }}
         />
-        <FormInputText
+        <FormInputPassword
           name="password"
           label="Пароль"
           style={{ width: "100%" }}
           rules={{ required: "Пароль - обязательное поле." }}
         />
-        <Button type="submit" label="Войти" />
+        <Button
+          type="submit"
+          label="Войти"
+          loading={authStore.state === STATES.LOADING}
+        />
       </FormWrapper>
     </div>
   );
-};
+});

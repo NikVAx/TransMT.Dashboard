@@ -71,12 +71,11 @@
 }
 
 .submenuWrapper a.activeRoute {
-  font-weight: 500;
+  font-weight: 700;
   color: var(--primary-color);
 }
 
 .submenuWrapper i.activeRouteIcon {
-  font-weight: 500;
   color: var(--primary-color);
 }
 
