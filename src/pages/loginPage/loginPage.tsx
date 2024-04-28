@@ -5,27 +5,22 @@ import { FormInputPassword, FormInputText, FormWrapper } from "@/components";
 import { ILoginDto, STATES } from "@/features";
 import { useStore } from "@/app/store";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const LoginPage = observer(() => {
   const authStore = useStore((store) => store.authStore);
-
-  const onSubmit: SubmitHandler<ILoginDto> = (data) => {
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
     console.log("onSubmit", data);
 
-    authStore.login(data);
-  };
+    const status = await authStore.login(data);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (authStore.state === STATES.DONE) {
+    if (status) {
       navigate("/");
-    } else if (authStore.state === STATES.ERROR) {
+    } else {
       alert("Неверное имя пользователя или пароль");
     }
-  }, [authStore.state]);
+  };
 
   const defaultValue = {
     username: "",
