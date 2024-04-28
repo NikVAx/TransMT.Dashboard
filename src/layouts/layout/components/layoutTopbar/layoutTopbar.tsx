@@ -6,11 +6,13 @@ import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/app/store";
 
+const themes = ["lara-light-blue", "lara-dark-blue"];
+
 export function LayoutTopbar() {
   const navigate = useNavigate();
   const authStore = useStore((store) => store.authStore);
 
-  const [theme, setTheme] = useState("lara-dark-blue");
+  const [theme, setTheme] = useState(themes[0]);
 
   useEffect(() => {
     let themeLink = document.getElementById("theme-link") as any;
@@ -39,10 +41,11 @@ export function LayoutTopbar() {
           label: "Сменить тему",
           icon: "pi pi-upload",
           command: () => {
-            if (theme === "lara-dark-blue") {
-              setTheme("lara-light-blue");
+            const currentThemeIndex = themes.indexOf(theme);
+            if (currentThemeIndex !== themes.length - 1) {
+              setTheme(themes[currentThemeIndex + 1]);
             } else {
-              setTheme("lara-dark-blue");
+              setTheme(themes[0]);
             }
           },
         },
