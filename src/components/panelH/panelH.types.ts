@@ -1,12 +1,12 @@
 import { PropsWithChildren } from "react";
 
-export interface HPanelHeaderProps {
+export interface PanelHHeaderProps {
   width?: string | number,
   minWidth?: string | number,
   maxWidth?: string | number,
 }
 
-export interface HPanelProps extends PropsWithChildren {
+export interface PanelHProps extends PropsWithChildren {
   title: string,
-  header?: HPanelHeaderProps
+  header?: PanelHHeaderProps
 }
