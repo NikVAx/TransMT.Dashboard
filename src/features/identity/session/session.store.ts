@@ -22,20 +22,26 @@ export class SessionStore {
     if (id) {
       const [status, response] = await getSessionsRequest(id);
       if (status) {
-        this.sessions = response.data.map<ISession>((dto) => {
-          const expiredAtDate = new Date(dto.expiredAt);
-          const createdAtDate = new Date(dto.createdAt);
+        runInAction(() => {
+          this.sessions = response.data.map<ISession>((dto) => {
+            const expiredAtDate = new Date(dto.expiredAt);
+            const createdAtDate = new Date(dto.createdAt);
 
-          return {
-            ...dto,
-            expiredAt: expiredAtDate,
-            createdAt: createdAtDate,
-            isExpired: new Date(Date.now()) > expiredAtDate,
-          };
+            return {
+              ...dto,
+              expiredAt: expiredAtDate,
+              createdAt: createdAtDate,
+              isExpired: new Date(Date.now()) > expiredAtDate,
+            };
+          });
         });
-        this.state = STATES.DONE;
+        runInAction(() => {
+          this.state = STATES.DONE;
+        });
       } else {
-        this.state = STATES.ERROR;
+        runInAction(() => {
+          this.state = STATES.ERROR;
+        });
       }
     }
   };
