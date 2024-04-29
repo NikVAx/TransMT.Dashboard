@@ -1,3 +1,5 @@
 import { Named } from "@/shared/types";
 
-export interface FormInputErrorMessageProps extends Named {}
+export interface FormInputErrorMessageProps extends Named {
+    root?: boolean;
+}

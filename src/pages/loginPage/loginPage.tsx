@@ -1,7 +1,12 @@
 import styles from "./loginPage.module.css";
 import { Button } from "primereact/button";
-import { SubmitHandler } from "react-hook-form";
-import { FormInputPassword, FormInputText, FormWrapper } from "@/components";
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import {
+  FormInputErrorMessage,
+  FormInputPassword,
+  FormInputText,
+  FormWrapper,
+} from "@/components";
 import { ILoginDto } from "@/features";
 import { useStore } from "@/app/store";
 import { observer } from "mobx-react-lite";
@@ -11,29 +16,32 @@ import { STATES } from "@/shared/constants/constants";
 export const LoginPage = observer(() => {
   const authStore = useStore((store) => store.authStore);
   const navigate = useNavigate();
-  const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
-    console.log("onSubmit", data);
 
+  const defaultValues = {
+    username: "",
+    password: "",
+  } as ILoginDto;
+
+  const methods = useForm({ defaultValues });
+
+  const onSubmit: SubmitHandler<ILoginDto> = async (data, e) => {
     const status = await authStore.login(data);
 
     if (status) {
       navigate("/");
     } else {
-      alert("Неверное имя пользователя или пароль");
+      methods.setError("root.login", {
+        message: "Неверное имя пользователя или пароль!",
+      });
     }
   };
-
-  const defaultValue = {
-    username: "",
-    password: "",
-  } as ILoginDto;
 
   return (
     <div className={styles.layoutWrapper}>
       <FormWrapper
         className={styles.formWrapper}
         onSubmit={onSubmit}
-        defaultValues={defaultValue}
+        methods={methods}
       >
         <h1>Авторизация</h1>
         <FormInputText
@@ -55,6 +63,7 @@ export const LoginPage = observer(() => {
           label="Войти"
           loading={authStore.state === STATES.LOADING}
         />
+        <FormInputErrorMessage root name="login"/>
       </FormWrapper>
     </div>
   );

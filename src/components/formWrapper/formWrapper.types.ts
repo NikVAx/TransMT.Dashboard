@@ -1,4 +1,8 @@
-import { SubmitErrorHandler, SubmitHandler } from "react-hook-form";
+import {
+  SubmitErrorHandler,
+  SubmitHandler,
+  UseFormReturn,
+} from "react-hook-form";
 
 export interface FormWrapperProps
   extends Omit<
@@ -8,7 +12,7 @@ export interface FormWrapperProps
     >,
     "onSubmit" | "onError"
   > {
-  defaultValues: any;
   onSubmit: SubmitHandler<any>;
   onError?: SubmitErrorHandler<any>;
+  methods: UseFormReturn<any, any, undefined>;
 }
