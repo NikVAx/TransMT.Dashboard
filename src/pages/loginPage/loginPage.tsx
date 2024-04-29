@@ -2,10 +2,11 @@ import styles from "./loginPage.module.css";
 import { Button } from "primereact/button";
 import { SubmitHandler } from "react-hook-form";
 import { FormInputPassword, FormInputText, FormWrapper } from "@/components";
-import { ILoginDto, STATES } from "@/features";
+import { ILoginDto } from "@/features";
 import { useStore } from "@/app/store";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
+import { STATES } from "@/shared/constants/constants";
 
 export const LoginPage = observer(() => {
   const authStore = useStore((store) => store.authStore);

@@ -15,7 +15,4 @@ export interface IAuthDataDto {
   accessToken: string | null;
 }
 
-export enum STORAGE_KEYS {
-  ACCESS_TOKEN = "access-token",
-  USER = "user",
-}
+

@@ -1,11 +1,7 @@
 import { createGuardRequest } from "@/shared/utils";
-import {
-  IAuthDataDto,
-  ILoginDto,
-  IUserWithRoles,
-  STORAGE_KEYS,
-} from "./auth.types";
+import { IAuthDataDto, ILoginDto, IUserWithRoles } from "./auth.types";
 import { appApiInstance } from "@/shared/api/instances";
+import { STORAGE_KEYS } from "@/shared/constants/constants";
 
 export const loginRequest = createGuardRequest((data: ILoginDto) =>
   appApiInstance.post<IAuthDataDto>("/auth/sign-in", data)
@@ -22,10 +18,10 @@ export const getLocalUserOrNull = () => {
 };
 
 export const getLocalAccessTokenOrNull = () => {
-  const localUser = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+  const localAccessToken = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
-  if (localUser) {
-    return JSON.parse(localUser) as string;
+  if (localAccessToken) {
+    return localAccessToken;
   } else {
     return null;
   }

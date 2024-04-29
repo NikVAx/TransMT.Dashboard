@@ -1,4 +1,4 @@
-import { ILoginDto, IUserWithRoles, STORAGE_KEYS } from "./auth.types";
+import { ILoginDto, IUserWithRoles } from "./auth.types";
 import {
   getLocalAccessTokenOrNull,
   getLocalUserOrNull,
@@ -6,13 +6,7 @@ import {
 } from "./auth.service";
 import { RootStore } from "@/app/store";
 import { makeAutoObservable, runInAction } from "mobx";
-
-export enum STATES {
-  INITIAL = "initial",
-  LOADING = "loading",
-  DONE = "done",
-  ERROR = "error",
-}
+import { STATES, STORAGE_KEYS } from "@/shared/constants/constants";
 
 export class AuthStore {
   user: IUserWithRoles | null;
@@ -36,10 +30,9 @@ export class AuthStore {
       if (status) {
         this.user = response.data.user;
         this.accessToken = response.data.accessToken;
-        localStorage.setItem(
-          STORAGE_KEYS.ACCESS_TOKEN,
-          JSON.stringify(this.accessToken)
-        );
+        if (this.accessToken) {
+          localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, this.accessToken);
+        }
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(this.user));
         this.state = STATES.DONE;
       } else {
