@@ -1,6 +1,6 @@
 import styles from "./loginPage.module.css";
 import { Button } from "primereact/button";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   FormInputErrorMessage,
   FormInputPassword,
@@ -24,7 +24,7 @@ export const LoginPage = observer(() => {
 
   const methods = useForm({ defaultValues });
 
-  const onSubmit: SubmitHandler<ILoginDto> = async (data, e) => {
+  const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
     const status = await authStore.login(data);
 
     if (status) {
@@ -63,7 +63,7 @@ export const LoginPage = observer(() => {
           label="Войти"
           loading={authStore.state === STATES.LOADING}
         />
-        <FormInputErrorMessage root name="login"/>
+        <FormInputErrorMessage root name="login" />
       </FormWrapper>
     </div>
   );
