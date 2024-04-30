@@ -1,9 +1,11 @@
 import { RootStore } from "@/app/store";
 import { STATES } from "@/shared/constants/constants";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IUser } from "./user.types";
-import { getUsersRequest } from "./user.service";
+import { ICreateUserDto, IUser } from "./user.types";
+import { createUserRequest, deleteUsersRequest, getUsersRequest } from "./user.service";
 import { PaginationStore } from "@/features/pagination";
+import { IManyDeleteOptions, IManyDeleteRequestOptions } from "@/shared/types";
+import { toArray } from "@/shared/utils";
 
 export class UserStore {
   state: STATES;
@@ -29,6 +31,23 @@ export class UserStore {
         this.users = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
         this.state = STATES.DONE;
+      } else {
+        this.state = STATES.ERROR;
+        console.log("failed to load users");
+      }
+    });
+  }
+
+  public async createUser(options: ICreateUserDto) {
+    runInAction(() => {
+      this.state = STATES.LOADING;
+    });
+
+    const [status] = await createUserRequest(options);
+
+    runInAction(() => {
+      if (status) {
+        this.getUsersPage();
       } else {
         this.state = STATES.ERROR;
       }

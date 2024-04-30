@@ -15,11 +15,6 @@ export const getUsersRequest = createGuardRequest((params?: IPaginatedRequest) =
   })
 );
 
-export const deleteUsersRequest = createGuardRequest(
-  (data: IManyDeleteRequestOptions) =>
-    appApiInstance.delete(`/${ROUTE}`, { data })
-);
-
 export const createUserRequest = createGuardRequest((data: ICreateUserDto) =>
   appApiInstance.post<IGetUserDto>(`/${ROUTE}`, data)
 );

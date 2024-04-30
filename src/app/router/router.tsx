@@ -1,7 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import { PageUseParamsTemplate } from "@/app/mock";
 import { Layout } from "@/layouts";
-import { LoginPage, ProfilePage, UserListPage } from "@/pages";
+import { LoginPage, ProfilePage, UserCreatePage, UserListPage } from "@/pages";
 import { ExamplePageCards, ExamplePageMap } from "../mock/examples";
 
 export const router = createBrowserRouter([
@@ -22,11 +22,19 @@ export const router = createBrowserRouter([
     children: [
       { path: "/accounts/me", element: <ProfilePage /> },
       { path: "/pages/:id", element: <PageUseParamsTemplate /> },
-      { path: "/pages/:tag/:id", element: <PageUseParamsTemplate /> },
       {
         path: "/identity",
         children: [
-          { path: "users", element: <UserListPage /> },
+          {
+            path: "users",
+            element: <UserListPage />,
+          },
+          
+            {
+              path: "users/create",
+              element: <UserCreatePage />,
+            },
+          
           { path: "roles", element: <div /> },
         ],
       },
