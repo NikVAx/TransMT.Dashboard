@@ -4,7 +4,9 @@ import { useResizeListener } from "primereact/hooks";
 import { DisplayMode } from "./layout.types";
 
 export const LayoutProvider = ({ children }: PropsWithChildren<any>) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+
 
   const getDisplayMode = (width: number) => {
     if (width > 991) {

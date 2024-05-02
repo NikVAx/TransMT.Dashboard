@@ -1,3 +1,5 @@
+import { MobxTreeNode } from "@/features/tree";
+
 export type MenuCommandProps = {
     originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>;
     item: IAppMenuItem;
@@ -21,9 +23,8 @@ export interface IAppMenuItem {
 
 
 export interface AppMenuItemProps {
-    item?: IAppMenuItem;
+    node: MobxTreeNode<IAppMenuItem>;
     parentKey?: string;
     index?: number;
-    root?: boolean;
     className?: string;
   }

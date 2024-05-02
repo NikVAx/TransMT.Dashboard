@@ -1,20 +1,13 @@
-import { appMenuConfig } from "../../config/menu.config";
-import { MenuProvider } from "./appMenu.context";
+import { menuStore } from "../../config/menu.config";
 import { AppMenuitem } from "../appMenuItem/appMenuItem";
 import s from "./appMenu.module.css";
 
 export function AppMenu() {
   return (
-    <MenuProvider>
-      <ul className={s.appMenu}>
-        {appMenuConfig.map((item, i) => {
-          return !item?.seperator ? (
-            <AppMenuitem item={item} root={true} index={i} key={item.id} />
-          ) : (
-            <li className="menu-separator"></li>
-          );
-        })}
-      </ul>
-    </MenuProvider>
+    <ul className={s.appMenu}>
+      {menuStore.root.children.map((node, i) => {
+        return <AppMenuitem node={node} index={i} key={node.value.id} />;
+      })}
+    </ul>
   );
 }
