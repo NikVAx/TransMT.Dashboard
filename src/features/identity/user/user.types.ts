@@ -2,6 +2,7 @@ export interface IUser {
   id: string;
   username: string;
   email: string;
+  roles: string[]
 }
 
 export interface IGetUserDto extends IUser {}

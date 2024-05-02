@@ -2,15 +2,13 @@ import { RootStore } from "@/app/store";
 import { STATES } from "@/shared/constants/constants";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ICreateUserDto, IUser } from "./user.types";
-import { createUserRequest, deleteUsersRequest, getUsersRequest } from "./user.service";
+import { createUserRequest, getUsersRequest } from "./user.service";
 import { PaginationStore } from "@/features/pagination";
-import { IManyDeleteOptions, IManyDeleteRequestOptions } from "@/shared/types";
-import { toArray } from "@/shared/utils";
 
 export class UserStore {
   state: STATES;
-  users: IUser[];
   pagination: PaginationStore;
+  users: IUser[];
 
   constructor(_: RootStore) {
     this.state = STATES.INITIAL;
@@ -43,13 +41,15 @@ export class UserStore {
       this.state = STATES.LOADING;
     });
 
-    const [status] = await createUserRequest(options);
+    const [status, response] = await createUserRequest(options);
+    console.log(status, response);
 
     runInAction(() => {
       if (status) {
-        this.getUsersPage();
+        this.state = STATES.DONE;
       } else {
         this.state = STATES.ERROR;
+        console.log("failed to create user");
       }
     });
   }

@@ -1,15 +1,28 @@
+import { useStore } from "@/app/store";
 import { PanelH } from "@/components";
 import { ICreateUserDto } from "@/features";
+import { STATES } from "@/shared/constants/constants";
+import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { ChangeEvent, useState } from "react";
+import { useEffect, useState } from "react";
 
-export const UserCreatePage = () => {
+export const UserCreatePage = observer(() => {
   const [user, setUser] = useState<ICreateUserDto>({
     username: "",
     email: "",
     password: "",
+    roles: [ "string" ]
   });
+
+  const userStore = useStore((x) => x.userStore);
+
+  useEffect(() => {
+    if (userStore.state === STATES.ERROR) {
+      alert("Не удалось создать пользователя");
+    }
+  }, [userStore.state]);
 
   return (
     <>
@@ -19,6 +32,7 @@ export const UserCreatePage = () => {
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
+          width: "fit-content"
         }}
       >
         <PanelH
@@ -51,10 +65,10 @@ export const UserCreatePage = () => {
               id="password"
               pt={{
                 input: {
-                    style: {
-                        width: "100%"
-                    }
-                }
+                  style: {
+                    width: "100%",
+                  },
+                },
               }}
               value={user.password}
               onChange={(e) =>
@@ -63,24 +77,16 @@ export const UserCreatePage = () => {
             />
           </div>
         </PanelH>
-        <PanelH
-          title="Основная информация"
-          header={{ width: "12rem", minWidth: "12rem" }}
-        >
-          <div className="flex flex-column gap-2">
-            <label htmlFor="username">Фамилия</label>
-            <InputText id="username" />
-          </div>
-          <div className="flex flex-column gap-2">
-            <label htmlFor="email">Имя</label>
-            <InputText id="email" />
-          </div>
-          <div className="flex flex-column gap-2">
-            <label htmlFor="email">Отчество</label>
-            <InputText id="email" />
-          </div>
-        </PanelH>
+        <div className="flex flex-row-reverse gap-2">
+          <Button
+            label="Сохранить"
+            onClick={async () => {
+              userStore.createUser(user);
+            }}
+            loading={userStore.isLoading}
+          />
+        </div>
       </div>
     </>
   );
-};
+});

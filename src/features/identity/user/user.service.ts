@@ -1,6 +1,5 @@
 import { appApiInstance } from "@/shared/api";
 import {
-  IManyDeleteRequestOptions,
   IPaginatedRequest,
   IPaginatedResponse,
 } from "@/shared/types";
@@ -16,7 +15,7 @@ export const getUsersRequest = createGuardRequest((params?: IPaginatedRequest) =
 );
 
 export const createUserRequest = createGuardRequest((data: ICreateUserDto) =>
-  appApiInstance.post<IGetUserDto>(`/${ROUTE}`, data)
+  appApiInstance.post<IGetUserDto>("/users", {...data})
 );
 
 export const getUserByIdRequest = createGuardRequest((id: string) =>
