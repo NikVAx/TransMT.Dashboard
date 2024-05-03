@@ -13,6 +13,9 @@ import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import { STATES } from "@/shared/constants/constants";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ObjectSchema, object, string } from "yup";
+
 export const LoginPage = observer(() => {
   const authStore = useStore((store) => store.authStore);
   const navigate = useNavigate();
@@ -22,7 +25,14 @@ export const LoginPage = observer(() => {
     password: "",
   } as ILoginDto;
 
-  const methods = useForm({ defaultValues });
+  const schema: ObjectSchema<ILoginDto> = object()
+    .shape({
+      username: string().required().label("Имя пользователя"),
+      password: string().required().label("Пароль"),
+    })
+    .required();
+
+  const methods = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
     const status = await authStore.login(data);
@@ -48,15 +58,11 @@ export const LoginPage = observer(() => {
           name="username"
           label="Имя пользователя"
           style={{ width: "100%" }}
-          rules={{
-            required: "Имя пользователя - обязательное поле.",
-          }}
         />
         <FormInputPassword
           name="password"
           label="Пароль"
           style={{ width: "100%" }}
-          rules={{ required: "Пароль - обязательное поле." }}
         />
         <Button
           type="submit"

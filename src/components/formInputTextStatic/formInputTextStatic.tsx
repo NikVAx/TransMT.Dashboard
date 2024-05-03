@@ -1,10 +1,10 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { FormInputTextProps } from "./formInputText.types";
+import { FormInputTextProps } from "../formInputText/formInputText.types";
 import { classNames } from "primereact/utils";
 import { InputText } from "primereact/inputtext";
 import { FormInputErrorMessage, Label } from "..";
 
-export const FormInputText = ({
+export const FormInputTextStatic = ({
   name,
   rules,
   label,
@@ -16,13 +16,24 @@ export const FormInputText = ({
   } = useFormContext();
 
   return (
-    <div className="field">
+    <div
+      className="field"
+      style={{
+        marginBottom: "0.5rem",
+      }}
+    >
       <Controller
         name={name}
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <span className="p-float-label">
+          <span className="flex flex-column gap-2">
+            <Label
+              htmlFor={name}
+              invalid={errors !== undefined && errors[name] !== undefined}
+            >
+              {label}
+            </Label>
             <InputText
               {...props}
               {...field}
@@ -30,16 +41,10 @@ export const FormInputText = ({
               autoFocus
               className={classNames({ "p-invalid": fieldState.invalid })}
             />
-            <Label
-              htmlFor={name}
-              invalid={errors !== undefined && errors[name] !== undefined}
-            >
-              {label}
-            </Label>
           </span>
         )}
       />
-      <FormInputErrorMessage name={name} style={{ paddingLeft: "0.8rem" }}/>
+      <FormInputErrorMessage name={name}/>
     </div>
   );
 };

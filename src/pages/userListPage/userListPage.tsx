@@ -7,6 +7,7 @@ import { useStore } from "@/app/store";
 import { PageWrapper, View } from "@/components";
 import { IUser, PaginationStore } from "@/features";
 import { useNavigate } from "react-router-dom";
+import { STATES } from "@/shared/constants";
 
 export const UserListPage = observer(() => {
   const { userStore } = useStore((store) => ({ userStore: store.userStore }));
@@ -14,6 +15,11 @@ export const UserListPage = observer(() => {
   useEffect(() => {
     userStore.getUsersPage();
   }, []);
+  useEffect(() => {
+    if (userStore.state === STATES.DONE) {
+      userStore.state = STATES.INITIAL;
+    }
+  }, [userStore.state])
 
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">

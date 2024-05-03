@@ -4,6 +4,7 @@ import { FormInputErrorMessageProps } from "./formInputErrorMessage.types";
 export const FormInputErrorMessage = ({
   name,
   root = false,
+  style
 }: FormInputErrorMessageProps) => {
   const {
     formState: { errors },
@@ -20,7 +21,7 @@ export const FormInputErrorMessage = ({
   }
 
   return (
-    <small className="p-error" style={{ paddingLeft: "0.8rem" }}>
+    <small className="p-error" style={style}>
       {root && errors.root !== undefined
         ? (errors.root[name]?.message as string)
         : (errors[name]?.message as string)}

@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export interface IHeightSizeProps {
   height?: string;
   minHeight?: string;
@@ -10,3 +12,7 @@ export interface IWightSizeProps {
 }
 
 export interface ISizeProps extends IHeightSizeProps, IWightSizeProps {}
+
+export interface IStyled {
+  style?: CSSProperties;
+}
