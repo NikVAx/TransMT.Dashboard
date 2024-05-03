@@ -20,4 +20,19 @@ export class PermissionStore {
       }
     });
   }
+
+  public getSeparated(permissions: string[]) {
+    let included: IPermission[] = [];
+    let excluded: IPermission[] = [];
+
+    this.permissions.forEach((perm) => {
+      if (permissions.some((id) => id === perm.id)) {
+        excluded.push(perm);
+      } else {
+        included.push(perm);
+      }
+    });
+
+    return { included, excluded }
+  }
 }

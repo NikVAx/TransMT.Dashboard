@@ -4,6 +4,6 @@ export const getRoleValidationSchema = () =>
   object()
     .shape({
       name: string().required().label("Название"),
-      description: string().required().label("Описание"),
+      description: string().label("Описание"),
     })
     .required();

@@ -5,6 +5,7 @@ import {
   LoginPage,
   ProfilePage,
   RoleCreatePage,
+  RoleEditPage,
   RoleListPage,
   UserCreatePage,
   UserListPage,
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
           { path: "users/create", element: <UserCreatePage /> },
           { path: "roles", element: <RoleListPage /> },
           { path: "roles/create", element: <RoleCreatePage /> },
+          { path: "roles/:id/edit", element: <RoleEditPage /> },
         ],
       },
       {

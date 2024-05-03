@@ -1,11 +1,12 @@
 import { RootStore } from "@/app/store";
 import { PaginationStore } from "@/features/pagination";
 import { STATES } from "@/shared/constants/constants";
-import { ICreateRoleDto, IRole } from "./role.types";
+import { ICreateRoleDto, IEditRoleDto, IRole } from "./role.types";
 import { makeAutoObservable, runInAction } from "mobx";
 import {
   createRoleRequest,
   deleteRolesRequest,
+  editRoleByIdRequest,
   getRoleByIdRequest,
   getRolesRequest,
 } from "./role.service";
@@ -59,6 +60,20 @@ export class RoleStore {
     this.setLoading();
 
     const [status, response] = await createRoleRequest(options);
+
+    if (status) {
+      this.setDone();
+      return response.data;
+    } else {
+      this.setError();
+      return null;
+    }
+  }
+
+  public async editRoleById(id: string, options: IEditRoleDto) {
+    this.setLoading();
+
+    const [status, response] = await editRoleByIdRequest(id, options);
 
     if (status) {
       this.setDone();

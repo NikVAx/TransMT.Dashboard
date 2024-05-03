@@ -5,18 +5,19 @@ import {
   PageWrapper,
   PanelV,
 } from "@/components";
-import { getRoleValidationSchema } from "./config/validation.config";
+import { getRoleValidationSchema } from "../roleCreatePage/config/validation.config";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
-import { ICreateRoleDto } from "@/features";
+import { ICreateRoleDto, IEditRoleDto } from "@/features";
 import { useStore } from "@/app/store";
 import { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 import { PickList, PickListChangeEvent } from "primereact/picklist";
 import { IPermission } from "@/features/identity/permissions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const RoleCreatePage = () => {
+export const RoleEditPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { permissionStore, roleStore } = useStore((x) => ({
@@ -27,23 +28,35 @@ export const RoleCreatePage = () => {
   const [sourcePermissions, setSourcePermissions] = useState<IPermission[]>([]);
   const [targetPermissions, setTargetPermissions] = useState<IPermission[]>([]);
 
-  const initialize = async () => {
-    await permissionStore.fetchPermissions();
-    setSourcePermissions(permissionStore.permissions);
-  };
-
-  useEffect(() => {
-    initialize();
-  }, []);
-
   const methods = useForm({
     defaultValues: {
       name: "",
       description: "",
       permissions: [],
-    } as ICreateRoleDto,
+    } as IEditRoleDto,
     resolver: yupResolver(getRoleValidationSchema()),
   });
+
+  const initialize = async () => {
+    if (!id) return navigate("/not-found");
+    
+    const roleWithShortPerms = await roleStore.getRoleById(id);
+    
+    if (!roleWithShortPerms) return navigate("/not-found");;
+    
+    await permissionStore.fetchPermissions();
+
+    const separated = permissionStore.getSeparated(roleWithShortPerms.permissions);
+
+    methods.reset({ ...roleWithShortPerms });
+
+    setSourcePermissions(separated.excluded);
+    setTargetPermissions(separated.included);
+  };
+
+  useEffect(() => {
+    initialize();
+  }, []);
 
   const onSubmit: SubmitHandler<ICreateRoleDto> = async (data) => {
     if (targetPermissions.length === 0) {
@@ -51,7 +64,7 @@ export const RoleCreatePage = () => {
         message: "Должно быть выбрано по крайней мере одно разрешение",
       });
     } else {
-      const responseData = await roleStore.createRole({
+      const responseData = await roleStore.editRoleById(id!, {
         ...data,
         permissions: targetPermissions.map((x) => x.name),
       });
