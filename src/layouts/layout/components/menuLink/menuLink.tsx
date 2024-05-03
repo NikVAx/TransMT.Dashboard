@@ -3,8 +3,12 @@ import { classNames } from "primereact/utils";
 import { Ripple } from "primereact/ripple";
 import { MenuLinkProps } from "./menuLink.types";
 import styles from "../appMenuItem/appMenuItem.module.css";
+import { observer } from "mobx-react-lite";
+import { useMemo } from "react";
 
-export const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
+export const MenuLink = observer(({ node, onClick, isActive }: MenuLinkProps) => {  
+  const item = useMemo(() => node.value, [node.value]);
+  
   return (
     <NavigationLink
       to={item.to}
@@ -23,15 +27,15 @@ export const MenuLink = ({ item, onClick, isActive }: MenuLinkProps) => {
         })}
       />
       <span className={styles.menuItemText}>{item!.label}</span>
-      {item!.items && (
+      {node.hasChildren() && (
         <i
+          style={{transform: node.isOpen ? "rotate(-180deg)" : ""}}
           className={classNames(
-            "pi pi-fw pi-angle-down",
-            styles.submenuTogglerIcon
+            "pi pi-fw pi-angle-down"
           )}
         />
       )}
       {!item.disabled ? <Ripple /> : null}
     </NavigationLink>
   );
-};
+});

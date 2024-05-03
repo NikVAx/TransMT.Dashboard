@@ -2,7 +2,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Password } from "primereact/password";
 import { FormInputPasswordProps } from "./formInputPassword.types";
 import { classNames } from "primereact/utils";
-import { FormInputErrorMessage } from "..";
+import { FormInputErrorMessage, Label } from "..";
 
 export const FormInputPassword = ({
   name,
@@ -18,16 +18,16 @@ export const FormInputPassword = ({
 
   return (
     <div className="field">
-      <span className="p-float-label">
-        <Controller
-          name={name}
-          control={control}
-          rules={rules}
-          render={({ field, fieldState }) => (
+      <Controller
+        name={name}
+        control={control}
+        rules={rules}
+        render={({ field, fieldState }) => (
+          <span className="p-float-label">
             <Password
               {...props}
-              id={field.name}
               {...field}
+              id={field.name}
               className={classNames({ "p-invalid": fieldState.invalid })}
               pt={{
                 input: {
@@ -39,18 +39,17 @@ export const FormInputPassword = ({
               feedback={feedback}
               title={label}
             />
-          )}
-        />
-        <label
-          htmlFor={name}
-          className={classNames({
-            "p-error": errors !== undefined && errors[name] !== undefined,
-          })}
-        >
-          {label}
-        </label>
-      </span>
-      <FormInputErrorMessage name={name} />
+            <Label
+              htmlFor={name}
+              invalid={errors !== undefined && errors[name] !== undefined}
+            >
+              {label}
+            </Label>
+          </span>
+        )}
+      />
+
+      <FormInputErrorMessage name={name} style={{ paddingLeft: "0.8rem" }} />
     </div>
   );
 };

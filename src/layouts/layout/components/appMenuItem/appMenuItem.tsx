@@ -1,25 +1,26 @@
 import { useLocation } from "react-router-dom";
-import { AppMenuItemProps } from "./appMenuItem.types";
-import { useContext, useEffect, useRef } from "react";
-import { MenuContext } from "../appMenu/appMenu.context";
+import { AppMenuItemProps, IAppMenuItem } from "./appMenuItem.types";
+import { useEffect, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
 import styles from "./appMenuItem.module.css";
 import { MenuLink } from "../menuLink";
+import { observer } from "mobx-react-lite";
+import { MobxTreeNode } from "@/features/tree";
 
-export const AppMenuitem = (props: AppMenuItemProps) => {
+export interface IMobxNodeProps<T> {
+  node: MobxTreeNode<T>;
+}
+
+export const AppMenuitem = observer(({ node }: AppMenuItemProps) => {
   const { pathname } = useLocation();
-  const { activeMenu, setActiveMenu } = useContext(MenuContext);
-  const item = props.item;
-  const key = props.parentKey
-    ? props.parentKey + "-" + props.index
-    : String(props.index);
-  const isActiveRoute = (item!.to && pathname === item!.to) as boolean;
-  const active = activeMenu === key || activeMenu.startsWith(key + "-");
+
+  const isActiveRoute = (node.value!.to &&
+    pathname === node.value!.to) as boolean;
 
   const onRouteChange = (url: string) => {
-    if (item!.to && item!.to === url) {
-      setActiveMenu(key);
+    if (node.value!.to && node.value!.to === url) {
+      node.activate();
     }
   };
 
@@ -30,70 +31,72 @@ export const AppMenuitem = (props: AppMenuItemProps) => {
   const itemClick = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
-    
-    //execute command
-    if (item!.command) {
-      item!.command({ originalEvent: event, item: item! });
+    if (node.value!.command) {
+      node.value!.command({ originalEvent: event, item: node.value! });
     }
 
-    // toggle active state
-    if (item!.items) {
-      setActiveMenu(active ? (props.parentKey as string) : key);
-    } else {
-      setActiveMenu(key);
+    console.log(node.value.label, node.isOpen);
+
+    if (node.hasChildren()) {
+      node.toggle();
+      if (node.isOpen) {
+        node.closeOtherBranches();
+      }
     }
   };
 
   const nodeRef = useRef(null);
 
-  const subMenu = item!.items && item!.visible !== false && (
-    <CSSTransition
-      nodeRef={nodeRef}
-      timeout={{ enter: 1000, exit: 450 }}
-      classNames={{
-        enterActive: styles.layoutSubmenuEnterActive,
-        enterDone: styles.layoutSubmenuEnterDone,
-        exit: styles.layoutSubmenuExit,
-        exitActive: styles.layoutSubmenuExitActive,
-      }}
-      in={props.root ? true : active}
-      key={item!.label}
-    >
+  const subMenu = node.hasChildren() &&
+    node.value!.visible !== false &&
+    (node.isOpen || node.deepIndex === 1) && (
       <ul ref={nodeRef} className={styles.submenuWrapper}>
-        {item!.items.map((child, i) => {
-          return (
-            <AppMenuitem
-              item={child}
-              index={i}
-              parentKey={key}
-              key={child.label}
-            />
-          );
+        {node.children.map((child, i) => {
+          return <AppMenuitem node={child} index={i} key={child.value.label} />;
         })}
       </ul>
-    </CSSTransition>
-  );
+    );
 
   return (
     <li
       tabIndex={-1}
       className={classNames(
-        { [styles.rootMenuItem]: props.root },
-        { [styles.activeMenuItem]: active },
-        { [styles.disabledMenuItem]: item?.disabled }
+        { [styles.rootMenuItem]: node.deepIndex === 1 },
+        { [styles.activeMenuItem]: true /*TODO: replace to isActive()*/ },
+        { [styles.disabledMenuItem]: node.value.disabled }
       )}
     >
-      {props.root && item!.visible !== false && (
+      {node.deepIndex === 1 && node.value!.visible !== false && (
         <div tabIndex={-1} className={styles.menuItemRootText}>
-          {item!.label}
+          {node.value!.label}
         </div>
       )}
 
-      {!props.root && item!.visible !== false && item !== undefined ? (
-        <MenuLink item={item} onClick={itemClick} isActive={isActiveRoute} />
+      {node.deepIndex !== 1 &&
+      node.value!.visible !== false &&
+      node.value !== undefined ? (
+        <MenuLink node={node} onClick={itemClick} isActive={isActiveRoute} />
       ) : null}
 
       {subMenu}
     </li>
   );
-};
+});
+
+/*
+  
+  <CSSTransition
+        nodeRef={nodeRef}
+        timeout={{ enter: 1000, exit: 450 }}
+        classNames={{
+          enterActive: styles.layoutSubmenuEnterActive,
+          enterDone: styles.layoutSubmenuEnterDone,
+          exit: styles.layoutSubmenuExit,
+          exitActive: styles.layoutSubmenuExitActive,
+        }}
+        in={node.deepIndex === 1 ? true : node.isOpen}
+        key={item!.label}
+      >
+        
+      </CSSTransition>
+  */

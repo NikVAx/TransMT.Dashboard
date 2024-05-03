@@ -1,9 +1,10 @@
 .wrapper {
   display: flex;
+  flex-direction: column;
 }
 
 .headerText {
-  color: var(--primary-text);
+  color: #374151 /*var(--primary-text)*/;
   font-weight: 700;
 }
 
@@ -11,16 +12,14 @@
   padding: var(--content-padding);
   background: var(--surface-c);
   border-top-left-radius: var(--border-radius);
-  border-bottom-left-radius: var(--border-radius);
-  border-right: 1px solid var(--surface-border);
-  overflow-wrap: break-word;
+  border-top-right-radius: var(--border-radius);
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .content {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 1rem;
+  padding: var(--content-padding);
   flex: 1;
-  flex-wrap: wrap;
 }

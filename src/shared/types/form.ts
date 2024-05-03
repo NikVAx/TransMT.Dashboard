@@ -5,6 +5,6 @@ export type FormRule = Omit<
   "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
 >;
 
-export interface Named {
+export interface INamed {
   name: string;
 }

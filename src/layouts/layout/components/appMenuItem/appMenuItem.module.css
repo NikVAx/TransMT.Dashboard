@@ -42,11 +42,6 @@
   display: none;
 }
 
-/* active menu items styles */
-
-.activeMenuItem > a .submenuTogglerIcon {
-  transform: rotate(-180deg);
-}
 
 .activeMenuItem > ul {
   max-height: auto;
@@ -86,7 +81,7 @@
 
 .submenuWrapper ul {
   overflow: hidden;
-  max-height: 0;
+  /*max-height: 0;*/
 }
 
 .submenuWrapper ul li a {

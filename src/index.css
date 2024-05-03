@@ -19,10 +19,22 @@ a {
   text-decoration: none;
 }
 
+*::placeholder {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+
 .p-ink-active {
   background-color: var(--primary-color);
   opacity: 0.2;
 }
- .p-tabmenu-nav {
+
+.p-tabmenu-nav {
   white-space: nowrap;
- }
+}
+
+.p-picklist-header {
+  background-color: var(--surface-c);
+}
+

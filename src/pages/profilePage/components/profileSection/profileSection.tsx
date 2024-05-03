@@ -1,5 +1,5 @@
 import { useStore } from "@/app/store";
-import { HPanel } from "@/components";
+import { PanelH } from "@/components";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
@@ -15,7 +15,7 @@ export const ProfileSection = () => {
         gap: "1rem",
       }}
     >
-      <HPanel
+      <PanelH
         title="Основная информация"
         header={{ width: "12rem", minWidth: "12rem" }}
       >
@@ -31,7 +31,7 @@ export const ProfileSection = () => {
           <label htmlFor="email">Электронная почта</label>
           <InputText id="email" value={authStore.user?.email} />
         </div>
-      </HPanel>
+      </PanelH>
       <div className="flex flex-row-reverse gap-2">
         <Button>Сохранить</Button>
         <Button outlined>Отмена</Button>

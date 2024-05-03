@@ -7,10 +7,14 @@ export class PaginationStore {
   totalCount: number;
 
   constructor() {
-    this.pageSize = 20;
-    this.pageSizeOptions = [10, 20, 40];
+    this.pageSize = 10;
+    this.pageSizeOptions = [2, 5, 10, 20];
     this.pageIndex = 0;
     this.totalCount = 0;
     makeAutoObservable(this);
+  }
+
+  public get first() {
+    return this.pageIndex * this.pageSize;
   }
 }

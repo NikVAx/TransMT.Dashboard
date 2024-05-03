@@ -12,13 +12,16 @@ export function LayoutTopbar() {
   const navigate = useNavigate();
   const authStore = useStore((store) => store.authStore);
 
-  const [theme, setTheme] = useState(themes[0]);
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") ?? themes[0]
+  );
 
   useEffect(() => {
     let themeLink = document.getElementById("theme-link") as any;
     if (themeLink) {
       themeLink.href = `/themes/${theme}/theme.css`;
     }
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const items = [
@@ -75,7 +78,7 @@ export function LayoutTopbar() {
         onClick={onSidebarToggle}
       />
 
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <Menu
           model={items}
           popup
@@ -83,6 +86,7 @@ export function LayoutTopbar() {
           id="popup_menu_right"
           popupAlignment="right"
         />
+        <span style={{paddingRight: "1rem"}}>{authStore.user?.username}</span>
         <Button
           style={{ width: "2rem", height: "2rem" }}
           icon="pi pi-user"

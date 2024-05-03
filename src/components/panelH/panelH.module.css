@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+}
+
+.headerText {
+  color: var(--primary-text);
+  font-weight: 700;
+}
+
+.header {
+  padding: var(--content-padding);
+  background: var(--surface-c);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-right: 1px solid var(--surface-border);
+  overflow-wrap: break-word;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: var(--content-padding);
+  flex: 1;
+  flex-wrap: wrap;
+}

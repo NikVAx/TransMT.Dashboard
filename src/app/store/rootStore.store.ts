@@ -1,13 +1,22 @@
 import { AuthStore, SessionStore } from "@/features";
+import { PermissionStore } from "@/features/identity/permissions";
+import { RoleStore } from "@/features/identity/role/role.store";
+import { UserStore } from "@/features/identity/user/user.store";
 import { makeAutoObservable } from "mobx";
 
 export class RootStore {
   authStore: AuthStore;
   sessionStore: SessionStore;
+  userStore: UserStore;
+  roleStore: RoleStore;
+  permissionStore: PermissionStore
 
   constructor() {
     this.authStore = new AuthStore(this);
     this.sessionStore = new SessionStore(this);
+    this.userStore = new UserStore(this);
+    this.roleStore = new RoleStore(this);
+    this.permissionStore = new PermissionStore(this);
     makeAutoObservable(this);
   }
 }

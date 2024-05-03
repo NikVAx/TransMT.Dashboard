@@ -15,16 +15,13 @@ export const ProfilePage = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const items = [
-    { label: "Данные пользователя", icon: "pi pi-id-card" },
-    { label: "Входы в систему", icon: "pi pi-key" },
+    { label: "Данные пользователя", icon: "pi pi-id-card", tab: <ProfileSection/> },
+    { label: "Входы в систему", icon: "pi pi-key", tab: <SessionsSection/> },
   ];
 
   return (
     <div className={styles.layout}>
       <div className={styles.wrapper}>
-        <View className={styles.leftDataWrapper}>
-          <ImageSection />
-        </View>
         <View className={styles.rightDataWrapper}>
           <div>
             <TabMenu
@@ -37,11 +34,7 @@ export const ProfilePage = () => {
             />
           </div>
           <div className={styles.rightDataWrapperContent}>
-            {tabIndex === 0 ? (
-              <ProfileSection />
-            ) : tabIndex === 1 ? (
-              <SessionsSection />
-            ) : null}
+            {items[tabIndex].tab}
           </div>
         </View>
       </div>
