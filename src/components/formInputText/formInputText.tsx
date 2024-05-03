@@ -25,8 +25,8 @@ export const FormInputText = ({
           render={({ field, fieldState }) => (
             <InputText
               {...props}
-              id={field.name}
               {...field}
+              id={field.name}
               autoFocus
               className={classNames({ "p-invalid": fieldState.invalid })}
             />

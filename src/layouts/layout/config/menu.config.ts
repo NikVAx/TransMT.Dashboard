@@ -8,7 +8,7 @@ export function TreeNode<T>(
   return { value, children };
 }
 
-export const appMenuConfig2: ITreeNode<IAppMenuItem>[] = [
+export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
   TreeNode(
     {
       id: "#home",
@@ -88,7 +88,7 @@ TreeNode({
 */
 
 const menuStore = new MobxTree<IAppMenuItem>(
-  appMenuConfig2,
+  appMenuConfig,
   (value) => value.to === window.location.pathname
 );
 

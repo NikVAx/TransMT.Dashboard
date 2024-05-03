@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Button } from "primereact/button";
 import { useStore } from "@/app/store";
-import { View } from "@/components";
+import { PageWrapper, View } from "@/components";
 import { IUser, PaginationStore } from "@/features";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +18,14 @@ export const UserListPage = observer(() => {
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
       <div className="flex flex-wrap gap-2">
-        <Button label="Создать" icon="pi pi-plus" severity="success" onClick={() => {
-          navigate("/identity/users/create")
-        }}/>
+        <Button
+          label="Создать"
+          icon="pi pi-plus"
+          severity="success"
+          onClick={() => {
+            navigate("/identity/users/create");
+          }}
+        />
       </div>
       <span className="text-xl text-900 font-bold">Пользователи</span>
     </div>
@@ -35,7 +40,7 @@ export const UserListPage = observer(() => {
           outlined
           className="mr-2"
           onClick={() => {
-            console.log("edit", data)
+            console.log("edit", data);
           }}
         />
         <Button
@@ -55,12 +60,12 @@ export const UserListPage = observer(() => {
       first: paginationStore.first,
       rows: paginationStore.pageSize,
       //rowsPerPageOptions: paginationStore.pageSizeOptions,
-      totalRecords: paginationStore.totalCount
-    }
-  }
+      totalRecords: paginationStore.totalCount,
+    };
+  };
 
   return (
-    <View style={{height: "100%", padding: "2rem"}}>
+    <PageWrapper>
       <DataTable
         scrollable
         scrollHeight="flex"
@@ -82,8 +87,13 @@ export const UserListPage = observer(() => {
         <Column field="id" header="ID" />
         <Column field="username" header="Имя пользователя" />
         <Column field="email" header="Электронная почта" />
-        <Column body={actionBodyTemplate} exportable={false} frozen={true} alignFrozen="right"/>
+        <Column
+          body={actionBodyTemplate}
+          exportable={false}
+          frozen={true}
+          alignFrozen="right"
+        />
       </DataTable>
-    </View>
+    </PageWrapper>
   );
 });

@@ -43,11 +43,6 @@ export const SessionsSection = observer(() => {
           header="Заблокирована"
           body={(s) => (s.isBlocked ? "Да" : "Нет")}
         />
-        <Column
-          field="isExpired"
-          header="Истекла"
-          body={(s) => (s.isBlocked ? "Да" : "Нет")}
-        />
       </DataTable>
     </View>
   );

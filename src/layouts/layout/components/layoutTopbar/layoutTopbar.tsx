@@ -78,7 +78,7 @@ export function LayoutTopbar() {
         onClick={onSidebarToggle}
       />
 
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <Menu
           model={items}
           popup
@@ -86,6 +86,7 @@ export function LayoutTopbar() {
           id="popup_menu_right"
           popupAlignment="right"
         />
+        <span style={{paddingRight: "1rem"}}>{authStore.user?.username}</span>
         <Button
           style={{ width: "2rem", height: "2rem" }}
           icon="pi pi-user"

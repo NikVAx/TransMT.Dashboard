@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Button } from "primereact/button";
 import { useStore } from "@/app/store";
-import { View } from "@/components";
+import { PageWrapper, View } from "@/components";
 import { IRole, PaginationStore } from "@/features";
 import { useNavigate } from "react-router-dom";
 
@@ -18,9 +18,14 @@ export const RoleListPage = observer(() => {
   const header = (
     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
       <div className="flex flex-wrap gap-2">
-        <Button label="Создать" icon="pi pi-plus" severity="success" onClick={() => {
-          navigate("/identity/roles/create")
-        }}/>
+        <Button
+          label="Создать"
+          icon="pi pi-plus"
+          severity="success"
+          onClick={() => {
+            navigate("/identity/roles/create");
+          }}
+        />
       </div>
       <span className="text-xl text-900 font-bold">Роли</span>
     </div>
@@ -29,22 +34,26 @@ export const RoleListPage = observer(() => {
   const actionBodyTemplate = (data: IRole) => {
     return (
       <div>
-        <Button
-          icon="pi pi-pencil"
-          rounded
-          outlined
-          className="mr-2"
-          onClick={() => {
-            console.log("edit", data)
-          }}
-        />
-        <Button
-          icon="pi pi-trash"
-          rounded
-          outlined
-          severity="danger"
-          onClick={() => {}}
-        />
+        {data.name !== "superuser" && (
+          <>
+            <Button
+              icon="pi pi-pencil"
+              rounded
+              outlined
+              className="mr-2"
+              onClick={() => {
+                console.log("edit", data);
+              }}
+            />
+            <Button
+              icon="pi pi-trash"
+              rounded
+              outlined
+              severity="danger"
+              onClick={() => {}}
+            />
+          </>
+        )}
       </div>
     );
   };
@@ -55,12 +64,12 @@ export const RoleListPage = observer(() => {
       first: paginationStore.first,
       rows: paginationStore.pageSize,
       //rowsPerPageOptions: paginationStore.pageSizeOptions,
-      totalRecords: paginationStore.totalCount
-    }
-  }
+      totalRecords: paginationStore.totalCount,
+    };
+  };
 
   return (
-    <View style={{height: "100%", padding: "2rem"}}>
+    <PageWrapper>
       <DataTable
         scrollable
         scrollHeight="flex"
@@ -74,15 +83,21 @@ export const RoleListPage = observer(() => {
         lazy
         {...getPageProps(roleStore.pagination)}
         onPage={(event) => {
-            roleStore.pagination.pageSize = event.rows;
-            roleStore.pagination.pageIndex = event.page ?? 0;
-            roleStore.getRolesPage();
+          roleStore.pagination.pageSize = event.rows;
+          roleStore.pagination.pageIndex = event.page ?? 0;
+          roleStore.getRolesPage();
         }}
       >
         <Column field="id" header="ID" />
-        <Column field="name" header="Название" />
-        <Column body={actionBodyTemplate} exportable={false} frozen={true} alignFrozen="right"/>
+        <Column field="name" header="Название" resizeable={false} />
+        <Column
+          body={actionBodyTemplate}
+          exportable={false}
+          frozen={true}
+          alignFrozen="right"
+          style={{ width: "150px" }}
+        />
       </DataTable>
-    </View>
+    </PageWrapper>
   );
 });
