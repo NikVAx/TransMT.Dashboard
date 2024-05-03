@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Button } from "primereact/button";
 import { useStore } from "@/app/store";
-import { PageWrapper, View } from "@/components";
+import { PageWrapper } from "@/components";
 import { IUser, PaginationStore } from "@/features";
 import { useNavigate } from "react-router-dom";
 import { STATES } from "@/shared/constants";
@@ -92,12 +92,13 @@ export const UserListPage = observer(() => {
       >
         <Column field="id" header="ID" />
         <Column field="username" header="Имя пользователя" />
-        <Column field="email" header="Электронная почта" />
+        <Column field="email" header="Электронная почта" resizeable={false} />
         <Column
           body={actionBodyTemplate}
           exportable={false}
           frozen={true}
           alignFrozen="right"
+          style={{ width: "150px" }}
         />
       </DataTable>
     </PageWrapper>

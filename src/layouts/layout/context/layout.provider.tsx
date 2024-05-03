@@ -6,8 +6,6 @@ import { DisplayMode } from "./layout.types";
 export const LayoutProvider = ({ children }: PropsWithChildren<any>) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-
-
   const getDisplayMode = (width: number) => {
     if (width > 991) {
       return "large";

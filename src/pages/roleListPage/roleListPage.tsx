@@ -4,9 +4,10 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { Button } from "primereact/button";
 import { useStore } from "@/app/store";
-import { PageWrapper, View } from "@/components";
+import { PageWrapper } from "@/components";
 import { IRole, PaginationStore } from "@/features";
 import { useNavigate } from "react-router-dom";
+import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 
 export const RoleListPage = observer(() => {
   const { roleStore } = useStore((store) => ({ roleStore: store.roleStore }));
@@ -33,7 +34,7 @@ export const RoleListPage = observer(() => {
 
   const actionBodyTemplate = (data: IRole) => {
     return (
-      <div>
+      <div style={{ height: "48px" }}>
         {data.name !== "superuser" && (
           <>
             <Button
@@ -48,9 +49,21 @@ export const RoleListPage = observer(() => {
             <Button
               icon="pi pi-trash"
               rounded
-              outlined
               severity="danger"
-              onClick={() => {}}
+              onClick={(event) => {
+                confirmPopup({
+                  target: event.currentTarget,
+                  message: "Вы уверены, что хотите удалить роль?",
+                  acceptLabel: "Да",
+                  rejectLabel: "Нет",
+                  icon: "pi pi-info-circle",
+                  defaultFocus: "reject",
+                  acceptClassName: "p-button-danger",
+                  accept: () => {
+                    roleStore.deleteRoles({ keys: [data.id] });
+                  },
+                });
+              }}
             />
           </>
         )}
@@ -70,11 +83,12 @@ export const RoleListPage = observer(() => {
 
   return (
     <PageWrapper>
+      <ConfirmPopup />
       <DataTable
         scrollable
         scrollHeight="flex"
         header={header}
-        size="large"
+        size="small"
         stripedRows
         value={roleStore.roles}
         loading={roleStore.isLoading}
@@ -95,7 +109,7 @@ export const RoleListPage = observer(() => {
           exportable={false}
           frozen={true}
           alignFrozen="right"
-          style={{ width: "150px" }}
+          style={{ width: "96px" }}
         />
       </DataTable>
     </PageWrapper>

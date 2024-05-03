@@ -1,5 +1,5 @@
-import { IAppMenuItem } from "../components/appMenuItem/appMenuItem.types";
 import { ITreeNode, MobxTree } from "@/features/tree";
+import { IAppMenuItem } from "@/layouts/layout/components/appMenuItem";
 
 export function TreeNode<T>(
   value: T,
@@ -77,15 +77,6 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
     ]
   ),
 ];
-
-/*
-TreeNode({
-    id: "#tree",
-    label: "Tree",
-    } as IAppMenuItem, mock.routesTree(3, 4),
-  ),
-
-*/
 
 const menuStore = new MobxTree<IAppMenuItem>(
   appMenuConfig,

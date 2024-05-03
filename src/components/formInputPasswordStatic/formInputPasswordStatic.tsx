@@ -23,7 +23,7 @@ export const FormInputPasswordStatic = ({
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <div className="flex flex-column gap-2">
+          <span className="flex flex-column gap-2">
             <Label
               htmlFor={name}
               invalid={errors !== undefined && errors[name] !== undefined}
@@ -45,7 +45,7 @@ export const FormInputPasswordStatic = ({
               feedback={feedback}
               title={label}
             />
-          </div>
+          </span>
         )}
       />
 

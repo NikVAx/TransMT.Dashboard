@@ -4,6 +4,7 @@ import { Layout } from "@/layouts";
 import {
   LoginPage,
   ProfilePage,
+  RoleCreatePage,
   RoleListPage,
   UserCreatePage,
   UserListPage,
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
           { path: "users", element: <UserListPage /> },
           { path: "users/create", element: <UserCreatePage /> },
           { path: "roles", element: <RoleListPage /> },
+          { path: "roles/create", element: <RoleCreatePage /> },
         ],
       },
       {
