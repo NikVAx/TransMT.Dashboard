@@ -1,4 +1,3 @@
-import { IRole } from "../role";
 import { IUser } from "../user";
 
 export interface ILoginDto {
@@ -6,13 +5,9 @@ export interface ILoginDto {
   password: string;
 }
 
-export interface IUserWithRoles extends IUser {
-  roles: IRole[];
-}
+export interface IUserWithRoles extends IUser {}
 
 export interface IAuthDataDto {
   user: IUserWithRoles | null;
   accessToken: string | null;
 }
-
-

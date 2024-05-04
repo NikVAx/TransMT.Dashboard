@@ -1,4 +1,12 @@
+import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
+import { PickList, PickListChangeEvent } from "primereact/picklist";
+import { Button } from "primereact/button";
 import { useStore } from "@/app/store";
+import { ICreateUserDto, IRole } from "@/features";
 import {
   FormInputErrorMessage,
   FormInputPasswordStatic,
@@ -7,26 +15,17 @@ import {
   PageWrapper,
   PanelV,
 } from "@/components";
-import { ICreateUserDto, IRole } from "@/features";
-import { STATES } from "@/shared/constants/constants";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { observer } from "mobx-react-lite";
-import { Button } from "primereact/button";
-import { PickList, PickListChangeEvent } from "primereact/picklist";
-import { useEffect, useState } from "react";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { getUserValidationSchema } from "./configs/validation.config";
-import { useNavigate } from "react-router-dom";
+import { itemTemplate } from "./components/itemTemplate";
+
+export const useComponentDidMount = (onDidMount: () => void) => {
+  useEffect(() => {
+    onDidMount();
+  }, []);
+};
 
 export const UserCreatePage = observer(() => {
   const navigate = useNavigate();
-  
-  const defaultValues = {
-    username: "",
-    email: "",
-    password: "",
-    roles: [],
-  } as ICreateUserDto;
 
   const [sourceRoles, setSourceRoles] = useState<IRole[]>([]);
   const [targetRoles, setTargetRoles] = useState<IRole[]>([]);
@@ -36,27 +35,19 @@ export const UserCreatePage = observer(() => {
     roleStore: x.roleStore,
   }));
 
-  const initialize = async () => {
+  useComponentDidMount(async () => {
     roleStore.pagination.pageSize = 20000;
     await roleStore.getRolesPage();
     setSourceRoles(roleStore.roles);
-  };
-
-  useEffect(() => {
-    initialize();
-  }, []);
-
-  useEffect(() => {
-    if (userStore.state === STATES.ERROR) {
-      alert("Не удалось создать пользователя");
-      userStore.state = STATES.INITIAL;
-    } else if (userStore.state === STATES.DONE) {
-      navigate("/identity/users");
-    }
-  }, [userStore.state]);
+  });
 
   const methods = useForm({
-    defaultValues,
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      roles: [],
+    } as ICreateUserDto,
     resolver: yupResolver(getUserValidationSchema()),
   });
 
@@ -65,15 +56,22 @@ export const UserCreatePage = observer(() => {
       methods.setError("root.roles", {
         message: "Не выбрана ни одна роль.",
       });
+      return;
+    }
+
+    const status = await userStore.createUser({
+      ...data,
+      roles: ["string"] /* TODO: fix backend: target.map(x => x.name)*/,
+    });
+
+    if (status.isSuccess) {
+      navigate("/identity/users");
     } else {
-      userStore.createUser({
-        ...data,
-        roles: ["string"] /* TODO: fix backend: target.map(x => x.name)*/,
-      });
+      alert("Не удалось создать пользователя");
     }
   };
 
-  const onSubmitError: SubmitErrorHandler<ICreateUserDto> = async (e) => {
+  const onSubmitError: SubmitErrorHandler<ICreateUserDto> = async () => {
     if (targetRoles.length === 0) {
       methods.setError("root.roles", {
         message: "Не выбрана ни одна роль.",
@@ -84,21 +82,6 @@ export const UserCreatePage = observer(() => {
   const onChange = (event: PickListChangeEvent) => {
     setSourceRoles(event.source);
     setTargetRoles(event.target);
-  };
-  
-  const itemTemplate = (item: IRole) => {
-    return (
-      <div className="flex flex-column flex-wrap p-2 align-items-left">
-        <div className="flex flex-wrap p-2 align-items-center">
-        <small>{item.id}</small>
-        </div>
-        <div className="flex flex-wrap p-2 align-items-center">
-
-        <span className="font-bold">{item.name}</span>
-        </div>
-        
-      </div>
-    );
   };
 
   return (

@@ -1,11 +1,10 @@
-import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useStore } from "@/app/store";
-import { PageWrapper } from "@/components";
+import { CrudDataTable, PageWrapper } from "@/components";
 import { ConfirmPopup } from "primereact/confirmpopup";
-import { defaultDataTableProps, getPaginatorProps } from "@/shared/utils";
+import { getPaginatorProps } from "@/shared/utils";
 import { Header } from "./components/header";
 import { actionBodyTemplate } from "./components/actionBodyTemplate";
 
@@ -18,8 +17,7 @@ export const RoleListPage = observer(() => {
   return (
     <PageWrapper>
       <ConfirmPopup />
-      <DataTable
-        {...defaultDataTableProps}
+      <CrudDataTable
         {...getPaginatorProps(roleStore.pagination)}
         onPage={(event) => {
           roleStore.pagination.pageSize = event.rows;
@@ -40,7 +38,7 @@ export const RoleListPage = observer(() => {
           alignFrozen="right"
           style={{ width: "96px" }}
         />
-      </DataTable>
+      </CrudDataTable>
     </PageWrapper>
   );
 });

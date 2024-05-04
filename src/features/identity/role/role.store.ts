@@ -1,6 +1,5 @@
 import { RootStore } from "@/app/store";
 import { PaginationStore } from "@/features/pagination";
-import { STATES } from "@/shared/constants/constants";
 import { ICreateRoleDto, IEditRoleDto, IRole } from "./role.types";
 import { makeAutoObservable, runInAction } from "mobx";
 import {
@@ -10,23 +9,23 @@ import {
   getRoleByIdRequest,
   getRolesRequest,
 } from "./role.service";
-import { IManyDeleteOptions } from "@/shared/types";
+import { IManyDeleteOptions, fail, success } from "@/shared/types";
 import { toArray } from "@/shared/utils";
 
 export class RoleStore {
-  state: STATES;
   pagination: PaginationStore;
   roles: IRole[];
+  isLoading: boolean;
 
   constructor(_: RootStore) {
-    this.state = STATES.INITIAL;
+    this.isLoading = false;
     this.roles = [];
     this.pagination = new PaginationStore();
     makeAutoObservable(this);
   }
 
   public async getRolesPage() {
-    this.setLoading();
+    this.loading();
 
     const [status, response] = await getRolesRequest(this.pagination);
 
@@ -37,78 +36,74 @@ export class RoleStore {
           permissions: [],
         }));
         this.pagination.totalCount = response.data.totalCount;
-        this.setDone();
+        return this.success();
       } else {
-        this.setError("failed to load roles");
+        return this.fail();
       }
     });
   }
 
   public async getRoleById(id: string) {
-    this.setLoading();
+    this.loading();
+
     const [status, response] = await getRoleByIdRequest(id);
     if (status) {
-      this.setDone();
-      return response.data;
+      return this.success(response.data);
     } else {
-      this.setError();
-      return null;
+      return this.fail();
     }
   }
 
   public async createRole(options: ICreateRoleDto) {
-    this.setLoading();
+    this.loading();
 
     const [status, response] = await createRoleRequest(options);
 
     if (status) {
-      this.setDone();
-      return response.data;
+      return this.success(response.data);
     } else {
-      this.setError();
-      return null;
+      return this.fail();
     }
   }
 
   public async editRoleById(id: string, options: IEditRoleDto) {
-    this.setLoading();
+    this.loading();
 
     const [status, response] = await editRoleByIdRequest(id, options);
 
     if (status) {
-      this.setDone();
-      return response.data;
+      this.isLoading = false;
+      return success(response.data);
     } else {
-      this.setError();
-      return null;
+      return this.fail();
     }
   }
 
   public async deleteRoles(options: IManyDeleteOptions) {
-    this.setLoading();
+    this.loading();
 
-    const [status, response] = await deleteRolesRequest({
+    const [status, _] = await deleteRolesRequest({
       keys: toArray(options.keys),
     });
 
     if (status) {
       this.getRolesPage();
     } else {
-      this.setError(response);
+      this.fail();
     }
   }
 
-  private setLoading() {
-    this.state = STATES.LOADING;
+  private loading() {
+    this.isLoading = true;
   }
-  private setDone() {
-    this.state = STATES.DONE;
+
+  private success<T>(data?: T) {
+    this.isLoading = false;
+    return success(data);
   }
-  private setError(object?: unknown) {
-    this.state = STATES.ERROR;
-    console.error(object);
-  }
-  get isLoading() {
-    return this.state === STATES.LOADING;
+
+  private fail<E>(error?: E) {
+    this.isLoading = false;
+    return fail(error);
   }
 }

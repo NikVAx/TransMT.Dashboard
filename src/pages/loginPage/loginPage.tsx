@@ -11,7 +11,6 @@ import { ILoginDto } from "@/features";
 import { useStore } from "@/app/store";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
-import { STATES } from "@/shared/constants/constants";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ObjectSchema, object, string } from "yup";
@@ -37,7 +36,7 @@ export const LoginPage = observer(() => {
   const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
     const status = await authStore.login(data);
 
-    if (status) {
+    if (status.isSuccess) {
       navigate("/");
     } else {
       methods.setError("root.login", {
@@ -67,7 +66,7 @@ export const LoginPage = observer(() => {
         <Button
           type="submit"
           label="Войти"
-          loading={authStore.state === STATES.LOADING}
+          loading={authStore.isLoading}
         />
         <FormInputErrorMessage root name="login" />
       </FormWrapper>

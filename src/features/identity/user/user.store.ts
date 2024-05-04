@@ -1,26 +1,24 @@
 import { RootStore } from "@/app/store";
-import { STATES } from "@/shared/constants/constants";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ICreateUserDto, IUser } from "./user.types";
 import { createUserRequest, getUsersRequest } from "./user.service";
 import { PaginationStore } from "@/features/pagination";
+import { fail, success } from "@/shared/types";
 
 export class UserStore {
-  state: STATES;
   pagination: PaginationStore;
   users: IUser[];
+  isLoading: boolean;
 
   constructor(_: RootStore) {
-    this.state = STATES.INITIAL;
+    this.isLoading = false;
     this.users = [];
     this.pagination = new PaginationStore();
     makeAutoObservable(this);
   }
 
   public async getUsersPage() {
-    runInAction(() => {
-      this.state = STATES.LOADING;
-    });
+    this.loading();
 
     const [status, response] = await getUsersRequest(this.pagination);
 
@@ -28,33 +26,36 @@ export class UserStore {
       if (status) {
         this.users = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
-        this.state = STATES.DONE;
+        this.success();
       } else {
-        this.state = STATES.ERROR;
-        console.log("failed to load users");
+        this.fail();
       }
     });
   }
 
   public async createUser(options: ICreateUserDto) {
-    runInAction(() => {
-      this.state = STATES.LOADING;
-    });
+    this.loading();
 
     const [status, response] = await createUserRequest(options);
-    console.log(status, response);
 
-    runInAction(() => {
-      if (status) {
-        this.state = STATES.DONE;
-      } else {
-        this.state = STATES.ERROR;
-        console.log("failed to create user");
-      }
-    });
+    if (status) {
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
   }
 
-  get isLoading() {
-    return this.state === STATES.LOADING;
+  private loading() {
+    this.isLoading = true;
+  }
+
+  private success<T>(data?: T) {
+    this.isLoading = false;
+    return success(data);
+  }
+
+  private fail<E>(error?: E) {
+    this.isLoading = false;
+    return fail(error);
   }
 }

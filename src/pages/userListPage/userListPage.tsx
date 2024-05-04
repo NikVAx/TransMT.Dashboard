@@ -1,11 +1,9 @@
-import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useStore } from "@/app/store";
-import { PageWrapper } from "@/components";
-import { STATES } from "@/shared/constants";
-import { defaultDataTableProps, getPaginatorProps } from "@/shared/utils";
+import { CrudDataTable, PageWrapper } from "@/components";
+import { getPaginatorProps } from "@/shared/utils";
 import { actionBodyTemplate } from "./components/actionBodyTemplate";
 import { Header } from "./components/header";
 
@@ -16,16 +14,9 @@ export const UserListPage = observer(() => {
     userStore.getUsersPage();
   }, []);
 
-  useEffect(() => {
-    if (userStore.state === STATES.DONE) {
-      userStore.state = STATES.INITIAL;
-    }
-  }, [userStore.state]);
-
   return (
     <PageWrapper>
-      <DataTable
-        {...defaultDataTableProps}
+      <CrudDataTable
         {...getPaginatorProps(userStore.pagination)}
         onPage={(event) => {
           userStore.pagination.pageSize = event.rows;
@@ -47,7 +38,7 @@ export const UserListPage = observer(() => {
           alignFrozen="right"
           style={{ width: "150px" }}
         />
-      </DataTable>
+      </CrudDataTable>
     </PageWrapper>
   );
 });

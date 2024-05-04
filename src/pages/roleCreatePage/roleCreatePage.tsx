@@ -51,11 +51,11 @@ export const RoleCreatePage = () => {
         message: "Должно быть выбрано по крайней мере одно разрешение",
       });
     } else {
-      const responseData = await roleStore.createRole({
+      const status = await roleStore.createRole({
         ...data,
         permissions: targetPermissions.map((x) => x.name),
       });
-      if (responseData != null) {
+      if (status.isSuccess) {
         navigate("/identity/roles");
       }
     }

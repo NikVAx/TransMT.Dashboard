@@ -38,3 +38,6 @@ a {
   background-color: var(--surface-c);
 }
 
+.p-datatable-header {
+  background-color: var(--surface-c);
+}

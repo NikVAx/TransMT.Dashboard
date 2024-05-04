@@ -40,15 +40,17 @@ export const RoleEditPage = () => {
   const initialize = async () => {
     if (!id) return navigate("/not-found");
     
-    const roleWithShortPerms = await roleStore.getRoleById(id);
+    const status = await roleStore.getRoleById(id);
     
-    if (!roleWithShortPerms) return navigate("/not-found");;
-    
+    if (!status.isSuccess) {
+      return navigate("/not-found")
+    }
+
     await permissionStore.fetchPermissions();
 
-    const separated = permissionStore.getSeparated(roleWithShortPerms.permissions);
+    const separated = permissionStore.getSeparated(status.data!.permissions);
 
-    methods.reset({ ...roleWithShortPerms });
+    methods.reset({ ...status.data! });
 
     setSourcePermissions(separated.excluded);
     setTargetPermissions(separated.included);

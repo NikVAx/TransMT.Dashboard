@@ -1,7 +1,7 @@
 import { createGuardRequest } from "@/shared/utils";
-import { IAuthDataDto, ILoginDto, IUserWithRoles } from "./auth.types";
 import { appApiInstance } from "@/shared/api/instances";
 import { STORAGE_KEYS } from "@/shared/constants/constants";
+import { IAuthDataDto, ILoginDto, IUserWithRoles } from "./auth.types";
 
 export const loginRequest = createGuardRequest((data: ILoginDto) =>
   appApiInstance.post<IAuthDataDto>("/auth/sign-in", data)

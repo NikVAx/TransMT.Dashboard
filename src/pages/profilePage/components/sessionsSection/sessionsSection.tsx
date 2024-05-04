@@ -1,6 +1,5 @@
 import { useStore } from "@/app/store";
 import { View } from "@/components";
-import { STATES } from "@/shared/constants/constants";
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
@@ -24,7 +23,7 @@ export const SessionsSection = observer(() => {
       <DataTable
         value={sessionStore.sessions}
         tableStyle={{ minWidth: "50rem" }}
-        loading={sessionStore.state === STATES.LOADING}
+        loading={sessionStore.isLoading}
       >
         <Column
           field="createdAt"
