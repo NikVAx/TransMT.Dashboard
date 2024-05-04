@@ -35,9 +35,9 @@ export class AuthStore {
           localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, this.accessToken);
         }
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(this.user));
-        return this.fail();
-      } else {
         return this.success();
+      } else {
+        return this.fail();
       }
     });
   };

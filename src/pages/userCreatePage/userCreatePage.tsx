@@ -10,7 +10,7 @@ import { ICreateUserDto, IRole } from "@/features";
 import {
   FormInputErrorMessage,
   FormInputPasswordStatic,
-  FormInputTextStatic,
+  FormInputText,
   FormWrapper,
   PageWrapper,
   PanelV,
@@ -92,12 +92,14 @@ export const UserCreatePage = observer(() => {
         methods={methods}
       >
         <PanelV title="Основная информация">
-          <FormInputTextStatic
+          <FormInputText
+            labelType="fixed"
             name="username"
             label="Имя пользователя"
             placeholder="Имя пользователя для входа в систему, например: example-manager"
           />
-          <FormInputTextStatic
+          <FormInputText
+            labelType="fixed"
             name="email"
             label="Электронная почта"
             placeholder="Электронная почта, например: my-example@ex.com"

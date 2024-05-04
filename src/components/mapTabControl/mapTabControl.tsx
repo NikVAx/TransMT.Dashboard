@@ -1,7 +1,6 @@
 import L from "leaflet";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
-import styles from "./mapTabControl.module.css"
-
+import { useEffect, useRef, useState } from "react";
+import styles from "./mapTabControl.module.css";
 
 export const MapTabControl = () => {
   const [isClosed, setIsClosed] = useState(true);
@@ -41,7 +40,10 @@ export const MapTabControl = () => {
             flexDirection: "column",
           }}
         >
-          <div className={styles.tabBox} style={{borderBottomWidth: isClosed? "0" : "1px"}}>
+          <div
+            className={styles.tabBox}
+            style={{ borderBottomWidth: isClosed ? "0" : "1px" }}
+          >
             <button
               className={styles.tabButton}
               onClick={(e) => {

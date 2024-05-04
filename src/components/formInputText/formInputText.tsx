@@ -8,6 +8,7 @@ export const FormInputText = ({
   name,
   rules,
   label,
+  labelType = "fixed",
   ...props
 }: FormInputTextProps) => {
   const {
@@ -16,19 +17,32 @@ export const FormInputText = ({
   } = useFormContext();
 
   return (
-    <div className="field">
+    <div
+      className={classNames({
+        "mb-2": labelType === "fixed",
+        "mt-2 mb-3": labelType === "float",
+      })}
+    >
       <Controller
         name={name}
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <span className="p-float-label">
+          <span
+            className={classNames({
+              "p-float-label": labelType === "float",
+              "flex flex-column-reverse gap-2": labelType === "fixed",
+            })}
+          >
             <InputText
               {...props}
               {...field}
               id={field.name}
               autoFocus
-              className={classNames({ "p-invalid": fieldState.invalid })}
+              className={classNames({
+                "p-invalid": fieldState.invalid,
+                "w-full": labelType === "float",
+              })}
             />
             <Label
               htmlFor={name}
@@ -39,7 +53,10 @@ export const FormInputText = ({
           </span>
         )}
       />
-      <FormInputErrorMessage name={name} style={{ paddingLeft: "0.8rem" }}/>
+      <FormInputErrorMessage
+        name={name}
+        style={{ paddingLeft: labelType === "float" ? "0.8rem" : "0" }}
+      />
     </div>
   );
 };

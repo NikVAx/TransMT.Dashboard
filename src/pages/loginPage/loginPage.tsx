@@ -35,7 +35,6 @@ export const LoginPage = observer(() => {
 
   const onSubmit: SubmitHandler<ILoginDto> = async (data) => {
     const status = await authStore.login(data);
-
     if (status.isSuccess) {
       navigate("/");
     } else {
@@ -54,6 +53,7 @@ export const LoginPage = observer(() => {
       >
         <h1>Авторизация</h1>
         <FormInputText
+          labelType="float"
           name="username"
           label="Имя пользователя"
           style={{ width: "100%" }}

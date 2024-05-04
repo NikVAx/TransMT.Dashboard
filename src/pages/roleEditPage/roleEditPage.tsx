@@ -1,6 +1,6 @@
 import {
   FormInputErrorMessage,
-  FormInputTextStatic,
+  FormInputText,
   FormWrapper,
   PageWrapper,
   PanelV,
@@ -39,11 +39,11 @@ export const RoleEditPage = () => {
 
   const initialize = async () => {
     if (!id) return navigate("/not-found");
-    
+
     const status = await roleStore.getRoleById(id);
-    
+
     if (!status.isSuccess) {
-      return navigate("/not-found")
+      return navigate("/not-found");
     }
 
     await permissionStore.fetchPermissions();
@@ -110,12 +110,14 @@ export const RoleEditPage = () => {
         methods={methods}
       >
         <PanelV title="Основная информация">
-          <FormInputTextStatic
+          <FormInputText
+            labelType="fixed"
             name="name"
             label="Название"
             placeholder="Название роли, например: Администратор"
           />
-          <FormInputTextStatic
+          <FormInputText
+            labelType="fixed"
             name="description"
             label="Описание"
             placeholder='Описание роли, например: "Может выполнять все действия в системе"'
