@@ -5,14 +5,18 @@ export interface IHeightSizeProps {
   minHeight?: string;
   maxHeight?: string;
 }
-export interface IWightSizeProps {
+export interface IWidhtSizeProps {
   width?: string;
   minWidth?: string;
   maxWidth?: string;
 }
 
-export interface ISizeProps extends IHeightSizeProps, IWightSizeProps {}
+export interface ISizeProps extends IHeightSizeProps, IWidhtSizeProps {}
 
 export interface IStyled {
   style?: CSSProperties;
+}
+export interface IVariantLabel {
+  label?: string;
+  labelType?: "float" | "fixed";
 }

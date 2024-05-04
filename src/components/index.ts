@@ -1,10 +1,12 @@
 export * from "./navigationLink"
 
 export * from "./formInputPassword"
-export * from "./formInputPasswordStatic"
 export * from "./formInputText"
 export * from "./formWrapper"
 export * from "./formInputErrorMessage"
+
+export * from "./variantInputPassword"
+export * from "./variantInputText"
 
 export * from "./view"
 export * from "./panelH"

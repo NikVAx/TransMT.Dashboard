@@ -56,9 +56,9 @@ export const LoginPage = observer(() => {
           labelType="float"
           name="username"
           label="Имя пользователя"
-          style={{ width: "100%" }}
         />
         <FormInputPassword
+          labelType="float"
           name="password"
           label="Пароль"
           style={{ width: "100%" }}

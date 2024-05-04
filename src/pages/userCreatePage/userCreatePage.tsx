@@ -9,7 +9,7 @@ import { useStore } from "@/app/store";
 import { ICreateUserDto, IRole } from "@/features";
 import {
   FormInputErrorMessage,
-  FormInputPasswordStatic,
+  FormInputPassword,
   FormInputText,
   FormWrapper,
   PageWrapper,
@@ -104,7 +104,8 @@ export const UserCreatePage = observer(() => {
             label="Электронная почта"
             placeholder="Электронная почта, например: my-example@ex.com"
           />
-          <FormInputPasswordStatic
+          <FormInputPassword
+            labelType="fixed"
             name="password"
             label="Пароль"
             placeholder="Пароль"

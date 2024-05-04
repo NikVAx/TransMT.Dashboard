@@ -1,8 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Password } from "primereact/password";
-import { FormInputPasswordProps } from "./formInputPassword.types";
-import { classNames } from "primereact/utils";
-import { FormInputErrorMessage, Label } from "..";
+import { FormInputPasswordProps } from "../formInputPassword/formInputPassword.types";
+import { FormInputErrorMessage, VariantInputPassword } from "..";
 
 export const FormInputPassword = ({
   name,
@@ -11,10 +9,7 @@ export const FormInputPassword = ({
   feedback,
   ...props
 }: FormInputPasswordProps) => {
-  const {
-    formState: { errors },
-    control,
-  } = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <div className="field">
@@ -23,33 +18,19 @@ export const FormInputPassword = ({
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <span className="p-float-label">
-            <Password
-              {...props}
-              {...field}
-              id={field.name}
-              className={classNames({ "p-invalid": fieldState.invalid })}
-              pt={{
-                input: {
-                  style: {
-                    width: "100%",
-                  },
-                },
-              }}
-              feedback={feedback}
-              title={label}
-            />
-            <Label
-              htmlFor={name}
-              invalid={errors !== undefined && errors[name] !== undefined}
-            >
-              {label}
-            </Label>
-          </span>
+          <VariantInputPassword
+            {...props}
+            {...field}
+            label={label}
+            name={name}
+            invalid={fieldState.invalid}
+            feedback={feedback}
+            title={label}
+          />
         )}
       />
 
-      <FormInputErrorMessage name={name} style={{ paddingLeft: "0.8rem" }} />
+      <FormInputErrorMessage name={name} />
     </div>
   );
 };
