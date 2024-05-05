@@ -4,6 +4,7 @@ import { View } from "@/components";
 import { classNames } from "primereact/utils";
 import { useState } from "react";
 import { ProfileSection, SessionsSection } from "./components";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const ImageSection = () => {
   return (
@@ -12,11 +13,19 @@ const ImageSection = () => {
 };
 
 export const ProfilePage = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const navigate = useNavigate();
 
   const items = [
-    { label: "Данные пользователя", icon: "pi pi-id-card", tab: <ProfileSection/> },
-    { label: "Входы в систему", icon: "pi pi-key", tab: <SessionsSection/> },
+    {
+      label: "Данные пользователя",
+      icon: "pi pi-id-card",
+      command: () => navigate("/accounts/me"),
+    },
+    {
+      label: "Входы в систему",
+      icon: "pi pi-key",
+      command: () => navigate("/accounts/sessions"),
+    },
   ];
 
   return (
@@ -24,17 +33,10 @@ export const ProfilePage = () => {
       <div className={styles.wrapper}>
         <View className={styles.rightDataWrapper}>
           <div>
-            <TabMenu
-              className={classNames(styles.tabmenu)}
-              model={items}
-              activeIndex={tabIndex}
-              onTabChange={(e) => {
-                setTabIndex(e.index);
-              }}
-            />
+            <TabMenu className={classNames(styles.tabmenu)} model={items} />
           </div>
           <div className={styles.rightDataWrapperContent}>
-            {items[tabIndex].tab}
+            <Outlet />
           </div>
         </View>
       </div>

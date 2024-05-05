@@ -15,18 +15,6 @@ import {
 import { toArray } from "@/shared/utils";
 import { PaginationStore } from "@/features/pagination";
 
-let isLoadingST = false;
-
-export const runAsyncAction = async <T>(
-  func: () => Promise<T>
-) => {
-  isLoadingST = true;
-  const result = await func();
-  isLoadingST = false;
-  return result;
-};
-
-
 export class BuildingStore {
   buildings: IBuilding[];
   isLoading: boolean;

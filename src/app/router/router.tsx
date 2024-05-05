@@ -11,6 +11,10 @@ import {
   UserListPage,
 } from "@/pages";
 import { ExamplePageCards, ExamplePageMap } from "../mock/examples";
+import {
+  ProfileSection,
+  SessionsSection,
+} from "@/pages/profilePage/components";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +32,14 @@ export const router = createBrowserRouter([
       </Layout>
     ),
     children: [
-      { path: "/accounts/me", element: <ProfilePage /> },
+      {
+        path: "/accounts",
+        element: <ProfilePage />,
+        children: [
+          { path: "me", element: <ProfileSection /> },
+          { path: "sessions", element: <SessionsSection /> },
+        ],
+      },
       { path: "/pages/:id", element: <PageUseParamsTemplate /> },
       {
         path: "/identity",
