@@ -1,7 +1,16 @@
 import L from "leaflet";
 import { PropsWithChildren, useEffect, useRef } from "react";
 
-export const MapCard = ({ children }: PropsWithChildren) => {
+export interface MapWidgetProps extends PropsWithChildren {
+  position: "topleft" | "topright"
+}
+
+const POSITION_CLASSES = {
+  topleft: "leaflet-top leaflet-left",
+  topright: "leaflet-top leaflet-right"
+}
+
+export const MapWidget = ({ position, children }: MapWidgetProps) => {
   const nodeRef = useRef(null);
   useEffect(() => {
     L.DomEvent.disableClickPropagation(
@@ -13,11 +22,10 @@ export const MapCard = ({ children }: PropsWithChildren) => {
   }, [nodeRef]);
 
   return (
-    <div className={"leaflet-top leaflet-right"}>
+    <div className={POSITION_CLASSES[position]}>
       <div
         className="leaflet-control leaflet-bar"
         style={{
-          right: "3rem",
           borderWidth: children ? "0" : "1px",
         }}
         ref={nodeRef}

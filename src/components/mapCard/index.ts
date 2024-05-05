@@ -1,1 +1,1 @@
-export * from "./mapCard"
+export * from "./mapWidget"

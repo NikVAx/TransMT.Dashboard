@@ -35,8 +35,6 @@ export const AppMenuitem = observer(({ node }: AppMenuItemProps) => {
       node.value!.command({ originalEvent: event, item: node.value! });
     }
 
-    console.log(node.value.label, node.isOpen);
-
     if (node.hasChildren()) {
       node.toggle();
       if (node.isOpen) {
