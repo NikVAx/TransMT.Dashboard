@@ -41,3 +41,8 @@ a {
 .p-datatable-header {
   background-color: var(--surface-c);
 }
+
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
