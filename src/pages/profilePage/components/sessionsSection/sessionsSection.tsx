@@ -1,22 +1,27 @@
 import { useStore } from "@/app/store";
 import { View } from "@/components";
+import { useComponentDidMount } from "@/shared/hooks";
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (value: Date) => {
   return value.toLocaleDateString() + " - " + value.toLocaleTimeString();
 };
 
 export const SessionsSection = observer(() => {
+  const navigate = useNavigate();
   const { sessionStore } = useStore((store) => ({
     sessionStore: store.sessionStore,
   }));
 
-  useEffect(() => {
-    sessionStore.getSessions();
-  }, []);
+  useComponentDidMount(async () => {
+    const status = await sessionStore.getSessions();
+    if (!status.isSuccess) {
+      navigate("/login");
+    }
+  });
 
   return (
     <View>

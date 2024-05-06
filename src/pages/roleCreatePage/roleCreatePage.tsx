@@ -109,9 +109,6 @@ export const RoleCreatePage = () => {
           />
         </PanelV>
         <PickList
-          style={{
-            marginTop: "20px",
-          }}
           dataKey="id"
           onChange={onChange}
           itemTemplate={itemTemplate}
@@ -133,7 +130,6 @@ export const RoleCreatePage = () => {
         <div
           className="flex flex-row-reverse gap-2"
           style={{
-            paddingTop: "20px",
             paddingBottom: "20px",
           }}
         >

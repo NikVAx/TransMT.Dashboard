@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { observer } from "mobx-react-lite";
@@ -17,12 +17,7 @@ import {
 } from "@/components";
 import { getUserValidationSchema } from "./configs/validation.config";
 import { itemTemplate } from "./components/itemTemplate";
-
-export const useComponentDidMount = (onDidMount: () => void) => {
-  useEffect(() => {
-    onDidMount();
-  }, []);
-};
+import { useComponentDidMount } from "@/shared/hooks";
 
 export const UserCreatePage = observer(() => {
   const navigate = useNavigate();
@@ -113,9 +108,6 @@ export const UserCreatePage = observer(() => {
         </PanelV>
 
         <PickList
-          style={{
-            marginTop: "20px",
-          }}
           dataKey="id"
           source={sourceRoles}
           target={targetRoles}
@@ -138,7 +130,6 @@ export const UserCreatePage = observer(() => {
         <div
           className="flex flex-row-reverse gap-2"
           style={{
-            paddingTop: "20px",
             paddingBottom: "20px",
           }}
         >
