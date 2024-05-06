@@ -2,6 +2,7 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import { PageUseParamsTemplate } from "@/app/mock";
 import { Layout } from "@/layouts";
 import {
+  BuildingListPage,
   LoginPage,
   ProfilePage,
   RoleCreatePage,
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
       {
         path: "/entities",
         children: [
+          { path: "buildings", element: <BuildingListPage /> },
           { path: "buildings/create", element: <BuildingCreatePage /> },
         ],
       },

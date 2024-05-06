@@ -1,4 +1,4 @@
-import { AuthStore, SessionStore } from "@/features";
+import { AuthStore, BuildingStore, SessionStore } from "@/features";
 import { PermissionStore } from "@/features/identity/permissions";
 import { RoleStore } from "@/features/identity/role/role.store";
 import { UserStore } from "@/features/identity/user/user.store";
@@ -10,6 +10,7 @@ export class RootStore {
   userStore: UserStore;
   roleStore: RoleStore;
   permissionStore: PermissionStore
+  buildingStore: BuildingStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -17,6 +18,7 @@ export class RootStore {
     this.userStore = new UserStore(this);
     this.roleStore = new RoleStore(this);
     this.permissionStore = new PermissionStore(this);
+    this.buildingStore = new BuildingStore(this);
     makeAutoObservable(this);
   }
 }

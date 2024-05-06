@@ -23,7 +23,6 @@ import {
 import { getAddressByGeopointFromDadataRequest } from "@/features/maps";
 import { Toast } from "primereact/toast";
 import { FormInputNumber } from "@/components/formInputNumber";
-import { InputNumber } from "primereact/inputnumber";
 
 export const BuildingCreatePage = observer(() => {
   const methods = useForm<ICreateBuildingDto>({
