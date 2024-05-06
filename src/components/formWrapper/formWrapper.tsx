@@ -6,11 +6,16 @@ export const FormWrapper = ({
   children,
   onSubmit,
   onError,
+  className,
   ...props
 }: FormWrapperProps) => {
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit, onError)} {...props}>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit, onError)}
+        {...props}
+        className={"flex flex-column gap-4"}
+      >
         {children}
       </form>
     </FormProvider>
