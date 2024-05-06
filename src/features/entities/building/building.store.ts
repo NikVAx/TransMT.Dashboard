@@ -46,12 +46,12 @@ export class BuildingStore {
 
   public async createBuilding(options: ICreateBuildingDto) {
     this.loading();
-    const [status] = await createBuildingRequest(options);
+    const [status, response] = await createBuildingRequest(options);
 
     if (status) {
-      this.getBuildingsPage();
+      return this.success(response.data)
     } else {
-      this.fail();
+      return this.fail();
     }
   }
 

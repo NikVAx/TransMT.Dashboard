@@ -23,8 +23,12 @@ import {
 import { getAddressByGeopointFromDadataRequest } from "@/features/maps";
 import { Toast } from "primereact/toast";
 import { FormInputNumber } from "@/components/formInputNumber";
+import { useStore } from "@/app/store";
+import { useNavigate } from "react-router-dom";
 
 export const BuildingCreatePage = observer(() => {
+  const { buildingStore } = useStore((store) => ({ buildingStore: store.buildingStore }));
+
   const methods = useForm<ICreateBuildingDto>({
     defaultValues: {
       name: "",
@@ -38,8 +42,17 @@ export const BuildingCreatePage = observer(() => {
     resolver: yupResolver(getBuildingValidationSchema()),
   });
 
-  const onSubmit: SubmitHandler<ICreateBuildingDto> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<ICreateBuildingDto> = async (data) => {
+    const status = await buildingStore.createBuilding(data);
+
+    if (status.isSuccess) {
+      navigate("/entities/buildings");
+    }
+    else {
+      console.log(status);
+    }
   };
 
   const onSubmitError = (e: any) => {

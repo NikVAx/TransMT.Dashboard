@@ -59,7 +59,7 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
       TreeNode(
         {
           id: "/entities/buildings",
-          label: "Здания",
+          label: "Здания и объекты",
           icon: "pi pi-fw pi-home",
         } as IAppMenuItem,
         [
