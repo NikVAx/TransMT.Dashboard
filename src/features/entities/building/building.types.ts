@@ -4,7 +4,7 @@ export interface IBuilding {
   id: string;
   name: string;
   type: string;
-  address: string;
+  address?: string;
   location: IGeoPoint;
 }
 

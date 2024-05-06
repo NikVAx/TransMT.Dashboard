@@ -15,6 +15,7 @@ import {
   ProfileSection,
   SessionsSection,
 } from "@/pages/profilePage/components";
+import { BuildingCreatePage } from "@/pages/buildingCreatePage/buildingCreatePage";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,12 @@ export const router = createBrowserRouter([
           { path: "roles", element: <RoleListPage /> },
           { path: "roles/create", element: <RoleCreatePage /> },
           { path: "roles/:id/edit", element: <RoleEditPage /> },
+        ],
+      },
+      {
+        path: "/entities",
+        children: [
+          { path: "buildings/create", element: <BuildingCreatePage /> },
         ],
       },
       {
