@@ -6,4 +6,5 @@ export interface FormInputTextProps extends InputTextProps {
   rules?: FormRule;
   label?: string;
   labelType?: "float" | "fixed"
+  hideErrorMessage?: boolean
 }

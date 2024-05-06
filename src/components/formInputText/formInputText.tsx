@@ -7,6 +7,7 @@ export const FormInputText = ({
   rules,
   label,
   labelType = "fixed",
+  hideErrorMessage = false,
   ...props
 }: FormInputTextProps) => {
   const { control } = useFormContext();
@@ -28,10 +29,12 @@ export const FormInputText = ({
           />
         )}
       />
-      <FormInputErrorMessage
-        name={name}
-        style={{ paddingLeft: labelType === "float" ? "0.8rem" : "0" }}
-      />
+      {!hideErrorMessage && (
+        <FormInputErrorMessage
+          name={name}
+          style={{ paddingLeft: labelType === "float" ? "0.8rem" : "0" }}
+        />
+      )}
     </div>
   );
 };
