@@ -22,6 +22,8 @@ import {
 } from "@/features/maps/geocoding/geocoding.types";
 import { getAddressByGeopointFromDadataRequest } from "@/features/maps";
 import { Toast } from "primereact/toast";
+import { FormInputNumber } from "@/components/formInputNumber";
+import { InputNumber } from "primereact/inputnumber";
 
 export const BuildingCreatePage = observer(() => {
   const methods = useForm<ICreateBuildingDto>({
@@ -114,15 +116,27 @@ export const BuildingCreatePage = observer(() => {
         <PanelV title="Расположение">
           <FormInputText name="address" label="Адрес" labelType="fixed" />
           <div className="flex gap-3">
-            <FormInputText
+            <FormInputNumber
               name="location.lat"
               label="Широта"
               labelType="fixed"
+              inputMode="numeric"
+              mode="decimal"
+              useGrouping={false}
+              min={-90}
+              max={90}
+              maxFractionDigits={8}
             />
-            <FormInputText
+            <FormInputNumber
               name="location.lng"
               label="Долгота"
               labelType="fixed"
+              inputMode="numeric"
+              mode="decimal"
+              useGrouping={false}
+              min={-180}
+              max={180}
+              maxFractionDigits={8}
             />
             <Button
               type="button"

@@ -20,3 +20,7 @@ export interface IVariantLabel {
   label?: string;
   labelType?: "float" | "fixed";
 }
+
+export interface IAs<T> {
+  as?: T;
+}

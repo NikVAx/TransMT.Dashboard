@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { FormInputErrorMessage, VariantInputNumber } from "..";
+import { FormInputErrorMessage } from "..";
 import { FormInputNumberProps } from "./formInputNumber.types";
+import { InputNumber } from "primereact/inputnumber";
 
 export const FormInputNumber = ({
   name,
@@ -11,16 +12,18 @@ export const FormInputNumber = ({
   const { control } = useFormContext();
 
   return (
-    <div className="field">
+    <div>
       <Controller
         name={name}
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <VariantInputNumber
-            {...props}
+          <InputNumber
             {...field}
-            label={label}
+            {...props}
+            id={name}
+            value={field.value}
+            onChange={(e) => {field.onChange(e.value)}}
             name={name}
             invalid={fieldState.invalid}
             title={label}
