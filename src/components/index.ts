@@ -22,3 +22,5 @@ export * from "./scrollBox"
 export * from "./pageWrapper"
 export * from "./label"
 export * from "./crudDataTable"
+
+export * from "./genericVariantInput"

@@ -2,7 +2,7 @@ import { IAs, IVariantLabel } from "@/shared/types";
 import { classNames } from "primereact/utils";
 import { ComponentPropsWithRef, ElementType, forwardRef } from "react";
 import { Label } from "../label";
-import styles from "./variantInputText.module.css";
+import styles from "./genericVariantInput.module.css";
 
 export const GenericVariantInput = forwardRef(
   <T extends ElementType>(

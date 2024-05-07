@@ -1,16 +1,25 @@
-import { AttributionControl, MapContainer, ZoomControl } from "react-leaflet";
+import { PropsWithChildren } from "react";
+import {
+  AttributionControl,
+  MapContainer,
+  MapContainerProps,
+  ZoomControl,
+} from "react-leaflet";
 
-export const MapBox = ({ children, ...props }: any) => {
+export const MapBox = ({
+  children,
+  ...props
+}: PropsWithChildren & MapContainerProps) => {
   return (
     <MapContainer
+      {...props}
       style={{ height: "100%" }}
       attributionControl={false}
       zoomControl={false}
-      {...props}
     >
       {children}
       <AttributionControl position="bottomright" prefix={false} />
-      <ZoomControl position="topright"/>
+      <ZoomControl position="topright" />
     </MapContainer>
   );
 };

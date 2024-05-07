@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { FormInputPasswordProps } from "../formInputPassword/formInputPassword.types";
-import { FormInputErrorMessage, VariantInputPassword } from "..";
+import { FormInputErrorMessage, GenericVariantInput } from "..";
+import { Password } from "primereact/password";
 
 export const FormInputPassword = ({
   name,
@@ -18,7 +19,8 @@ export const FormInputPassword = ({
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <VariantInputPassword
+          <GenericVariantInput
+            as={Password}
             {...props}
             {...field}
             label={label}
@@ -26,6 +28,13 @@ export const FormInputPassword = ({
             invalid={fieldState.invalid}
             feedback={feedback}
             title={label}
+            pt={{
+              input: {
+                style: {
+                  width: "100%",
+                },
+              },
+            }}
           />
         )}
       />

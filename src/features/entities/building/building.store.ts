@@ -5,7 +5,7 @@ import {
   fail,
   success,
 } from "@/shared/types";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { IBuilding, ICreateBuildingDto } from "./building.types";
 import {
   createBuildingRequest,
@@ -58,6 +58,17 @@ export class BuildingStore {
   public async getBuildingsPage() {
     this.loading();
     const [status, response] = await getBuildingsRequest(this.pagination);
+
+    runInAction(() => {
+      if (status) {
+        this.buildings = response.data.items;
+        this.pagination.totalCount = response.data.totalCount;
+        return this.success();
+      } else {
+        return this.fail();
+      }
+    });
+  
 
     if (status) {
       this.buildings = response.data.items;

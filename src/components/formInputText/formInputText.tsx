@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { FormInputTextProps } from "./formInputText.types";
-import { FormInputErrorMessage, VariantInputText } from "..";
+import { FormInputErrorMessage, GenericVariantInput } from "..";
+import { InputText } from "primereact/inputtext";
 
 export const FormInputText = ({
   name,
@@ -19,7 +20,8 @@ export const FormInputText = ({
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <VariantInputText
+          <GenericVariantInput
+            as={InputText}
             {...props}
             {...field}
             invalid={fieldState.invalid}

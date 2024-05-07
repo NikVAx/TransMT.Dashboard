@@ -37,7 +37,7 @@ export const MapSelectAddressBody = ({
     <>
       <MapClickEvent
         onClick={(event) => {
-          setPosition(event.latlng);
+          setPosition(event.latlng.wrap());
 
           if (!onChange) return;
 
@@ -51,7 +51,7 @@ export const MapSelectAddressBody = ({
 
 export const MapSelectAddress = (props: MapSelectAddressProps) => {
   return (
-    !props.isLoading ? <MapBox center={props.position} zoom={13}>
+    !props.isLoading ? <MapBox center={props.position} zoom={13} minZoom={2} maxBounds={[[-90,-180],   [90,180]]}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

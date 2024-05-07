@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { FormInputErrorMessage } from "..";
+import { FormInputErrorMessage, GenericVariantInput } from "..";
 import { FormInputNumberProps } from "./formInputNumber.types";
 import { InputNumber } from "primereact/inputnumber";
 
@@ -18,12 +18,13 @@ export const FormInputNumber = ({
         control={control}
         rules={rules}
         render={({ field, fieldState }) => (
-          <InputNumber
+          <GenericVariantInput
+            as={InputNumber}
             {...field}
             {...props}
             id={name}
             value={field.value}
-            onChange={(e) => {field.onChange(e.value)}}
+            onChange={(e: any) => {field.onChange(e.value)}}
             name={name}
             invalid={fieldState.invalid}
             title={label}
