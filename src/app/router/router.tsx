@@ -10,6 +10,7 @@ import {
   RoleListPage,
   UserCreatePage,
   UserListPage,
+  VehicleListPage,
 } from "@/pages";
 import { ExamplePageCards, ExamplePageMap } from "../mock/examples";
 import {
@@ -58,6 +59,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "buildings", element: <BuildingListPage /> },
           { path: "buildings/create", element: <BuildingCreatePage /> },
+          { path: "vehicles", element: <VehicleListPage /> },
         ],
       },
       {
