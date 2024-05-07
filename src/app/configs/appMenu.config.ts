@@ -93,7 +93,7 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         [
           TreeNode({
             id: "/entities/operators",
-            label: "Список ТС",
+            label: "Список операторов",
             to: "/entities/operators",
           }),
         ]

@@ -1,4 +1,5 @@
 import { AuthStore, BuildingStore, SessionStore } from "@/features";
+import { OperatorStore } from "@/features/entities/operator";
 import { VehicleStore } from "@/features/entities/vehicle";
 import { PermissionStore } from "@/features/identity/permissions";
 import { RoleStore } from "@/features/identity/role/role.store";
@@ -13,6 +14,7 @@ export class RootStore {
   permissionStore: PermissionStore
   buildingStore: BuildingStore;
   vehicleStore: VehicleStore;
+  operatorStore: OperatorStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -22,6 +24,7 @@ export class RootStore {
     this.permissionStore = new PermissionStore(this);
     this.buildingStore = new BuildingStore(this);
     this.vehicleStore = new VehicleStore(this);
+    this.operatorStore = new OperatorStore(this);
     makeAutoObservable(this);
   }
 }
