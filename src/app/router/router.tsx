@@ -3,6 +3,7 @@ import { PageUseParamsTemplate } from "@/app/mock";
 import { Layout } from "@/layouts";
 import {
   BuildingListPage,
+  GpsDeviceListPage,
   LoginPage,
   OperatorListPage,
   ProfilePage,
@@ -62,6 +63,7 @@ export const router = createBrowserRouter([
           { path: "buildings/create", element: <BuildingCreatePage /> },
           { path: "vehicles", element: <VehicleListPage /> },
           { path: "operators", element: <OperatorListPage /> },
+          { path: "devices", element: <GpsDeviceListPage /> },
         ],
       },
       {
