@@ -1,6 +1,6 @@
 import { RootStore } from "@/app/store";
 import {
-  IManyDeleteOptions,
+  IDeleteOptions,
   IManyDeleteRequestOptions,
   fail,
   success,
@@ -28,7 +28,7 @@ export class BuildingStore {
     makeAutoObservable(this);
   }
 
-  public async deleteBuildings(options: IManyDeleteOptions) {
+  public async deleteBuildings(options: IDeleteOptions) {
     this.loading();
     const mappedOptions: IManyDeleteRequestOptions = {
       ...options,

@@ -1,5 +1,7 @@
-export interface IOperator {
-  id: string;
+import { IEntity } from "@/shared/types";
+
+export interface IOperator extends IEntity {
+
 }
 
 export interface IGetOperatorDto extends IOperator {}

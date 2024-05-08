@@ -1,6 +1,6 @@
 import { RootStore } from "@/app/store";
 import {
-  IManyDeleteOptions,
+  IDeleteOptions,
   IManyDeleteRequestOptions,
   fail,
   success,
@@ -28,7 +28,7 @@ export class VehicleStore {
     makeAutoObservable(this);
   }
 
-  public async deleteVehicles(options: IManyDeleteOptions) {
+  public async deleteVehicles(options: IDeleteOptions) {
     this.loading();
     const mappedOptions: IManyDeleteRequestOptions = {
       ...options,

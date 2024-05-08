@@ -9,7 +9,7 @@ import {
   getRoleByIdRequest,
   getRolesRequest,
 } from "./role.service";
-import { IManyDeleteOptions, fail, success } from "@/shared/types";
+import { IDeleteOptions, fail, success } from "@/shared/types";
 import { toArray } from "@/shared/utils";
 
 export class RoleStore {
@@ -79,7 +79,7 @@ export class RoleStore {
     }
   }
 
-  public async deleteRoles(options: IManyDeleteOptions) {
+  public async deleteRoles(options: IDeleteOptions) {
     this.loading();
 
     const [status, _] = await deleteRolesRequest({

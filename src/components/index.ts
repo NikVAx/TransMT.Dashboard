@@ -21,6 +21,9 @@ export * from "./mapSelectAddress"
 export * from "./scrollBox"
 export * from "./pageWrapper"
 export * from "./label"
+
 export * from "./crudDataTable"
+export * from "./crudEditEntityButton"
+export * from "./crudDeleteEntityButton"
 
 export * from "./genericVariantInput"

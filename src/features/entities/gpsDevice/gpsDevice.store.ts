@@ -6,47 +6,47 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IOperator, ICreateOperatorDto } from "./operator.types";
+import { IGpsDevice, ICreateGpsDeviceDto } from "./gpsDevice.types";
 import {
-  createOperatorRequest,
-  deleteOperatorsRequest,
-  getOperatorsRequest,
-} from "./operator.services";
+  createGpsDeviceRequest,
+  deleteGpsDevicesRequest,
+  getGpsDevicesRequest,
+} from "./gpsDevice.services";
 import { toArray } from "@/shared/utils";
 import { PaginationStore } from "@/features/pagination";
 
-export class OperatorStore {
-  operators: IOperator[];
+export class GpsDeviceStore {
+  devices: IGpsDevice[];
   isLoading: boolean;
   pagination: PaginationStore;
 
   constructor(public rootStore: RootStore) {
     this.isLoading = false;
-    this.operators = [];
+    this.devices = [];
     this.pagination = new PaginationStore();
 
     makeAutoObservable(this);
   }
 
-  public async deleteOperators(options: IDeleteOptions) {
+  public async deleteGpsDevices(options: IDeleteOptions) {
     this.loading();
     const mappedOptions: IManyDeleteRequestOptions = {
       ...options,
       keys: toArray(options.keys),
     };
 
-    const [status] = await deleteOperatorsRequest(mappedOptions);
+    const [status] = await deleteGpsDevicesRequest(mappedOptions);
 
     if (status) {
-      this.getOperatorsPage();
+      this.getGpsDevicesPage();
     } else {
       this.fail();
     }
   }
 
-  public async createOperator(options: ICreateOperatorDto) {
+  public async createGpsDevice(options: ICreateGpsDeviceDto) {
     this.loading();
-    const [status, response] = await createOperatorRequest(options);
+    const [status, response] = await createGpsDeviceRequest(options);
 
     if (status) {
       return this.success(response.data)
@@ -55,13 +55,13 @@ export class OperatorStore {
     }
   }
 
-  public async getOperatorsPage() {
+  public async getGpsDevicesPage() {
     this.loading();
-    const [status, response] = await getOperatorsRequest(this.pagination);
+    const [status, response] = await getGpsDevicesRequest(this.pagination);
 
     runInAction(() => {
       if (status) {
-        this.operators = response.data.items;
+        this.devices = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
         return this.success();
       } else {
@@ -71,7 +71,7 @@ export class OperatorStore {
   
 
     if (status) {
-      this.operators = response.data.items;
+      this.devices = response.data.items;
       this.success();
     } else {
       this.fail();

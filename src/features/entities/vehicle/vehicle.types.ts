@@ -1,5 +1,6 @@
-export interface IVehicle {
-  id: string;
+import { IEntity } from "@/shared/types";
+
+export interface IVehicle extends IEntity {
   number: string;
   type: string;
   operatingStatus: string;

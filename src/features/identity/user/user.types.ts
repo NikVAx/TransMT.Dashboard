@@ -1,5 +1,6 @@
-export interface IUser {
-  id: string;
+import { IEntity } from "@/shared/types";
+
+export interface IUser extends IEntity {
   username: string;
   email: string;
   roles: string[]

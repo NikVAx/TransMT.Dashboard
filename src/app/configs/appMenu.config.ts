@@ -33,7 +33,7 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         {
           id: "/identity",
           label: "Учетные записи",
-          icon: "pi pi-fw pi-home",
+          icon: "pi pi-fw pi-users",
         } as IAppMenuItem,
         [
           TreeNode({
@@ -60,7 +60,7 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         {
           id: "#entities/buildings",
           label: "Здания и объекты",
-          icon: "pi pi-fw pi-home",
+          icon: "pi pi-fw pi-building",
         } as IAppMenuItem,
         [
           TreeNode({
@@ -74,7 +74,7 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         {
           id: "#entities/vehicles",
           label: "Транспортные средства",
-          icon: "pi pi-fw pi-home",
+          icon: "pi pi-fw pi-truck",
         } as IAppMenuItem,
         [
           TreeNode({
@@ -88,13 +88,27 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         {
           id: "#entities/operators",
           label: "Операторы ТС",
-          icon: "pi pi-fw pi-home",
+          icon: "pi pi-fw pi-user",
         } as IAppMenuItem,
         [
           TreeNode({
             id: "/entities/operators",
             label: "Список операторов",
             to: "/entities/operators",
+          }),
+        ]
+      ),
+      TreeNode(
+        {
+          id: "#entities/operators",
+          label: "Устройства GPS",
+          icon: "pi pi-fw pi-tablet",
+        } as IAppMenuItem,
+        [
+          TreeNode({
+            id: "/entities/devices",
+            label: "Список устройств",
+            to: "/entities/devices",
           }),
         ]
       ),

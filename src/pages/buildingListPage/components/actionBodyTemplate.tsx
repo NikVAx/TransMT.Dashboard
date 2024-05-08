@@ -1,28 +1,22 @@
+import { useStore } from "@/app/store";
+import { CrudDeleteEntityButton, CrudEditEntityButton } from "@/components";
 import { IBuilding } from "@/features";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
 
-export const actionBodyTemplate = (_: IBuilding) => {
-  const navigate = useNavigate();
+export const actionBodyTemplate = (data: IBuilding) => {
+  const { buildingStore } = useStore((store) => ({
+    buildingStore: store.buildingStore,
+  }));
 
   return (
     <div>
-      <Button
-        icon="pi pi-pencil"
-        rounded
-        outlined
-        className="mr-2"
-        onClick={() => {
-          navigate("/not-implemented");
-            // TODO: add after fix backend
+      <CrudEditEntityButton to={"/not-implemented"} />
+      <CrudDeleteEntityButton
+        message="Вы уверены, что хотите удалить здание?"
+        data={data}
+        onAccept={(arg) => {
+          buildingStore.deleteBuildings({ keys: [arg.id] });
         }}
       />
-      <Button icon="pi pi-trash" 
-        rounded 
-        severity="danger" 
-        onClick={() => {
-            // TODO: add after fix backend
-        }} />
     </div>
   );
 };

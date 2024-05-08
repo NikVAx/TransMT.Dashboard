@@ -23,10 +23,14 @@ export interface IGeoPoint {
   lat: number;
 }
 
-export interface IManyDeleteOptions<TKey = string> {
+export interface IDeleteOptions<TKey = string> {
   keys: TKey[] | TKey;
 }
 
 export interface IManyDeleteRequestOptions<TKey = string> {
   keys: TKey[];
+}
+
+export interface IEntity<T = string> {
+  id: T
 }

@@ -9,6 +9,7 @@ import { StoreProvider, store } from "./store";
 
 import { primeReactConfig, yupLocaleConfig } from "./configs";
 import { setLocale } from "yup";
+import { ConfirmPopup } from "primereact/confirmpopup";
 
 export function App() {
   setLocale(yupLocaleConfig);
@@ -16,6 +17,7 @@ export function App() {
   return (
     <StoreProvider store={store}>
       <PrimeReactProvider value={primeReactConfig}>
+        <ConfirmPopup />
         <LayoutProvider>
           <RouterProvider router={router} />
         </LayoutProvider>

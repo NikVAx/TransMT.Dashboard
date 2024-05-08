@@ -1,28 +1,20 @@
-import { IBuilding } from "@/features";
-import { Button } from "primereact/button";
-import { useNavigate } from "react-router-dom";
+import { useStore } from "@/app/store";
+import { CrudDeleteEntityButton, CrudEditEntityButton } from "@/components";
+import { IOperator } from "@/features/entities/operator";
 
-export const actionBodyTemplate = (_: IBuilding) => {
-  const navigate = useNavigate();
+export const actionBodyTemplate = (data: IOperator) => {
+  const { operatorStore } = useStore((store) => ({ operatorStore: store.operatorStore }));
 
   return (
     <div>
-      <Button
-        icon="pi pi-pencil"
-        rounded
-        outlined
-        className="mr-2"
-        onClick={() => {
-          navigate("/not-implemented");
-            // TODO: add after fix backend
+      <CrudEditEntityButton to={"/not-implemented"} />
+      <CrudDeleteEntityButton
+        message="Вы уверены, что хотите удалить оператора ТС?"
+        data={data}
+        onAccept={(arg) => {
+          operatorStore.deleteOperators({ keys: [arg.id] });
         }}
       />
-      <Button icon="pi pi-trash" 
-        rounded 
-        severity="danger" 
-        onClick={() => {
-            // TODO: add after fix backend
-        }} />
     </div>
   );
 };

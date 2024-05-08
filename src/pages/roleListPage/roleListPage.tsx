@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useStore } from "@/app/store";
 import { CrudDataTable, PageWrapper } from "@/components";
-import { ConfirmPopup } from "primereact/confirmpopup";
 import { getPaginatorProps } from "@/shared/utils";
 import { Header } from "./components/header";
 import { actionBodyTemplate } from "./components/actionBodyTemplate";
@@ -16,7 +15,6 @@ export const RoleListPage = observer(() => {
 
   return (
     <PageWrapper>
-      <ConfirmPopup />
       <CrudDataTable
         {...getPaginatorProps(roleStore.pagination)}
         onPage={(event) => {

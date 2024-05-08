@@ -1,5 +1,6 @@
-export interface IRole {
-  id: string;
+import { IEntity } from "@/shared/types";
+
+export interface IRole extends IEntity {
   name: string;
   description: string;
   permissions: string[];
