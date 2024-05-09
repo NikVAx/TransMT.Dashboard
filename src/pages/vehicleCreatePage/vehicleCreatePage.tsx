@@ -1,0 +1,132 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { observer } from "mobx-react-lite";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Button } from "primereact/button";
+import {
+  FormAutoComplete,
+  FormInputText,
+  FormWrapper,
+  PageWrapper,
+  PanelV,
+} from "@/components";
+import { useEffect, useRef, useState } from "react";
+import { Toast } from "primereact/toast";
+import { useStore } from "@/app/store";
+import { useNavigate } from "react-router-dom";
+import {
+  ICreateVehicleDto,
+  getVehicleValidationSchema,
+} from "@/features/entities/vehicle";
+import { IBuilding } from "@/features";
+import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
+
+export const VehicleCreatePage = observer(() => {
+  const { vehicleStore, buildingStore } = useStore((store) => ({
+    vehicleStore: store.vehicleStore,
+    buildingStore: store.buildingStore,
+  }));
+
+  const methods = useForm({
+    defaultValues: {
+      number: "",
+      type: "",
+      storageArea: null!,
+      operatingStatus: "Нет",
+    },
+    resolver: yupResolver(getVehicleValidationSchema()),
+  });
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<any> = async (data: any) => {
+    const status = await vehicleStore.createVehicle({
+      operatingStatus: data.operatingStatus,
+      number: data.number,
+      type: data.type,
+      storageAreaId: data.storageArea.id
+    } as ICreateVehicleDto);
+
+    if (status.isSuccess) {
+      navigate("/entities/vehicles");
+    } else {
+      console.log(status);
+    }
+  };
+
+  const onSubmitError = (e: any) => {
+    console.log(e);
+    console.log(methods.getValues());
+  };
+
+  const toast = useRef<Toast>(null);
+
+  useEffect(() => {
+    const prevPageSize = buildingStore.pagination.pageSize;
+    buildingStore.pagination.pageSize = 10000;
+    buildingStore.getBuildingsPage();
+    return () => {
+      buildingStore.pagination.pageSize = prevPageSize;
+    };
+  }, []);
+
+  const itemTemplate = (building: IBuilding) => {
+    return (
+      <div>
+        <div>
+          {building.name}, {building.address}
+        </div>
+        <small>{building.id}</small>
+      </div>
+    );
+  };
+
+  const [buildingSuggestions, setBuildingSuggestions] = useState<IBuilding[]>(
+    []
+  );
+
+  const search = (event: AutoCompleteCompleteEvent) => {
+    const filtered = buildingStore.buildings.filter(
+      (x) =>
+        x.id.toUpperCase().includes(event.query.toUpperCase()) ||
+        x.name.toUpperCase().includes(event.query.toUpperCase()) ||
+        (x.address ?? "").toUpperCase().includes(event.query.toUpperCase())
+    );
+
+    setBuildingSuggestions(filtered);
+  };
+
+  return (
+    <PageWrapper>
+      <Toast ref={toast} position="top-center" />
+      <FormWrapper
+        onSubmit={onSubmit}
+        onError={onSubmitError}
+        methods={methods}
+        className="flex flex-column gap-4"
+      >
+        <PanelV title="Основная информация">
+          <FormInputText name="number" label="Номер ТС" labelType="fixed" />
+          <FormInputText name="type" label="Тип ТС" labelType="fixed" />
+          <FormAutoComplete
+            field="name"
+            dropdown
+            label="Зона хранения"
+            labelType="fixed"
+            name="storageArea"
+            suggestions={buildingSuggestions}
+            completeMethod={search}
+            itemTemplate={itemTemplate}
+            forceSelection
+          />
+        </PanelV>
+        <div
+          className="flex flex-row-reverse gap-2"
+          style={{
+            paddingBottom: "20px",
+          }}
+        >
+          <Button type="submit" label="Сохранить" />
+        </div>
+      </FormWrapper>
+    </PageWrapper>
+  );
+});

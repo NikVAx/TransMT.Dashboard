@@ -8,7 +8,9 @@ import { actionBodyTemplate } from "./components/actionBodyTemplate";
 import { Header } from "./components/header";
 
 export const VehicleListPage = observer(() => {
-  const { vehicleStore } = useStore((store) => ({ vehicleStore: store.vehicleStore }));
+  const { vehicleStore } = useStore((store) => ({
+    vehicleStore: store.vehicleStore,
+  }));
 
   useEffect(() => {
     vehicleStore.getVehiclesPage();

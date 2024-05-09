@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { ICreateGpsDeviceDto } from "./gpsDevice.types";
 
-export const getBuildingValidationSchema =
+export const getGpsDeviceValidationSchema =
   (): yup.ObjectSchema<ICreateGpsDeviceDto> =>
     yup
       .object()

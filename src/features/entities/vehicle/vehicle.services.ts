@@ -38,3 +38,8 @@ export const editVehicleByIdRequest = createGuardRequest(
   (id: string, data: IEditVehicleDto) =>
     appApiInstance.patch<IGetVehicleDto>(`/${ROUTE}/${id}`, data)
 );
+
+export const deleteVehicleByIdRequest = createGuardRequest(
+  (id: string) =>
+    appApiInstance.delete<IGetVehicleDto>(`/${ROUTE}/${id}`)
+);

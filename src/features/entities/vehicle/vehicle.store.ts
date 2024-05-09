@@ -6,9 +6,10 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IVehicle, ICreateVehicleDto } from "./vehicle.types"
+import { IVehicle, ICreateVehicleDto } from "./vehicle.types";
 import {
   createVehicleRequest,
+  deleteVehicleByIdRequest,
   deleteVehiclesRequest,
   getVehiclesRequest,
 } from "./vehicle.services";
@@ -35,7 +36,10 @@ export class VehicleStore {
       keys: toArray(options.keys),
     };
 
-    const [status] = await deleteVehiclesRequest(mappedOptions);
+    const [status] =
+      mappedOptions.keys.length === 1
+        ? await deleteVehicleByIdRequest(options.keys[0])
+        : await deleteVehiclesRequest(mappedOptions);
 
     if (status) {
       this.getVehiclesPage();
@@ -49,7 +53,7 @@ export class VehicleStore {
     const [status, response] = await createVehicleRequest(options);
 
     if (status) {
-      return this.success(response.data)
+      return this.success(response.data);
     } else {
       return this.fail();
     }
@@ -68,7 +72,6 @@ export class VehicleStore {
         return this.fail();
       }
     });
-  
 
     if (status) {
       this.vehicles = response.data.items;

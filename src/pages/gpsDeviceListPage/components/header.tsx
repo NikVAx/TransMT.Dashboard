@@ -11,7 +11,7 @@ export const Header = () => {
           icon="pi pi-plus"
           severity="success"
           onClick={() => {
-            navigate("/entities/vehicles/create");
+            navigate("/entities/devices/create");
           }}
         />
       </div>

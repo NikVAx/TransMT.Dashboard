@@ -61,6 +61,7 @@ export const LoginPage = observer(() => {
           labelType="float"
           name="password"
           label="Пароль"
+          toggleMask
           style={{ width: "100%" }}
         />
         <Button

@@ -2,6 +2,7 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import { PageUseParamsTemplate } from "@/app/mock";
 import { Layout } from "@/layouts";
 import {
+  BuildingCreatePage,
   BuildingListPage,
   GpsDeviceListPage,
   LoginPage,
@@ -12,6 +13,7 @@ import {
   RoleListPage,
   UserCreatePage,
   UserListPage,
+  VehicleCreatePage,
   VehicleListPage,
 } from "@/pages";
 import { ExamplePageCards, ExamplePageMap } from "../mock/examples";
@@ -19,7 +21,6 @@ import {
   ProfileSection,
   SessionsSection,
 } from "@/pages/profilePage/components";
-import { BuildingCreatePage } from "@/pages/buildingCreatePage/buildingCreatePage";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,7 @@ export const router = createBrowserRouter([
           { path: "buildings", element: <BuildingListPage /> },
           { path: "buildings/create", element: <BuildingCreatePage /> },
           { path: "vehicles", element: <VehicleListPage /> },
+          { path: "vehicles/create", element: <VehicleCreatePage /> },
           { path: "operators", element: <OperatorListPage /> },
           { path: "devices", element: <GpsDeviceListPage /> },
         ],
