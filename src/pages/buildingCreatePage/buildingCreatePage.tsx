@@ -27,7 +27,9 @@ import { useStore } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 
 export const BuildingCreatePage = observer(() => {
-  const { buildingStore } = useStore((store) => ({ buildingStore: store.buildingStore }));
+  const { buildingStore } = useStore((store) => ({
+    buildingStore: store.buildingStore,
+  }));
 
   const methods = useForm<ICreateBuildingDto>({
     defaultValues: {
@@ -49,8 +51,7 @@ export const BuildingCreatePage = observer(() => {
 
     if (status.isSuccess) {
       navigate("/entities/buildings");
-    }
-    else {
+    } else {
       console.log(status);
     }
   };

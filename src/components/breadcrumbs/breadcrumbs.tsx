@@ -28,7 +28,7 @@ export function Breadcrumbs() {
       <NavigationLink
         className={options.className}
         to={item.url}
-        disabled={item.disabled}
+        disabled={item.data.handle?.disabled ?? false}
       >
         <span className={options.labelClassName}>{item.label}</span>
       </NavigationLink>
@@ -37,9 +37,10 @@ export function Breadcrumbs() {
 
   const items = matches.slice(1, matches.length).map<MenuItem>((match) => {
     return {
-      label: match.handle.crumb,
+      label: match.handle?.crumb ?? "Неизвестная страницы",
       url: match.pathname,
       template: itemTemplate,
+      data: match
     };
   });
 

@@ -21,6 +21,10 @@ import {
   ProfileSection,
   SessionsSection,
 } from "@/pages/profilePage/components";
+import { crumb } from "@/components/breadcrumbs/bradcrumbs.types";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+
+const DISABLED = true;
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +38,7 @@ export const router = createBrowserRouter([
   {
     element: (
       <Layout>
+        <Breadcrumbs />
         <Outlet />
       </Layout>
     ),
@@ -59,13 +64,38 @@ export const router = createBrowserRouter([
       },
       {
         path: "/entities",
+        handle: crumb("Справочники", DISABLED),
         children: [
-          { path: "buildings", element: <BuildingListPage /> },
-          { path: "buildings/create", element: <BuildingCreatePage /> },
-          { path: "vehicles", element: <VehicleListPage /> },
-          { path: "vehicles/create", element: <VehicleCreatePage /> },
-          { path: "operators", element: <OperatorListPage /> },
-          { path: "devices", element: <GpsDeviceListPage /> },
+          {
+            path: "buildings",
+            element: <BuildingListPage />,
+            handle: crumb("Здания"),
+          },
+          {
+            path: "buildings/create",
+            element: <BuildingCreatePage />,
+            handle: crumb("Создание здания"),
+          },
+          {
+            path: "vehicles",
+            element: <VehicleListPage />,
+            handle: crumb("Транспортные средства"),
+          },
+          {
+            path: "vehicles/create",
+            element: <VehicleCreatePage />,
+            handle: crumb("Создание ТС"),
+          },
+          {
+            path: "operators",
+            element: <OperatorListPage />,
+            handle: crumb("Операторы ТС"),
+          },
+          {
+            path: "devices",
+            element: <GpsDeviceListPage />,
+            handle: crumb("GPS Устройства"),
+          },
         ],
       },
       {
