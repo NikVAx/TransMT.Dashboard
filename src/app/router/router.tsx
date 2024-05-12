@@ -6,6 +6,7 @@ import {
   BuildingListPage,
   GpsDeviceListPage,
   LoginPage,
+  OperatorCreatePage,
   OperatorListPage,
   ProfilePage,
   RoleCreatePage,
@@ -95,6 +96,11 @@ export const router = createBrowserRouter([
             path: "operators",
             element: <OperatorListPage />,
             handle: crumb("Операторы ТС"),
+          },
+          {
+            path: "operators/create",
+            element: <OperatorCreatePage />,
+            handle: crumb("Создание оператора ТС"),
           },
           {
             path: "devices",

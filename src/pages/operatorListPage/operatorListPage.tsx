@@ -8,7 +8,9 @@ import { actionBodyTemplate } from "./components/actionBodyTemplate";
 import { Header } from "./components/header";
 
 export const OperatorListPage = observer(() => {
-  const { operatorStore } = useStore((store) => ({ operatorStore: store.operatorStore }));
+  const { operatorStore } = useStore((store) => ({
+    operatorStore: store.operatorStore,
+  }));
 
   useEffect(() => {
     operatorStore.getOperatorsPage();
@@ -28,7 +30,14 @@ export const OperatorListPage = observer(() => {
         value={operatorStore.operators}
         loading={operatorStore.isLoading}
       >
-        <Column field="id" header="ID" resizeable={false}/>
+        <Column field="id" header="ID" />
+        <Column
+          header="ФИО"
+          body={(item) =>
+            `${item.lastName} ${item.firstName} ${item.middleName}`
+          }
+          resizeable={false}
+        />
         <Column
           body={actionBodyTemplate}
           exportable={false}

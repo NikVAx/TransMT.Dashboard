@@ -5,7 +5,7 @@ import {
   PageWrapper,
   PanelV,
 } from "@/components";
-import { getRoleValidationSchema } from "./config/validation.config";
+import { getRoleValidationSchema } from "../../features/identity/role/role.validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { ICreateRoleDto } from "@/features";

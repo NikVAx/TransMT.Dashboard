@@ -1,9 +1,12 @@
 import * as yup from "yup";
-import { ICreateOperatorDto } from "./operator.types";
 
 export const getOperatorValidationSchema =
-  (): yup.ObjectSchema<ICreateOperatorDto> =>
+  () =>
     yup
       .object()
-      .shape({})
+      .shape({
+        firstName: yup.string().required().label("Имя"),
+        lastName: yup.string().required().label("Фамилия"),
+        middleName: yup.string().notRequired().label("Отчество"),
+      })
       .required();

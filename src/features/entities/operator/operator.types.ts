@@ -1,7 +1,9 @@
 import { IEntity } from "@/shared/types";
 
 export interface IOperator extends IEntity {
-
+  firstName: string;
+  lastName: string;
+  middleName: string;
 }
 
 export interface IGetOperatorDto extends IOperator {}
