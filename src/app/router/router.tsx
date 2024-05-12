@@ -18,7 +18,7 @@ import {
   VehicleCreatePage,
   VehicleListPage,
 } from "@/pages";
-import { ExamplePageCards, ExamplePageMap } from "../mock/examples";
+import { ExamplePageMap } from "../mock/examples";
 import {
   ProfileSection,
   SessionsSection,
@@ -31,8 +31,19 @@ const DISABLED = true;
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <Layout>
+        <Outlet />
+      </Layout>
+    ),
+    children: [
+      {
+        path: "map",
+        element: <ExamplePageMap />,
+      },
+    ],
   },
+
   {
     path: "/login",
     element: <LoginPage />,
@@ -63,10 +74,22 @@ export const router = createBrowserRouter([
             element: <UserListPage />,
             handle: crumb("Пользователи"),
           },
-          { path: "users/create", element: <UserCreatePage /> },
+          {
+            path: "users/create",
+            element: <UserCreatePage />,
+            handle: crumb("Создание пользователя"),
+          },
           { path: "roles", element: <RoleListPage />, handle: crumb("Роли") },
-          { path: "roles/create", element: <RoleCreatePage /> },
-          { path: "roles/:id/edit", element: <RoleEditPage /> },
+          {
+            path: "roles/create",
+            element: <RoleCreatePage />,
+            handle: crumb("Создание роли"),
+          },
+          {
+            path: "roles/:id/edit",
+            element: <RoleEditPage />,
+            handle: crumb("Редактирование роли"),
+          },
         ],
       },
       {
@@ -114,14 +137,7 @@ export const router = createBrowserRouter([
             handle: crumb("Создание GPS устройства"),
           },
         ],
-      },
-      {
-        path: "/examples",
-        children: [
-          { path: "cards", element: <ExamplePageCards /> },
-          { path: "map", element: <ExamplePageMap /> },
-        ],
-      },
+      }
     ],
   },
 ]);

@@ -21,6 +21,12 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         icon: "pi pi-fw pi-home",
         to: "/",
       }),
+      TreeNode({
+        id: "/map",
+        label: "Карта",
+        icon: "pi pi-fw pi-map",
+        to: "/map",
+      }),
     ]
   ),
   TreeNode(
@@ -109,32 +115,6 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
             id: "/entities/devices",
             label: "Список устройств",
             to: "/entities/devices",
-          }),
-        ]
-      ),
-    ]
-  ),
-  TreeNode(
-    {
-      id: "#examples",
-      label: "Примеры",
-    } as IAppMenuItem,
-    [
-      TreeNode(
-        {
-          id: "#examples/group",
-          label: "Примеры",
-        } as IAppMenuItem,
-        [
-          TreeNode({
-            id: "/examples/cards",
-            label: "Список карточек",
-            to: "/examples/cards",
-          }),
-          TreeNode({
-            id: "/examples/map",
-            label: "Карта",
-            to: "/examples/map",
           }),
         ]
       ),

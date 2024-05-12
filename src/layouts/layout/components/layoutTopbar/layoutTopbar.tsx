@@ -5,6 +5,7 @@ import { Menu } from "primereact/menu";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "@/app/store";
+import { IUserWithRoles } from "@/features";
 
 const themes = ["lara-light-blue", "lara-dark-blue"];
 
@@ -67,6 +68,18 @@ export function LayoutTopbar() {
     setIsSidebarOpen((prev) => !prev);
   };
 
+  const getDisplayName = (user?: IUserWithRoles) => {
+    if (user === undefined) {
+      navigate("/login");
+    }
+
+    if (!authStore.user?.firstName && authStore.user?.lastName) {
+      return `${authStore.user?.lastName} ${authStore.user?.firstName}`;
+    } else {
+      return `${authStore.user?.username}`;
+    }
+  };
+
   return (
     <div className={styles.layoutTopbar}>
       <Button
@@ -86,7 +99,9 @@ export function LayoutTopbar() {
           id="popup_menu_right"
           popupAlignment="right"
         />
-        <span style={{paddingRight: "1rem"}}>{authStore.user?.username}</span>
+        <span style={{ paddingRight: "1rem" }}>
+          {getDisplayName(authStore.user!)}
+        </span>
         <Button
           style={{ width: "2rem", height: "2rem" }}
           icon="pi pi-user"
