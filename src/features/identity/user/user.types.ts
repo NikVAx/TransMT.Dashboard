@@ -4,6 +4,10 @@ export interface IUser extends IEntity {
   username: string;
   email: string;
   roles: string[]
+
+  firstName: string;
+  lastName: string;
+  middleName: string;
 }
 
 export interface IGetUserDto extends IUser {}

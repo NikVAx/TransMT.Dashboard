@@ -41,6 +41,9 @@ export const UserCreatePage = observer(() => {
       username: "",
       email: "",
       password: "",
+      firstName: "",
+      lastName: "",
+      middleName: "",
       roles: [],
     } as ICreateUserDto,
     resolver: yupResolver(getUserValidationSchema()),
@@ -54,10 +57,14 @@ export const UserCreatePage = observer(() => {
       return;
     }
 
-    const status = await userStore.createUser({
+    const createDto = {
       ...data,
-      roles: ["string"] /* TODO: fix backend: target.map(x => x.name)*/,
-    });
+      roles: targetRoles.map(x => x.name),
+    } as ICreateUserDto;
+
+    console.log(createDto);
+
+    const status = await userStore.createUser(createDto);
 
     if (status.isSuccess) {
       navigate("/identity/users");
@@ -86,6 +93,26 @@ export const UserCreatePage = observer(() => {
         onError={onSubmitError}
         methods={methods}
       >
+        <PanelV title="Персональные данные">
+          <FormInputText
+            labelType="fixed"
+            name="lastName"
+            label="Фамилия"
+            placeholder=""
+          />
+          <FormInputText
+            labelType="fixed"
+            name="firstName"
+            label="Имя"
+            placeholder=""
+          />
+          <FormInputText
+            labelType="fixed"
+            name="middleName"
+            label="Отчество (необязательно)"
+            placeholder=""
+          />
+        </PanelV>
         <PanelV title="Основная информация">
           <FormInputText
             labelType="fixed"

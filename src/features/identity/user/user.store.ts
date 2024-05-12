@@ -1,9 +1,19 @@
 import { RootStore } from "@/app/store";
 import { makeAutoObservable, runInAction } from "mobx";
 import { ICreateUserDto, IUser } from "./user.types";
-import { createUserRequest, getUsersRequest } from "./user.service";
+import {
+  createUserRequest,
+  deleteUsersRequest,
+  getUsersRequest,
+} from "./user.service";
 import { PaginationStore } from "@/features/pagination";
-import { fail, success } from "@/shared/types";
+import {
+  IDeleteOptions,
+  IManyDeleteRequestOptions,
+  fail,
+  success,
+} from "@/shared/types";
+import { toArray } from "@/shared/utils";
 
 export class UserStore {
   pagination: PaginationStore;
@@ -42,6 +52,22 @@ export class UserStore {
       return this.success(response.data);
     } else {
       return this.fail();
+    }
+  }
+
+  public async deleteUsers(options: IDeleteOptions) {
+    this.loading();
+    const mappedOptions: IManyDeleteRequestOptions = {
+      ...options,
+      keys: toArray(options.keys),
+    };
+
+    const [status] = await deleteUsersRequest(mappedOptions);
+
+    if (status) {
+      this.getUsersPage();
+    } else {
+      this.fail();
     }
   }
 

@@ -54,10 +54,15 @@ export const router = createBrowserRouter([
       { path: "/pages/:id", element: <PageUseParamsTemplate /> },
       {
         path: "/identity",
+        handle: crumb("Учетные записи", DISABLED),
         children: [
-          { path: "users", element: <UserListPage /> },
+          {
+            path: "users",
+            element: <UserListPage />,
+            handle: crumb("Пользователи"),
+          },
           { path: "users/create", element: <UserCreatePage /> },
-          { path: "roles", element: <RoleListPage /> },
+          { path: "roles", element: <RoleListPage />, handle: crumb("Роли") },
           { path: "roles/create", element: <RoleCreatePage /> },
           { path: "roles/:id/edit", element: <RoleEditPage /> },
         ],
