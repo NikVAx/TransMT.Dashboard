@@ -4,6 +4,7 @@ import { Layout } from "@/layouts";
 import {
   BuildingCreatePage,
   BuildingListPage,
+  GpsDeviceCreatePage,
   GpsDeviceListPage,
   LoginPage,
   OperatorCreatePage,
@@ -106,6 +107,11 @@ export const router = createBrowserRouter([
             path: "devices",
             element: <GpsDeviceListPage />,
             handle: crumb("GPS Устройства"),
+          },
+          {
+            path: "devices/create",
+            element: <GpsDeviceCreatePage />,
+            handle: crumb("Создание GPS устройства"),
           },
         ],
       },

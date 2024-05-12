@@ -1,4 +1,5 @@
 export * from "./crudDataTable"
+export * from "./crudCreateEntityButton"
 export * from "./crudEditEntityButton"
 export * from "./crudDeleteEntityButton"
 

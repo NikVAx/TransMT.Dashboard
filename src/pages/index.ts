@@ -1,14 +1,21 @@
 export * from "./loginPage"
 export * from "./profilePage"
-export * from "./userCreatePage"
+
 export * from "./userListPage"
+export * from "./userCreatePage"
+
 export * from "./roleListPage"
 export * from "./roleCreatePage"
 export * from "./roleEditPage"
+
 export * from "./buildingCreatePage"
 export * from "./buildingListPage"
+
 export * from "./vehicleListPage"
 export * from "./vehicleCreatePage"
+
 export * from "./operatorListPage"
 export * from "./operatorsCreatePage"
+
 export * from "./gpsDeviceListPage"
+export * from "./gpsDeviceCreatePage"
