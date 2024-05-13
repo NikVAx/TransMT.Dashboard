@@ -25,6 +25,7 @@ import {
 } from "@/pages/profilePage/components";
 import { crumb } from "@/components/breadcrumbs/bradcrumbs.types";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { GeoZoneListPage } from "@/pages/geoZoneListPage/geoZoneListPage";
 
 const DISABLED = true;
 
@@ -136,8 +137,13 @@ export const router = createBrowserRouter([
             element: <GpsDeviceCreatePage />,
             handle: crumb("Создание GPS устройства"),
           },
+          {
+            path: "geozones",
+            element: <GeoZoneListPage />,
+            handle: crumb("Географические зоны"),
+          },
         ],
-      }
+      },
     ],
   },
 ]);

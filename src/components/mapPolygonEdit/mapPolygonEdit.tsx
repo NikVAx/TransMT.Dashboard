@@ -24,6 +24,9 @@ export const MapPolygonEdit = observer(
 
     const onEditEnd = () => {
       store.toggleEditing();
+      if (store.countOfPoints >= 3) {
+        store.isComplited = true;
+      }
     };
 
     return (
