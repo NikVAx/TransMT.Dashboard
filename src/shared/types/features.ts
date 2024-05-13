@@ -18,7 +18,7 @@ export interface IPaginatedResponse<T> extends IPageOptions {
   items: T[];
 }
 
-export interface IGeoPoint {
+export interface ILatLng {
   lng: number;
   lat: number;
 }

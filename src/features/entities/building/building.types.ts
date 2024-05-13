@@ -1,10 +1,10 @@
-import { IEntity, IGeoPoint } from "@/shared/types";
+import { IEntity, ILatLng } from "@/shared/types";
 
 export interface IBuilding extends IEntity {
   name: string;
   type: string;
   address?: string;
-  location: IGeoPoint;
+  location: ILatLng;
 }
 
 export interface IGetBuildingDto extends IBuilding {}

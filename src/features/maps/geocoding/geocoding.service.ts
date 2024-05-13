@@ -1,4 +1,4 @@
-import { IGeoPoint } from "@/shared/types";
+import { ILatLng } from "@/shared/types";
 import axios from "axios";
 import {
   IDadataSuggestionItemDto,
@@ -8,7 +8,7 @@ import {
 } from "./geocoding.types";
 
 export async function getAddressByGeopointFromDadataRequest(
-  location: IGeoPoint
+  location: ILatLng
 ) {
   try {
     const api_key = import.meta.env.VITE_DADATA_API_KEY;

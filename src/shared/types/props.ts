@@ -24,3 +24,7 @@ export interface IVariantLabel {
 export interface IAs<T> {
   as?: T;
 }
+
+export interface StoreProps<T> {
+  store: T;
+}

@@ -1,8 +1,8 @@
-import { IGeoPoint } from "@/shared/types";
+import { ILatLng } from "@/shared/types";
 import * as yup from "yup";
 import { ICreateBuildingDto } from "./building.types";
 
-export const getGeoPointSchema = (): yup.ObjectSchema<IGeoPoint> =>
+export const getGeoPointSchema = (): yup.ObjectSchema<ILatLng> =>
   yup.object().shape({
     lat: yup.number().min(-90).max(90).required().label("Широта"),
     lng: yup.number().min(-180).max(180).required().label("Долгота"),

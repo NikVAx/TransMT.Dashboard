@@ -118,6 +118,20 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
           }),
         ]
       ),
+      TreeNode(
+        {
+          id: "#entities/geozones",
+          label: "Географические зоны",
+          icon: "pi pi-fw pi-clone",
+        } as IAppMenuItem,
+        [
+          TreeNode({
+            id: "/entities/geozones",
+            label: "Список географических зон",
+            to: "/entities/geozones",
+          }),
+        ]
+      ),
     ]
   ),
 ];
