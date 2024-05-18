@@ -4,6 +4,7 @@ import { Layout } from "@/layouts";
 import {
   BuildingCreatePage,
   BuildingListPage,
+  GeoZoneCreatePage,
   GpsDeviceCreatePage,
   GpsDeviceListPage,
   LoginPage,
@@ -141,6 +142,11 @@ export const router = createBrowserRouter([
             path: "geozones",
             element: <GeoZoneListPage />,
             handle: crumb("Географические зоны"),
+          },
+          {
+            path: "geozones/create",
+            element: <GeoZoneCreatePage />,
+            handle: crumb("Создание геозоны"),
           },
         ],
       },

@@ -5,6 +5,8 @@ import {
   MapContainerProps,
   ZoomControl,
 } from "react-leaflet";
+import styles from "./maxBox.module.css";
+import { classNames } from "primereact/utils";
 
 export const MapBox = ({
   children,
@@ -13,7 +15,8 @@ export const MapBox = ({
   return (
     <MapContainer
       {...props}
-      style={{ height: "100%" }}
+      className={classNames(styles.mapBox, props.className)}
+      style={props.style}
       attributionControl={false}
       zoomControl={false}
     >

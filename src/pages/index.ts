@@ -19,3 +19,6 @@ export * from "./operatorsCreatePage"
 
 export * from "./gpsDeviceListPage"
 export * from "./gpsDeviceCreatePage"
+
+export * from "./geoZoneListPage"
+export * from "./geoZoneCreatePage"

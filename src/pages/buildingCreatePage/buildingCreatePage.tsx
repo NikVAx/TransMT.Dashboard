@@ -13,7 +13,7 @@ import {
   ICreateBuildingDto,
   getBuildingValidationSchema,
 } from "@/features/entities/building";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
 import { useComponentDidMount } from "@/shared/hooks";
 import {
@@ -25,6 +25,7 @@ import { Toast } from "primereact/toast";
 import { FormInputNumber } from "@/components/formInputNumber";
 import { useStore } from "@/app/store";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "primereact/dropdown";
 
 export const BuildingCreatePage = observer(() => {
   const { buildingStore } = useStore((store) => ({
@@ -64,6 +65,13 @@ export const BuildingCreatePage = observer(() => {
   const [position, setPosition] = useState<LatLng>(latLng(55.753927, 37.62082));
   const [suggestion, setSuggestion] = useState<ISuggestion | null>(null);
   const toast = useRef<Toast>(null);
+  
+  const geoZoneTypes = useMemo<string[]>(() => [
+    "Не указана",
+    "Опасная зона",
+    "Складская зона",
+    "Здание",
+  ], []);
 
   const handlePositionChange = async (latlng: LatLng) => {
     setPosition(latlng);
@@ -124,6 +132,8 @@ export const BuildingCreatePage = observer(() => {
         <PanelV title="Основная информация">
           <FormInputText name="name" label="Наименование" labelType="fixed" />
           <FormInputText name="type" label="Тип здания" labelType="fixed" />
+          <Dropdown  options={geoZoneTypes} optionLabel="name" 
+    filter placeholder="Выбор типа геозоны"  className="w-full md:w-20rem" />
         </PanelV>
 
         <PanelV title="Расположение">

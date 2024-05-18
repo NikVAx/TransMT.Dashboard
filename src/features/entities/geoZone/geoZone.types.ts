@@ -4,7 +4,7 @@ export interface IGeoZone extends IEntity {
   name: string;
   type: string;
   color: string;
-  points: ILatLng;
+  points: ILatLng[];
 }
 
 export interface IGetGeoZoneDto extends IGeoZone {}

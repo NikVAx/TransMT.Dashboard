@@ -16,19 +16,21 @@ export const PredictZonePolyline = observer(
               <Polyline
                 dashArray={[16, 16]}
                 positions={[store.nodes.at(-1)!.position!, position!]}
+                color="black"
               />
             )}
             {store.nodes.at(0) && store.countOfPoints > 1 && (
               <Polyline
                 weight={1.5}
                 positions={[store.nodes.at(0)!.position!, position!]}
+                color="black"
               />
             )}
           </>
         )}
         {store.isEditing && (
           <Polyline
-            pathOptions={{ color: "red" }}
+            pathOptions={{ color: "black" }}
             positions={[...store.getPositions()]}
           />
         )}

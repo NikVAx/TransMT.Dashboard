@@ -38,7 +38,7 @@ export const VehicleListPage = observer(() => {
           exportable={false}
           frozen={true}
           alignFrozen="right"
-          style={{ width: "150px" }}
+          style={{ width: "100px", padding: "0.5rem" }}
         />
       </CrudDataTable>
     </PageWrapper>
