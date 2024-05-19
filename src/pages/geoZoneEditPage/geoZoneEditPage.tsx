@@ -1,6 +1,7 @@
 import { useStore } from "@/app/store";
 import {
   FormDropdown,
+  FormInputErrorMessage,
   FormInputText,
   FormWrapper,
   MapBox,
@@ -10,9 +11,11 @@ import {
 import { MapPolygonEdit } from "@/components/mapPolygonEdit/mapPolygonEdit";
 import {
   ICreateGeoZoneDto,
+  MapDragNode,
   MapPolygonStore,
   getGeoZoneValidationSchema,
 } from "@/features";
+import { useComponentDidMount } from "@/shared/hooks";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
@@ -21,29 +24,26 @@ import { Toast } from "primereact/toast";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Polygon, TileLayer } from "react-leaflet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const editPolygonStore = new MapPolygonStore();
 
-export const GeoZoneCreatePage = observer(() => {
-  const navigate = useNavigate();
+const geoZoneTypes = [
+  { name: "Не определен", defaultColor: "" },
+  { name: "Зона хранения", defaultColor: "" },
+  { name: "Зона погрузки", defaultColor: "" },
+  { name: "Зона разгрузки", defaultColor: "" },
+  { name: "Опасная зона", defaultColor: "" },
+  { name: "Пешеходная зона", defaultColor: "" },
+];
 
+export const GeoZoneEditPage = observer(() => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { geoZoneStore } = useStore((store) => ({
     geoZoneStore: store.geoZoneStore,
   }));
-
   const [сolor, setColor] = useState("6466f1");
-
-  const toast = useRef<Toast>(null);
-
-  const geoZoneTypes = [
-    { name: "Не определен", defaultColor: "" },
-    { name: "Зона хранения", defaultColor: "" },
-    { name: "Зона погрузки", defaultColor: "" },
-    { name: "Зона разгрузки", defaultColor: "" },
-    { name: "Опасная зона", defaultColor: "" },
-    { name: "Пешеходная зона", defaultColor: "" },
-  ];
 
   const methods = useForm({
     defaultValues: {
@@ -53,6 +53,24 @@ export const GeoZoneCreatePage = observer(() => {
     },
     resolver: yupResolver(getGeoZoneValidationSchema()),
   });
+
+  useComponentDidMount(async () => {
+    if (!id) return navigate("/not-found");
+
+    const status = await geoZoneStore.getGeoZoneById(id);
+
+    if (!status.isSuccess) {
+      return navigate("/not-found");
+    }
+
+    methods.reset({ ...status.data! });
+    setColor(status.data!.color.slice(1));
+    editPolygonStore.nodes = status.data!.points.map(
+      (node, i) => new MapDragNode(node, i)
+    );
+  });
+
+  const toast = useRef<Toast>(null);
 
   const onSubmit: SubmitHandler<ICreateGeoZoneDto> = async (data) => {
     const points = editPolygonStore.getPositions();
@@ -64,7 +82,7 @@ export const GeoZoneCreatePage = observer(() => {
     }
     methods.clearErrors();
 
-    const status = await geoZoneStore.createGeoZone({
+    const status = await geoZoneStore.editGeoZoneById(id!, {
       name: data.name,
       type: data.type,
       color: data.color,
@@ -145,6 +163,7 @@ export const GeoZoneCreatePage = observer(() => {
 
             <MapPolygonEdit store={editPolygonStore} />
           </MapBox>
+          <FormInputErrorMessage root name="points"/>
         </PanelV>
 
         <div

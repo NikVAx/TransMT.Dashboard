@@ -5,6 +5,7 @@ import {
   BuildingCreatePage,
   BuildingListPage,
   GeoZoneCreatePage,
+  GeoZoneEditPage,
   GpsDeviceCreatePage,
   GpsDeviceListPage,
   LoginPage,
@@ -141,12 +142,17 @@ export const router = createBrowserRouter([
           {
             path: "geozones",
             element: <GeoZoneListPage />,
-            handle: crumb("Географические зоны"),
+            handle: crumb("Геозоны"),
           },
           {
             path: "geozones/create",
             element: <GeoZoneCreatePage />,
             handle: crumb("Создание геозоны"),
+          },
+          {
+            path: "geozones/:id/edit",
+            element: <GeoZoneEditPage />,
+            handle: crumb("Редактирование геозоны"),
           },
         ],
       },

@@ -9,7 +9,7 @@ export const actionBodyTemplate = (data: IBuilding) => {
 
   return (
     <div>
-      <CrudEditEntityButton to={"/not-implemented"} />
+      <CrudEditEntityButton to={`/entities/buildings/${data.id}/edit`} />
       <CrudDeleteEntityButton
         message="Вы уверены, что хотите удалить здание?"
         data={data}

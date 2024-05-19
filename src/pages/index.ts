@@ -22,3 +22,4 @@ export * from "./gpsDeviceCreatePage"
 
 export * from "./geoZoneListPage"
 export * from "./geoZoneCreatePage"
+export * from "./geoZoneEditPage"

@@ -6,10 +6,16 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IBuilding, ICreateBuildingDto } from "./building.types";
+import {
+  IBuilding,
+  ICreateBuildingDto,
+  IEditBuildingDto,
+} from "./building.types";
 import {
   createBuildingRequest,
   deleteBuildingsRequest,
+  editBuildingByIdRequest,
+  getBuildingByIdRequest,
   getBuildingsRequest,
 } from "./building.services";
 import { toArray } from "@/shared/utils";
@@ -49,7 +55,29 @@ export class BuildingStore {
     const [status, response] = await createBuildingRequest(options);
 
     if (status) {
-      return this.success(response.data)
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async getBuildingById(id: string) {
+    this.loading();
+
+    const [status, response] = await getBuildingByIdRequest(id);
+    if (status) {
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async editBuildingById(id: string, options: IEditBuildingDto) {
+    this.loading();
+    const [status, response] = await editBuildingByIdRequest(id, options);
+
+    if (status) {
+      return this.success(response.data);
     } else {
       return this.fail();
     }
@@ -68,7 +96,6 @@ export class BuildingStore {
         return this.fail();
       }
     });
-  
 
     if (status) {
       this.buildings = response.data.items;

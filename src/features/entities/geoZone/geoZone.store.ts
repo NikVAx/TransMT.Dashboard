@@ -6,10 +6,12 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IGeoZone, ICreateGeoZoneDto } from "./geoZone.types";
+import { IGeoZone, ICreateGeoZoneDto, IEditGeoZoneDto } from "./geoZone.types";
 import {
   createGeoZoneRequest,
   deleteGeoZonesRequest,
+  editGeoZoneByIdRequest,
+  getGeoZoneByIdRequest,
   getGeoZonesRequest,
 } from "./geoZone.services";
 import { toArray } from "@/shared/utils";
@@ -49,7 +51,18 @@ export class GeoZoneStore {
     const [status, response] = await createGeoZoneRequest(options);
 
     if (status) {
-      return this.success(response.data)
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async editGeoZoneById(id: string, options: IEditGeoZoneDto) {
+    this.loading();
+    const [status, response] = await editGeoZoneByIdRequest(id, options);
+
+    if (status) {
+      return this.success(response.data);
     } else {
       return this.fail();
     }
@@ -68,13 +81,23 @@ export class GeoZoneStore {
         return this.fail();
       }
     });
-  
 
     if (status) {
       this.geoZones = response.data.items;
       this.success();
     } else {
       this.fail();
+    }
+  }
+
+  public async getGeoZoneById(id: string) {
+    this.loading();
+
+    const [status, response] = await getGeoZoneByIdRequest(id);
+    if (status) {
+      return this.success(response.data);
+    } else {
+      return this.fail();
     }
   }
 

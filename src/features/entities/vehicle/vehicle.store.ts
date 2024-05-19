@@ -62,7 +62,6 @@ export class VehicleStore {
   public async getVehiclesPage() {
     this.loading();
     const [status, response] = await getVehiclesRequest(this.pagination);
-    console.log(status, response);
     runInAction(() => {
       if (status) {
         this.vehicles = response.data.items;
