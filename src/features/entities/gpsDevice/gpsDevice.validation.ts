@@ -5,6 +5,7 @@ export const getGpsDeviceValidationSchema = () =>
   yup
     .object()
     .shape({
+      deviceId: yup.string().required(),
       vehicle: getVehicleValidationSchema()
         .shape({
           id: yup.string().uuid().required(),

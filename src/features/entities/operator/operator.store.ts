@@ -6,10 +6,16 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IOperator, ICreateOperatorDto } from "./operator.types";
+import {
+  IOperator,
+  ICreateOperatorDto,
+  IEditOperatorDto,
+} from "./operator.types";
 import {
   createOperatorRequest,
   deleteOperatorsRequest,
+  editOperatorByIdRequest,
+  getOperatorByIdRequest,
   getOperatorsRequest,
 } from "./operator.services";
 import { toArray } from "@/shared/utils";
@@ -49,7 +55,29 @@ export class OperatorStore {
     const [status, response] = await createOperatorRequest(options);
 
     if (status) {
-      return this.success(response.data)
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async getOperatorById(id: string) {
+    this.loading();
+
+    const [status, response] = await getOperatorByIdRequest(id);
+    if (status) {
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async editOperatorById(id: string, options: IEditOperatorDto) {
+    this.loading();
+    const [status, response] = await editOperatorByIdRequest(id, options);
+
+    if (status) {
+      return this.success(response.data);
     } else {
       return this.fail();
     }
@@ -59,7 +87,7 @@ export class OperatorStore {
     this.loading();
     const [status, response] = await getOperatorsRequest(this.pagination);
 
-    runInAction(() => {
+    return runInAction(() => {
       if (status) {
         this.operators = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
@@ -68,14 +96,6 @@ export class OperatorStore {
         return this.fail();
       }
     });
-  
-
-    if (status) {
-      this.operators = response.data.items;
-      this.success();
-    } else {
-      this.fail();
-    }
   }
 
   private loading() {

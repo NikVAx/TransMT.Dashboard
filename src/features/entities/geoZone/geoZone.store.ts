@@ -72,7 +72,7 @@ export class GeoZoneStore {
     this.loading();
     const [status, response] = await getGeoZonesRequest(this.pagination);
 
-    runInAction(() => {
+    return runInAction(() => {
       if (status) {
         this.geoZones = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
@@ -81,13 +81,6 @@ export class GeoZoneStore {
         return this.fail();
       }
     });
-
-    if (status) {
-      this.geoZones = response.data.items;
-      this.success();
-    } else {
-      this.fail();
-    }
   }
 
   public async getGeoZoneById(id: string) {

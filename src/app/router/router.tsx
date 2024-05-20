@@ -3,13 +3,17 @@ import { PageUseParamsTemplate } from "@/app/mock";
 import { Layout } from "@/layouts";
 import {
   BuildingCreatePage,
+  BuildingEditPage,
   BuildingListPage,
   GeoZoneCreatePage,
   GeoZoneEditPage,
+  GeoZoneListPage,
   GpsDeviceCreatePage,
+  GpsDeviceEditPage,
   GpsDeviceListPage,
   LoginPage,
   OperatorCreatePage,
+  OperatorEditPage,
   OperatorListPage,
   ProfilePage,
   RoleCreatePage,
@@ -28,7 +32,6 @@ import {
 } from "@/pages/profilePage/components";
 import { crumb } from "@/components/breadcrumbs/bradcrumbs.types";
 import { Breadcrumbs } from "@/components/breadcrumbs";
-import { GeoZoneListPage } from "@/pages/geoZoneListPage/geoZoneListPage";
 
 const DISABLED = true;
 
@@ -111,6 +114,11 @@ export const router = createBrowserRouter([
             handle: crumb("Создание здания"),
           },
           {
+            path: "buildings/:id/edit",
+            element: <BuildingEditPage />,
+            handle: crumb("Редактирование здания"),
+          },
+          {
             path: "vehicles",
             element: <VehicleListPage />,
             handle: crumb("Транспортные средства"),
@@ -136,6 +144,11 @@ export const router = createBrowserRouter([
             handle: crumb("Создание оператора ТС"),
           },
           {
+            path: "operators/:id/edit",
+            element: <OperatorEditPage />,
+            handle: crumb("Редактирование оператора ТС"),
+          },
+          {
             path: "devices",
             element: <GpsDeviceListPage />,
             handle: crumb("GPS Устройства"),
@@ -144,6 +157,11 @@ export const router = createBrowserRouter([
             path: "devices/create",
             element: <GpsDeviceCreatePage />,
             handle: crumb("Создание GPS устройства"),
+          },
+          {
+            path: "devices/:id/edit",
+            element: <GpsDeviceEditPage />,
+            handle: crumb("Редактирование GPS устройсва"),
           },
           {
             path: "geozones",

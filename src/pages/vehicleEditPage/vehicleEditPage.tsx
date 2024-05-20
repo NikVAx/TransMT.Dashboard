@@ -14,7 +14,6 @@ import { Toast } from "primereact/toast";
 import { useStore } from "@/app/store";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  ICreateVehicleDto,
   IEditVehicleDto,
   getVehicleValidationSchema,
 } from "@/features/entities/vehicle";

@@ -87,7 +87,7 @@ export class BuildingStore {
     this.loading();
     const [status, response] = await getBuildingsRequest(this.pagination);
 
-    runInAction(() => {
+    return runInAction(() => {
       if (status) {
         this.buildings = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
@@ -96,13 +96,6 @@ export class BuildingStore {
         return this.fail();
       }
     });
-
-    if (status) {
-      this.buildings = response.data.items;
-      this.success();
-    } else {
-      this.fail();
-    }
   }
 
   private loading() {

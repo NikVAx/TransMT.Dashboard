@@ -7,7 +7,7 @@ export const actionBodyTemplate = (data: IGpsDevice) => {
 
   return (
     <div>
-      <CrudEditEntityButton to={"/not-implemented"} />
+      <CrudEditEntityButton to={`/entities/devices/${data.id}/edit`} />
       <CrudDeleteEntityButton
         message="Вы уверены, что хотите удалить GPS Устройство?"
         data={data}

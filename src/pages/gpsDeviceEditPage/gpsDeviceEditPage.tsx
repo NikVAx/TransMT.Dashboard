@@ -12,15 +12,18 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import { useStore } from "@/app/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IVehicle } from "@/features/entities/vehicle";
 import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
 import {
   ICreateGpsDeviceDto,
   getGpsDeviceValidationSchema,
 } from "@/features/entities/gpsDevice";
+import { useComponentDidMount } from "@/shared/hooks";
 
-export const GpsDeviceCreatePage = observer(() => {
+export const GpsDeviceEditPage = observer(() => {
+  const navigate = useNavigate();
+  const { id } = useParams();
   const { deviceStore: deviceStore, vehicleStore: vehicleStore } = useStore(
     (store) => ({
       deviceStore: store.deviceStore,
@@ -35,10 +38,31 @@ export const GpsDeviceCreatePage = observer(() => {
     },
     resolver: yupResolver(getGpsDeviceValidationSchema()),
   });
-  const navigate = useNavigate();
 
+  useComponentDidMount(async () => {
+    if (!id) return navigate("/not-found");
+
+    const status = await deviceStore.getGpsDeviceById(id);
+
+    if (!status.isSuccess) {
+      return navigate("/not-found");
+    }
+
+    const vehicleStatus = await vehicleStore.getVehicleById(
+      status.data!.vehicleId
+    );
+
+    if (!vehicleStatus.isSuccess) {
+      return navigate("/not-found");
+    }
+
+    methods.reset({
+      vehicle: vehicleStatus.data,
+      deviceId: status.data!.id,
+    });
+  });
   const onSubmit: SubmitHandler<any> = async (data: any) => {
-    const status = await deviceStore.createGpsDevice({
+    const status = await deviceStore.editGpsDeviceById(id!, {
       vehicleId: data.vehicle.id,
       deviceId: data.deviceId,
     } as ICreateGpsDeviceDto);

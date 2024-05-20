@@ -6,10 +6,16 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IGpsDevice, ICreateGpsDeviceDto } from "./gpsDevice.types";
+import {
+  IGpsDevice,
+  ICreateGpsDeviceDto,
+  IEditGpsDeviceDto,
+} from "./gpsDevice.types";
 import {
   createGpsDeviceRequest,
   deleteGpsDevicesRequest,
+  editGpsDeviceByIdRequest,
+  getGpsDeviceByIdRequest,
   getGpsDevicesRequest,
 } from "./gpsDevice.services";
 import { toArray } from "@/shared/utils";
@@ -49,7 +55,7 @@ export class GpsDeviceStore {
     const [status, response] = await createGpsDeviceRequest(options);
 
     if (status) {
-      return this.success(response.data)
+      return this.success(response.data);
     } else {
       return this.fail();
     }
@@ -59,7 +65,7 @@ export class GpsDeviceStore {
     this.loading();
     const [status, response] = await getGpsDevicesRequest(this.pagination);
 
-    runInAction(() => {
+    return runInAction(() => {
       if (status) {
         this.devices = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
@@ -68,13 +74,27 @@ export class GpsDeviceStore {
         return this.fail();
       }
     });
-  
+  }
+
+  public async getGpsDeviceById(id: string) {
+    this.loading();
+
+    const [status, response] = await getGpsDeviceByIdRequest(id);
+    if (status) {
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async editGpsDeviceById(id: string, options: IEditGpsDeviceDto) {
+    this.loading();
+    const [status, response] = await editGpsDeviceByIdRequest(id, options);
 
     if (status) {
-      this.devices = response.data.items;
-      this.success();
+      return this.success(response.data);
     } else {
-      this.fail();
+      return this.fail();
     }
   }
 
