@@ -121,13 +121,13 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
       TreeNode(
         {
           id: "#entities/geozones",
-          label: "Географические зоны",
+          label: "Геозоны",
           icon: "pi pi-fw pi-clone",
         } as IAppMenuItem,
         [
           TreeNode({
             id: "/entities/geozones",
-            label: "Список географических зон",
+            label: "Список геозон",
             to: "/entities/geozones",
           }),
         ]

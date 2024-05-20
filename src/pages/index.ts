@@ -13,6 +13,7 @@ export * from "./buildingListPage"
 
 export * from "./vehicleListPage"
 export * from "./vehicleCreatePage"
+export * from "./vehicleEditPage"
 
 export * from "./operatorListPage"
 export * from "./operatorsCreatePage"

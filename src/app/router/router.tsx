@@ -18,6 +18,7 @@ import {
   UserCreatePage,
   UserListPage,
   VehicleCreatePage,
+  VehicleEditPage,
   VehicleListPage,
 } from "@/pages";
 import { ExamplePageMap } from "../mock/examples";
@@ -118,6 +119,11 @@ export const router = createBrowserRouter([
             path: "vehicles/create",
             element: <VehicleCreatePage />,
             handle: crumb("Создание ТС"),
+          },
+          {
+            path: "vehicles/:id/edit",
+            element: <VehicleEditPage />,
+            handle: crumb("Редактирование ТС"),
           },
           {
             path: "operators",

@@ -22,6 +22,7 @@ export const FormInputNumber = ({
             as={InputNumber}
             {...field}
             {...props}
+            label={label}
             id={name}
             value={field.value}
             onChange={(e: any) => {field.onChange(e.value)}}

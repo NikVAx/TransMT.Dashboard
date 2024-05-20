@@ -8,6 +8,7 @@ import {
   PageWrapper,
   MapSelectAddress,
   PanelV,
+  FormDropdown,
 } from "@/components";
 import {
   ICreateBuildingDto,
@@ -25,7 +26,8 @@ import { Toast } from "primereact/toast";
 import { FormInputNumber } from "@/components/formInputNumber";
 import { useStore } from "@/app/store";
 import { useNavigate } from "react-router-dom";
-import { Dropdown } from "primereact/dropdown";
+import { classNames } from "primereact/utils";
+import { useLayout } from "@/layouts/layout/context/layout.hooks";
 
 export const BuildingCreatePage = observer(() => {
   const { buildingStore } = useStore((store) => ({
@@ -65,13 +67,11 @@ export const BuildingCreatePage = observer(() => {
   const [position, setPosition] = useState<LatLng>(latLng(55.753927, 37.62082));
   const [suggestion, setSuggestion] = useState<ISuggestion | null>(null);
   const toast = useRef<Toast>(null);
-  
-  const geoZoneTypes = useMemo<string[]>(() => [
-    "Не указана",
-    "Опасная зона",
-    "Складская зона",
-    "Здание",
-  ], []);
+
+  const buildingTypes = useMemo<string[]>(
+    () => ["Не указан", "Склад", "Порт", "Офис", "Техническое", "Ангар"],
+    []
+  );
 
   const handlePositionChange = async (latlng: LatLng) => {
     setPosition(latlng);
@@ -120,6 +120,8 @@ export const BuildingCreatePage = observer(() => {
     );
   });
 
+  const layout = useLayout();
+
   return (
     <PageWrapper>
       <Toast ref={toast} position="top-center" />
@@ -131,14 +133,24 @@ export const BuildingCreatePage = observer(() => {
       >
         <PanelV title="Основная информация">
           <FormInputText name="name" label="Наименование" labelType="fixed" />
-          <FormInputText name="type" label="Тип здания" labelType="fixed" />
-          <Dropdown  options={geoZoneTypes} optionLabel="name" 
-    filter placeholder="Выбор типа геозоны"  className="w-full md:w-20rem" />
+          <FormDropdown
+            name="type"
+            labelType="fixed"
+            label="Тип здания"
+            options={buildingTypes}
+            filter
+            placeholder="Выбор типа здания"
+            className="w-full"
+          />
         </PanelV>
 
         <PanelV title="Расположение">
           <FormInputText name="address" label="Адрес" labelType="fixed" />
-          <div className="flex gap-3">
+          <div
+            className={classNames("flex gap-3", {
+              "flex-column": layout.displayMode === "small",
+            })}
+          >
             <FormInputNumber
               name="location.lat"
               label="Широта"
@@ -161,28 +173,31 @@ export const BuildingCreatePage = observer(() => {
               max={180}
               maxFractionDigits={8}
             />
-            <Button
-              type="button"
-              label="Применить"
-              style={{ alignSelf: "end" }}
-              tooltip="Найти расположение по заданным координатам"
-              onClick={() => {
-                const l = methods.getValues().location;
-                handlePositionChange(latLng(l.lat, l.lng));
-              }}
-            />
 
-            <Button
-              type="button"
-              label="Отменить"
-              style={{ alignSelf: "end" }}
-              tooltip="Вернуть значение координат до редактирования"
-              onClick={() => {
-                methods.setValue("location", position, {
-                  shouldValidate: true,
-                });
-              }}
-            />
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                label="Применить"
+                style={{ alignSelf: "end" }}
+                tooltip="Найти расположение по заданным координатам"
+                onClick={() => {
+                  const l = methods.getValues().location;
+                  handlePositionChange(latLng(l.lat, l.lng));
+                }}
+              />
+
+              <Button
+                type="button"
+                label="Отменить"
+                style={{ alignSelf: "end" }}
+                tooltip="Вернуть значение координат до редактирования"
+                onClick={() => {
+                  methods.setValue("location", position, {
+                    shouldValidate: true,
+                  });
+                }}
+              />
+            </div>
           </div>
 
           <div

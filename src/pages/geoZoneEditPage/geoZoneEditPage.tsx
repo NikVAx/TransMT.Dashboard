@@ -68,6 +68,7 @@ export const GeoZoneEditPage = observer(() => {
     editPolygonStore.nodes = status.data!.points.map(
       (node, i) => new MapDragNode(node, i)
     );
+    editPolygonStore.isComplited = true;
   });
 
   const toast = useRef<Toast>(null);

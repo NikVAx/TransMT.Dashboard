@@ -1,11 +1,6 @@
 import { MapBox, MapTabControl } from "@/components";
-
-import { MapPolygonEdit } from "@/components/mapPolygonEdit/mapPolygonEdit";
-import { MapPolygonStore } from "@/features/maps";
 import { observer } from "mobx-react-lite";
-import { Polygon, TileLayer } from "react-leaflet";
-
-const editPolygonStore = new MapPolygonStore();
+import { TileLayer } from "react-leaflet";
 
 export const ExamplePageMap = observer(() => {
   return (
@@ -15,9 +10,6 @@ export const ExamplePageMap = observer(() => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <MapTabControl />
-
-      <Polygon positions={editPolygonStore.getPositions()} />
-      <MapPolygonEdit store={editPolygonStore} />
     </MapBox>
   );
 });

@@ -6,11 +6,13 @@ import {
   success,
 } from "@/shared/types";
 import { makeAutoObservable, runInAction } from "mobx";
-import { IVehicle, ICreateVehicleDto } from "./vehicle.types";
+import { IVehicle, ICreateVehicleDto, IEditVehicleDto } from "./vehicle.types";
 import {
   createVehicleRequest,
   deleteVehicleByIdRequest,
   deleteVehiclesRequest,
+  editVehicleByIdRequest,
+  getVehicleByIdRequest,
   getVehiclesRequest,
 } from "./vehicle.services";
 import { toArray } from "@/shared/utils";
@@ -62,7 +64,7 @@ export class VehicleStore {
   public async getVehiclesPage() {
     this.loading();
     const [status, response] = await getVehiclesRequest(this.pagination);
-    runInAction(() => {
+    return runInAction(() => {
       if (status) {
         this.vehicles = response.data.items;
         this.pagination.totalCount = response.data.totalCount;
@@ -71,12 +73,27 @@ export class VehicleStore {
         return this.fail();
       }
     });
+  }
+
+  public async getVehicleById(id: string) {
+    this.loading();
+
+    const [status, response] = await getVehicleByIdRequest(id);
+    if (status) {
+      return this.success(response.data);
+    } else {
+      return this.fail();
+    }
+  }
+
+  public async editVehicleById(id: string, options: IEditVehicleDto) {
+    this.loading();
+    const [status, response] = await editVehicleByIdRequest(id, options);
 
     if (status) {
-      this.vehicles = response.data.items;
-      this.success();
+      return this.success(response.data);
     } else {
-      this.fail();
+      return this.fail();
     }
   }
 
