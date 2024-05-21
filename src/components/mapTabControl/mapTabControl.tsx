@@ -1,8 +1,9 @@
 import L from "leaflet";
-import { useEffect, useRef, useState } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import styles from "./mapTabControl.module.css";
+import { Button } from "primereact/button";
 
-export const MapTabControl = () => {
+export const MapTabControl = ({ children }: PropsWithChildren) => {
   const [isClosed, setIsClosed] = useState(true);
 
   const nodeRef = useRef(null);
@@ -34,7 +35,7 @@ export const MapTabControl = () => {
       >
         <div
           style={{
-            width: isClosed ? "auto" : "280px",
+            width: isClosed ? "auto" : "420px",
             maxWidth: "100%",
             display: "flex",
             flexDirection: "column",
@@ -44,22 +45,18 @@ export const MapTabControl = () => {
             className={styles.tabBox}
             style={{ borderBottomWidth: isClosed ? "0" : "1px" }}
           >
-            <button
+            <Button
               className={styles.tabButton}
-              onClick={(e) => {
+              outlined
+              onClick={() => {
                 setIsClosed(!isClosed);
               }}
-              style={{}}
             >
-              {isClosed ? "СЛОИ" : "X"}
-            </button>
-            {!isClosed &&
-              ["Здания", "Геозоны", "Транспорт"].map((name) => {
-                return <button className={styles.tabButton}>{name}</button>;
-              })}
+              {isClosed ? "СЛОИ" : "ЗАКРЫТЬ"}
+            </Button>
           </div>
 
-          {!isClosed && <div style={{ height: "100%" }}></div>}
+          {!isClosed && <div style={{ height: "100%" }}>{children}</div>}
         </div>
       </div>
     </div>
