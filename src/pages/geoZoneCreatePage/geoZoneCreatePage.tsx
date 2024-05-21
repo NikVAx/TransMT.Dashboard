@@ -90,61 +90,65 @@ export const GeoZoneCreatePage = observer(() => {
         onSubmit={onSubmit}
         onError={onSubmitError}
         methods={methods}
-        className="flex flex-column gap-4"
       >
-        <PanelV title="Основная информация">
-          <FormInputText name="name" label="Наименование" labelType="fixed" />
-          <FormDropdown
-            name="type"
-            label="Тип геозоны"
-            labelType="fixed"
-            options={[...geoZoneTypes.map((x) => x.name)]}
-          />
-
-          <div>
-            <span className="pr-2">Цвет зоны</span>
-            <ColorPicker
-              format="hex"
-              value={сolor}
-              onChange={(e) => {
-                setColor(e.value as string);
-                methods.setValue("color", `#${e.value}`);
-              }}
-              className="mb-3"
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText name="name" label="Наименование" labelType="fixed" />
+            <FormDropdown
+              name="type"
+              label="Тип геозоны"
+              labelType="fixed"
+              options={[...geoZoneTypes.map((x) => x.name)]}
             />
-          </div>
+
+            <div>
+              <span className="pr-2">Цвет зоны</span>
+              <ColorPicker
+                format="hex"
+                value={сolor}
+                onChange={(e) => {
+                  setColor(e.value as string);
+                  methods.setValue("color", `#${e.value}`);
+                }}
+                className="mb-3"
+              />
+            </div>
+          </PanelV.Content>
         </PanelV>
 
-        <PanelV title="Редактор области">
-          <MapBox
-            center={[59.938784, 30.314997]}
-            zoom={13}
-            style={{ height: "600px" }}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-
-            {editPolygonStore.isEditing ? (
-              <Polygon
-                positions={editPolygonStore.getPositions()}
-                pathOptions={{
-                  color: "black",
-                }}
+        <PanelV>
+          <PanelV.Header>Редактор области</PanelV.Header>
+          <PanelV.Content>
+            <MapBox
+              center={[59.938784, 30.314997]}
+              zoom={13}
+              style={{ height: "600px" }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-            ) : (
-              <Polygon
-                positions={editPolygonStore.getPositions()}
-                pathOptions={{
-                  color: `#${сolor}`,
-                  fillColor: `#${сolor}`,
-                }}
-              />
-            )}
 
-            <MapPolygonEdit store={editPolygonStore} />
-          </MapBox>
+              {editPolygonStore.isEditing ? (
+                <Polygon
+                  positions={editPolygonStore.getPositions()}
+                  pathOptions={{
+                    color: "black",
+                  }}
+                />
+              ) : (
+                <Polygon
+                  positions={editPolygonStore.getPositions()}
+                  pathOptions={{
+                    color: `#${сolor}`,
+                    fillColor: `#${сolor}`,
+                  }}
+                />
+              )}
+              <MapPolygonEdit store={editPolygonStore} />
+            </MapBox>
+          </PanelV.Content>
         </PanelV>
 
         <div

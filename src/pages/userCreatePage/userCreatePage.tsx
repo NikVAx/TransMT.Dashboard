@@ -12,6 +12,7 @@ import {
   FormInputPassword,
   FormInputText,
   FormWrapper,
+  PageButtons,
   PageWrapper,
   PanelV,
 } from "@/components";
@@ -59,7 +60,7 @@ export const UserCreatePage = observer(() => {
 
     const createDto = {
       ...data,
-      roles: targetRoles.map(x => x.name),
+      roles: targetRoles.map((x) => x.name),
     } as ICreateUserDto;
 
     console.log(createDto);
@@ -93,45 +94,51 @@ export const UserCreatePage = observer(() => {
         onError={onSubmitError}
         methods={methods}
       >
-        <PanelV title="Персональные данные">
-          <FormInputText
-            labelType="fixed"
-            name="lastName"
-            label="Фамилия"
-            placeholder=""
-          />
-          <FormInputText
-            labelType="fixed"
-            name="firstName"
-            label="Имя"
-            placeholder=""
-          />
-          <FormInputText
-            labelType="fixed"
-            name="middleName"
-            label="Отчество (необязательно)"
-            placeholder=""
-          />
+        <PanelV>
+          <PanelV.Header>Персональные данные</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText
+              labelType="fixed"
+              name="lastName"
+              label="Фамилия"
+              placeholder=""
+            />
+            <FormInputText
+              labelType="fixed"
+              name="firstName"
+              label="Имя"
+              placeholder=""
+            />
+            <FormInputText
+              labelType="fixed"
+              name="middleName"
+              label="Отчество (необязательно)"
+              placeholder=""
+            />
+          </PanelV.Content>
         </PanelV>
-        <PanelV title="Основная информация">
-          <FormInputText
-            labelType="fixed"
-            name="username"
-            label="Имя пользователя"
-            placeholder="Имя пользователя для входа в систему, например: example-manager"
-          />
-          <FormInputText
-            labelType="fixed"
-            name="email"
-            label="Электронная почта"
-            placeholder="Электронная почта, например: my-example@ex.com"
-          />
-          <FormInputPassword
-            labelType="fixed"
-            name="password"
-            label="Пароль"
-            placeholder="Пароль"
-          />
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText
+              labelType="fixed"
+              name="username"
+              label="Имя пользователя"
+              placeholder="Имя пользователя для входа в систему, например: example-manager"
+            />
+            <FormInputText
+              labelType="fixed"
+              name="email"
+              label="Электронная почта"
+              placeholder="Электронная почта, например: my-example@ex.com"
+            />
+            <FormInputPassword
+              labelType="fixed"
+              name="password"
+              label="Пароль"
+              placeholder="Пароль"
+            />
+          </PanelV.Content>
         </PanelV>
 
         <PickList
@@ -154,18 +161,13 @@ export const UserCreatePage = observer(() => {
         />
         <FormInputErrorMessage root name="roles" />
 
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button
             label="Сохранить"
             type="submit"
             loading={userStore.isLoading}
           />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

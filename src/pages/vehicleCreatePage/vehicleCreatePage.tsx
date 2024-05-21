@@ -6,6 +6,7 @@ import {
   FormAutoComplete,
   FormInputText,
   FormWrapper,
+  PageButtons,
   PageWrapper,
   PanelV,
 } from "@/components";
@@ -42,7 +43,7 @@ export const VehicleCreatePage = observer(() => {
       operatingStatus: data.operatingStatus,
       number: data.number,
       type: data.type,
-      storageAreaId: data.storageArea.id
+      storageAreaId: data.storageArea.id,
     } as ICreateVehicleDto);
 
     if (status.isSuccess) {
@@ -101,31 +102,28 @@ export const VehicleCreatePage = observer(() => {
         onSubmit={onSubmit}
         onError={onSubmitError}
         methods={methods}
-        className="flex flex-column gap-4"
       >
-        <PanelV title="Основная информация">
-          <FormInputText name="number" label="Номер ТС" labelType="fixed" />
-          <FormInputText name="type" label="Тип ТС" labelType="fixed" />
-          <FormAutoComplete
-            field="name"
-            dropdown
-            label="Зона хранения"
-            labelType="fixed"
-            name="storageArea"
-            suggestions={buildingSuggestions}
-            completeMethod={search}
-            itemTemplate={itemTemplate}
-            forceSelection
-          />
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText name="number" label="Номер ТС" labelType="fixed" />
+            <FormInputText name="type" label="Тип ТС" labelType="fixed" />
+            <FormAutoComplete
+              field="name"
+              dropdown
+              label="Зона хранения"
+              labelType="fixed"
+              name="storageArea"
+              suggestions={buildingSuggestions}
+              completeMethod={search}
+              itemTemplate={itemTemplate}
+              forceSelection
+            />
+          </PanelV.Content>
         </PanelV>
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button type="submit" label="Сохранить" />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

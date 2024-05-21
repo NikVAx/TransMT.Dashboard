@@ -1,4 +1,10 @@
-import { FormInputText, FormWrapper, PageWrapper, PanelV } from "@/components";
+import {
+  FormInputText,
+  FormWrapper,
+  PageButtons,
+  PageWrapper,
+  PanelV,
+} from "@/components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useStore } from "@/app/store";
@@ -51,28 +57,25 @@ export const OperatorEditPage = () => {
   return (
     <PageWrapper>
       <FormWrapper onSubmit={onSubmit} methods={methods}>
-        <PanelV title="Персональные данные">
-          <FormInputText labelType="fixed" name="lastName" label="Фамилия" />
-          <FormInputText labelType="fixed" name="firstName" label="Имя" />
-          <FormInputText
-            labelType="fixed"
-            name="middleName"
-            label="Отчество (необязательно)"
-          />
+        <PanelV>
+          <PanelV.Header>Персональные данные</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText labelType="fixed" name="lastName" label="Фамилия" />
+            <FormInputText labelType="fixed" name="firstName" label="Имя" />
+            <FormInputText
+              labelType="fixed"
+              name="middleName"
+              label="Отчество (необязательно)"
+            />
+          </PanelV.Content>
         </PanelV>
-
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button
             label="Сохранить"
             type="submit"
             loading={operatorStore.isLoading}
           />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

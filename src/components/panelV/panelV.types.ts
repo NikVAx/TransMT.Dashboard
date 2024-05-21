@@ -1,12 +1,6 @@
-import { PropsWithChildren } from "react";
+import { ComponentPropsWithoutRef, PropsWithChildren } from "react";
 
-export interface PanelVHeaderProps {
-  height?: string | number,
-  minHeight?: string | number,
-  maxHeight?: string | number,
-}
+export interface PanelVHeaderProps extends ComponentPropsWithoutRef<"div"> {}
+export interface PanelVContentProps extends ComponentPropsWithoutRef<"div"> {}
 
-export interface PanelVProps extends PropsWithChildren {
-  title: string,
-  header?: PanelVHeaderProps
-}
+export interface PanelVProps extends PropsWithChildren {}

@@ -23,5 +23,6 @@ export * from "./mapSelectAddress"
 
 export * from "./scrollBox"
 export * from "./pageWrapper"
+export * from "./pageButtons"
 export * from "./label"
 export * from "./navigationLink"

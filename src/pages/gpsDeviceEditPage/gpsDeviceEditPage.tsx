@@ -6,6 +6,7 @@ import {
   FormAutoComplete,
   FormInputText,
   FormWrapper,
+  PageButtons,
   PageWrapper,
   PanelV,
 } from "@/components";
@@ -121,34 +122,31 @@ export const GpsDeviceEditPage = observer(() => {
         onSubmit={onSubmit}
         onError={onSubmitError}
         methods={methods}
-        className="flex flex-column gap-4"
       >
-        <PanelV title="Основная информация">
-          <FormInputText
-            label="Идентификатор устройства"
-            labelType="fixed"
-            name="deviceId"
-          />
-          <FormAutoComplete
-            field="number"
-            dropdown
-            label="Транспортное средство"
-            labelType="fixed"
-            name="vehicle"
-            suggestions={vehicleSuggestions}
-            completeMethod={search}
-            itemTemplate={itemTemplate}
-            forceSelection
-          />
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText
+              label="Идентификатор устройства"
+              labelType="fixed"
+              name="deviceId"
+            />
+            <FormAutoComplete
+              field="number"
+              dropdown
+              label="Транспортное средство"
+              labelType="fixed"
+              name="vehicle"
+              suggestions={vehicleSuggestions}
+              completeMethod={search}
+              itemTemplate={itemTemplate}
+              forceSelection
+            />
+          </PanelV.Content>
         </PanelV>
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button type="submit" label="Сохранить" />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

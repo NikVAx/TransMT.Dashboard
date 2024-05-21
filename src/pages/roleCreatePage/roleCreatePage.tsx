@@ -2,6 +2,7 @@ import {
   FormInputErrorMessage,
   FormInputText,
   FormWrapper,
+  PageButtons,
   PageWrapper,
   PanelV,
 } from "@/components";
@@ -94,19 +95,22 @@ export const RoleCreatePage = () => {
         onError={onSubmitError}
         methods={methods}
       >
-        <PanelV title="Основная информация">
-          <FormInputText
-            labelType="fixed"
-            name="name"
-            label="Название"
-            placeholder="Название роли, например: Администратор"
-          />
-          <FormInputText
-            labelType="fixed"
-            name="description"
-            label="Описание"
-            placeholder='Описание роли, например: "Может выполнять все действия в системе"'
-          />
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText
+              labelType="fixed"
+              name="name"
+              label="Название"
+              placeholder="Название роли, например: Администратор"
+            />
+            <FormInputText
+              labelType="fixed"
+              name="description"
+              label="Описание"
+              placeholder='Описание роли, например: "Может выполнять все действия в системе"'
+            />
+          </PanelV.Content>
         </PanelV>
         <PickList
           dataKey="id"
@@ -127,18 +131,13 @@ export const RoleCreatePage = () => {
           showTargetControls={false}
         />
         <FormInputErrorMessage root name="permissions" />
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button
             label="Сохранить"
             type="submit"
             loading={roleStore.isLoading}
           />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

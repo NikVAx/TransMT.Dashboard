@@ -109,19 +109,22 @@ export const RoleEditPage = () => {
         onError={onSubmitError}
         methods={methods}
       >
-        <PanelV title="Основная информация">
-          <FormInputText
-            labelType="fixed"
-            name="name"
-            label="Название"
-            placeholder="Название роли, например: Администратор"
-          />
-          <FormInputText
-            labelType="fixed"
-            name="description"
-            label="Описание"
-            placeholder='Описание роли, например: "Может выполнять все действия в системе"'
-          />
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText
+              labelType="fixed"
+              name="name"
+              label="Название"
+              placeholder="Название роли, например: Администратор"
+            />
+            <FormInputText
+              labelType="fixed"
+              name="description"
+              label="Описание"
+              placeholder='Описание роли, например: "Может выполнять все действия в системе"'
+            />
+          </PanelV.Content>
         </PanelV>
         <PickList
           dataKey="id"

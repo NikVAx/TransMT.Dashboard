@@ -18,6 +18,7 @@ import {
 import { toArray } from "@/shared/utils";
 import { PaginationStore } from "@/features/pagination";
 
+
 export class VehicleStore {
   vehicles: IVehicle[];
   isLoading: boolean;

@@ -14,7 +14,7 @@ import {
   ICreateBuildingDto,
   getBuildingValidationSchema,
 } from "@/features/entities/building";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
 import { useComponentDidMount } from "@/shared/hooks";
 import {
@@ -28,6 +28,15 @@ import { useStore } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import { classNames } from "primereact/utils";
 import { useLayout } from "@/layouts/layout/context/layout.hooks";
+
+const buildingTypes = [
+  "Не указан",
+  "Склад",
+  "Порт",
+  "Офис",
+  "Техническое",
+  "Ангар",
+];
 
 export const BuildingCreatePage = observer(() => {
   const { buildingStore } = useStore((store) => ({
@@ -67,11 +76,6 @@ export const BuildingCreatePage = observer(() => {
   const [position, setPosition] = useState<LatLng>(latLng(55.753927, 37.62082));
   const [suggestion, setSuggestion] = useState<ISuggestion | null>(null);
   const toast = useRef<Toast>(null);
-
-  const buildingTypes = useMemo<string[]>(
-    () => ["Не указан", "Склад", "Порт", "Офис", "Техническое", "Ангар"],
-    []
-  );
 
   const handlePositionChange = async (latlng: LatLng) => {
     setPosition(latlng);
@@ -129,86 +133,95 @@ export const BuildingCreatePage = observer(() => {
         onSubmit={onSubmit}
         onError={onSubmitError}
         methods={methods}
-        className="flex flex-column gap-4"
       >
-        <PanelV title="Основная информация">
-          <FormInputText name="name" label="Наименование" labelType="fixed" />
-          <FormDropdown
-            name="type"
-            labelType="fixed"
-            label="Тип здания"
-            options={buildingTypes}
-            filter
-            placeholder="Выбор типа здания"
-            className="w-full"
-          />
+        <PanelV>
+          <PanelV.Header>Основная информация</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText name="name" label="Наименование" labelType="fixed" />
+            <FormDropdown
+              name="type"
+              labelType="fixed"
+              label="Тип здания"
+              options={buildingTypes}
+              filter
+              placeholder="Выбор типа здания"
+              className="w-full"
+            />
+          </PanelV.Content>
         </PanelV>
 
-        <PanelV title="Расположение">
-          <FormInputText name="address" label="Адрес" labelType="fixed" />
-          <div
-            className={classNames("flex gap-3", {
-              "flex-column": layout.displayMode === "small",
-            })}
-          >
-            <FormInputNumber
-              name="location.lat"
-              label="Широта"
-              labelType="fixed"
-              inputMode="numeric"
-              mode="decimal"
-              useGrouping={false}
-              min={-90}
-              max={90}
-              maxFractionDigits={8}
-            />
-            <FormInputNumber
-              name="location.lng"
-              label="Долгота"
-              labelType="fixed"
-              inputMode="numeric"
-              mode="decimal"
-              useGrouping={false}
-              min={-180}
-              max={180}
-              maxFractionDigits={8}
-            />
-
-            <div className="flex gap-3">
-              <Button
-                type="button"
-                label="Применить"
-                style={{ alignSelf: "end" }}
-                tooltip="Найти расположение по заданным координатам"
-                onClick={() => {
-                  const l = methods.getValues().location;
-                  handlePositionChange(latLng(l.lat, l.lng));
-                }}
+        <PanelV>
+          <PanelV.Header>Расположение</PanelV.Header>
+          <PanelV.Content>
+            <FormInputText name="address" label="Адрес" labelType="fixed" />
+            <div
+              className={classNames("flex gap-3", {
+                "flex-column": layout.displayMode === "small",
+              })}
+            >
+              <FormInputNumber
+                name="location.lat"
+                label="Широта"
+                labelType="fixed"
+                inputMode="numeric"
+                mode="decimal"
+                useGrouping={false}
+                min={-90}
+                max={90}
+                maxFractionDigits={8}
+              />
+              <FormInputNumber
+                name="location.lng"
+                label="Долгота"
+                labelType="fixed"
+                inputMode="numeric"
+                mode="decimal"
+                useGrouping={false}
+                min={-180}
+                max={180}
+                maxFractionDigits={8}
               />
 
-              <Button
-                type="button"
-                label="Отменить"
-                style={{ alignSelf: "end" }}
-                tooltip="Вернуть значение координат до редактирования"
-                onClick={() => {
-                  methods.setValue("location", position, {
-                    shouldValidate: true,
-                  });
-                }}
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  label="Применить"
+                  style={{ alignSelf: "end" }}
+                  tooltip="Найти расположение по заданным координатам"
+                  onClick={() => {
+                    const l = methods.getValues().location;
+                    handlePositionChange(latLng(l.lat, l.lng));
+                  }}
+                />
+
+                <Button
+                  type="button"
+                  label="Отменить"
+                  style={{ alignSelf: "end" }}
+                  tooltip="Вернуть значение координат до редактирования"
+                  onClick={() => {
+                    methods.setValue("location", position, {
+                      shouldValidate: true,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+
+            <div
+              style={{
+                minHeight: "400px",
+                maxHeight: "800px",
+                height: "75dvh",
+              }}
+            >
+              <MapSelectAddress
+                onChange={onChangePosition}
+                position={position}
+                isLoading={mapIsLoading}
               />
             </div>
-          </div>
-
-          <div
-            style={{ minHeight: "400px", maxHeight: "800px", height: "75dvh" }}
-          >
-            <MapSelectAddress
-              onChange={onChangePosition}
-              position={position}
-              isLoading={mapIsLoading}
-            />
-          </div>
+          </PanelV.Content>
         </PanelV>
         <div
           className="flex flex-row-reverse gap-2"
