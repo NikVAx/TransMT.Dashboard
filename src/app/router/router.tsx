@@ -12,6 +12,7 @@ import {
   GpsDeviceEditPage,
   GpsDeviceListPage,
   LoginPage,
+  MapPage,
   OperatorCreatePage,
   OperatorEditPage,
   OperatorListPage,
@@ -25,7 +26,6 @@ import {
   VehicleEditPage,
   VehicleListPage,
 } from "@/pages";
-import { ExamplePageMap } from "../mock/examples";
 import {
   ProfileSection,
   SessionsSection,
@@ -46,7 +46,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "map",
-        element: <ExamplePageMap />,
+        element: <MapPage />,
       },
     ],
   },

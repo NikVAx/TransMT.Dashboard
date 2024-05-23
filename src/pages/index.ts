@@ -17,7 +17,7 @@ export * from "./vehicleCreatePage"
 export * from "./vehicleEditPage"
 
 export * from "./operatorListPage"
-export * from "./operatorsCreatePage"
+export * from "./operatorCreatePage"
 export * from "./operatorEditPage"
 
 export * from "./gpsDeviceListPage"
@@ -27,3 +27,5 @@ export * from "./gpsDeviceEditPage"
 export * from "./geoZoneListPage"
 export * from "./geoZoneCreatePage"
 export * from "./geoZoneEditPage"
+
+export * from "./mapPage"

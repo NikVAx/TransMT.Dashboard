@@ -9,6 +9,7 @@ import {
   MapSelectAddress,
   PanelV,
   FormDropdown,
+  PageButtons,
 } from "@/components";
 import {
   ICreateBuildingDto,
@@ -16,7 +17,6 @@ import {
 } from "@/features/entities/building";
 import { useEffect, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
-import { useComponentDidMount } from "@/shared/hooks";
 import {
   ISuggestion,
   ISuggestions,
@@ -28,15 +28,7 @@ import { useStore } from "@/app/store";
 import { useNavigate } from "react-router-dom";
 import { classNames } from "primereact/utils";
 import { useLayout } from "@/layouts/layout/context/layout.hooks";
-
-const buildingTypes = [
-  "Не указан",
-  "Склад",
-  "Порт",
-  "Офис",
-  "Техническое",
-  "Ангар",
-];
+import { mock } from "@/app/mock";
 
 export const BuildingCreatePage = observer(() => {
   const { buildingStore } = useStore((store) => ({
@@ -109,7 +101,7 @@ export const BuildingCreatePage = observer(() => {
     });
   }, [position, suggestion]);
 
-  useComponentDidMount(() => {
+  useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setMapIsLoading(true);
@@ -122,7 +114,7 @@ export const BuildingCreatePage = observer(() => {
         setMapIsLoading(false);
       }
     );
-  });
+  }, []);
 
   const layout = useLayout();
 
@@ -142,14 +134,13 @@ export const BuildingCreatePage = observer(() => {
               name="type"
               labelType="fixed"
               label="Тип здания"
-              options={buildingTypes}
+              options={mock.buildingTypes}
               filter
               placeholder="Выбор типа здания"
               className="w-full"
             />
           </PanelV.Content>
         </PanelV>
-
         <PanelV>
           <PanelV.Header>Расположение</PanelV.Header>
           <PanelV.Content>
@@ -193,7 +184,6 @@ export const BuildingCreatePage = observer(() => {
                     handlePositionChange(latLng(l.lat, l.lng));
                   }}
                 />
-
                 <Button
                   type="button"
                   label="Отменить"
@@ -207,7 +197,6 @@ export const BuildingCreatePage = observer(() => {
                 />
               </div>
             </div>
-
             <div
               style={{
                 minHeight: "400px",
@@ -223,14 +212,9 @@ export const BuildingCreatePage = observer(() => {
             </div>
           </PanelV.Content>
         </PanelV>
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button type="submit" label="Сохранить" />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

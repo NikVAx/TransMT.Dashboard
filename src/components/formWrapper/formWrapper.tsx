@@ -1,5 +1,6 @@
 import { FormProvider } from "react-hook-form";
 import { FormWrapperProps } from "./formWrapper.types";
+import { classNames } from "primereact/utils";
 
 export const FormWrapper = ({
   methods,
@@ -9,12 +10,14 @@ export const FormWrapper = ({
   className,
   ...props
 }: FormWrapperProps) => {
+  const computedClassName = classNames("flex flex-column gap-4", className);
+
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(onSubmit, onError)}
         {...props}
-        className={"flex flex-column gap-4"}
+        onSubmit={methods.handleSubmit(onSubmit, onError)}
+        className={computedClassName}
       >
         {children}
       </form>

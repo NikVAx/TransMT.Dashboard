@@ -9,14 +9,14 @@ import {
   MapSelectAddress,
   PanelV,
   FormDropdown,
+  PageButtons,
 } from "@/components";
 import {
   ICreateBuildingDto,
   getBuildingValidationSchema,
 } from "@/features/entities/building";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
-import { useComponentDidMount } from "@/shared/hooks";
 import {
   ISuggestion,
   ISuggestions,
@@ -28,6 +28,7 @@ import { useStore } from "@/app/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { classNames } from "primereact/utils";
 import { useLayout } from "@/layouts/layout/context/layout.hooks";
+import { mock } from "@/app/mock";
 
 export const BuildingEditPage = observer(() => {
   const navigate = useNavigate();
@@ -68,11 +69,6 @@ export const BuildingEditPage = observer(() => {
   const [suggestion, setSuggestion] = useState<ISuggestion | null>(null);
   const toast = useRef<Toast>(null);
 
-  const buildingTypes = useMemo<string[]>(
-    () => ["Не указан", "Склад", "Порт", "Офис", "Техническое", "Ангар"],
-    []
-  );
-
   const handlePositionChange = async (latlng: LatLng) => {
     setPosition(latlng);
     const [status, response] = await getAddressByGeopointFromDadataRequest(
@@ -105,7 +101,7 @@ export const BuildingEditPage = observer(() => {
     });
   }, [position, suggestion]);
 
-  useComponentDidMount(async () => {
+  const handleLoadPage = async () => {
     if (!id) return navigate("/not-found");
 
     const status = await buildingStore.getBuildingById(id);
@@ -120,7 +116,11 @@ export const BuildingEditPage = observer(() => {
 
     setPosition(latLng(status.data!.location.lat, status.data!.location.lng));
     setMapIsLoading(false);
-  });
+  };
+
+  useEffect(() => {
+    handleLoadPage();
+  }, []);
 
   const layout = useLayout();
 
@@ -140,7 +140,7 @@ export const BuildingEditPage = observer(() => {
               name="type"
               labelType="fixed"
               label="Тип здания"
-              options={buildingTypes}
+              options={mock.buildingTypes}
               filter
               placeholder="Выбор типа здания"
               className="w-full"
@@ -221,14 +221,9 @@ export const BuildingEditPage = observer(() => {
             </div>
           </PanelV.Content>
         </PanelV>
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button type="submit" label="Сохранить" />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

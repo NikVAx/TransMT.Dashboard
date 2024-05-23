@@ -1,9 +1,12 @@
+import { mock } from "@/app/mock";
 import { useStore } from "@/app/store";
 import {
+  FormColorPicker,
   FormDropdown,
   FormInputText,
   FormWrapper,
   MapBox,
+  PageButtons,
   PageWrapper,
   PanelV,
 } from "@/components";
@@ -16,9 +19,8 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
-import { ColorPicker } from "primereact/colorpicker";
 import { Toast } from "primereact/toast";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Polygon, TileLayer } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
@@ -32,29 +34,18 @@ export const GeoZoneCreatePage = observer(() => {
     geoZoneStore: store.geoZoneStore,
   }));
 
-  const [сolor, setColor] = useState("6466f1");
-
   const toast = useRef<Toast>(null);
-
-  const geoZoneTypes = [
-    { name: "Не определен", defaultColor: "" },
-    { name: "Зона хранения", defaultColor: "" },
-    { name: "Зона погрузки", defaultColor: "" },
-    { name: "Зона разгрузки", defaultColor: "" },
-    { name: "Опасная зона", defaultColor: "" },
-    { name: "Пешеходная зона", defaultColor: "" },
-  ];
 
   const methods = useForm({
     defaultValues: {
       name: "",
-      type: geoZoneTypes[0].name,
+      type: mock.geoZoneTypes[0].name,
       color: "6466f1",
     },
     resolver: yupResolver(getGeoZoneValidationSchema()),
   });
 
-  const onSubmit: SubmitHandler<ICreateGeoZoneDto> = async (data) => {
+  const onSubmitHandler: SubmitHandler<ICreateGeoZoneDto> = async (data) => {
     const points = editPolygonStore.getPositions();
     if (points.length < 3) {
       methods.setError("root.points", {
@@ -79,18 +70,12 @@ export const GeoZoneCreatePage = observer(() => {
     }
   };
 
-  const onSubmitError = (e: any) => {
-    console.log(e);
-  };
+  methods.watch("color");
 
   return (
     <PageWrapper>
       <Toast ref={toast} position="top-center" />
-      <FormWrapper
-        onSubmit={onSubmit}
-        onError={onSubmitError}
-        methods={methods}
-      >
+      <FormWrapper onSubmit={onSubmitHandler} methods={methods}>
         <PanelV>
           <PanelV.Header>Основная информация</PanelV.Header>
           <PanelV.Content>
@@ -99,24 +84,21 @@ export const GeoZoneCreatePage = observer(() => {
               name="type"
               label="Тип геозоны"
               labelType="fixed"
-              options={[...geoZoneTypes.map((x) => x.name)]}
+              options={[...mock.geoZoneTypes.map((x) => x.name)]}
             />
-
-            <div>
-              <span className="pr-2">Цвет зоны</span>
-              <ColorPicker
-                format="hex"
-                value={сolor}
-                onChange={(e) => {
-                  setColor(e.value as string);
-                  methods.setValue("color", `#${e.value}`);
-                }}
-                className="mb-3"
-              />
-            </div>
+            <FormColorPicker
+              format="hex"
+              label="Цвет зоны"
+              name="color"
+              spanStyle={{
+                display: "flex",
+                flexDirection: "row-reverse",
+                alignItems: "center",
+                gap: "5px",
+              }}
+            />
           </PanelV.Content>
         </PanelV>
-
         <PanelV>
           <PanelV.Header>Редактор области</PanelV.Header>
           <PanelV.Content>
@@ -129,36 +111,24 @@ export const GeoZoneCreatePage = observer(() => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-
-              {editPolygonStore.isEditing ? (
-                <Polygon
-                  positions={editPolygonStore.getPositions()}
-                  pathOptions={{
-                    color: "black",
-                  }}
-                />
-              ) : (
-                <Polygon
-                  positions={editPolygonStore.getPositions()}
-                  pathOptions={{
-                    color: `#${сolor}`,
-                    fillColor: `#${сolor}`,
-                  }}
-                />
-              )}
+              <Polygon
+                positions={editPolygonStore.getPositions()}
+                pathOptions={{
+                  color: editPolygonStore.isEditing
+                    ? "black"
+                    : `#${methods.getValues("color")}`,
+                  fillColor: editPolygonStore.isEditing
+                    ? "black"
+                    : `#${methods.getValues("color")}`,
+                }}
+              />
               <MapPolygonEdit store={editPolygonStore} />
             </MapBox>
           </PanelV.Content>
         </PanelV>
-
-        <div
-          className="flex flex-row-reverse gap-2"
-          style={{
-            paddingBottom: "20px",
-          }}
-        >
+        <PageButtons>
           <Button type="submit" label="Сохранить" />
-        </div>
+        </PageButtons>
       </FormWrapper>
     </PageWrapper>
   );

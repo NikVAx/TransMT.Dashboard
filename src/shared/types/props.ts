@@ -1,3 +1,4 @@
+import { IBuilding, IGeoZone } from "@/features";
 import { CSSProperties } from "react";
 
 export interface IHeightSizeProps {
@@ -19,6 +20,7 @@ export interface IStyled {
 export interface IVariantLabel {
   label?: string;
   labelType?: "float" | "fixed";
+  spanStyle?: CSSProperties;
 }
 
 export interface IAs<T> {
@@ -27,4 +29,12 @@ export interface IAs<T> {
 
 export interface StoreProps<T> {
   store: T;
+}
+
+export interface IGeoZoneProps {
+  geoZone: IGeoZone;
+}
+
+export interface IBuildingProps {
+  building: IBuilding;
 }

@@ -29,6 +29,11 @@ export const FormInputPassword = ({
             feedback={feedback}
             title={label}
             pt={{
+              root: {
+                style: {
+                  width: "100%",
+                }
+              },
               input: {
                 style: {
                   width: "100%",

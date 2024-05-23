@@ -1,14 +1,15 @@
 import { MapDragNode, MapPolygonStore } from "@/features/maps";
 import { StoreProps } from "@/shared/types";
 import { observer } from "mobx-react-lite";
-import { useMapEvent } from "react-leaflet";
-import { MapWidget } from "../mapCard";
+import { useMap, useMapEvent } from "react-leaflet";
+import { MapWidget } from "..";
 import { Button } from "primereact/button";
 import {
   EdgePolygonNodes,
   PredictZonePolyline,
   VerticesPolygonNodes,
 } from "./components";
+import { useEffect } from "react";
 
 export const MapPolygonEdit = observer(
   ({ store }: StoreProps<MapPolygonStore>) => {
@@ -17,6 +18,14 @@ export const MapPolygonEdit = observer(
         store.push(new MapDragNode(e.latlng, store.countOfPoints));
       }
     });
+
+    const map = useMap();
+
+    useEffect(() => {
+      if (store.countOfPoints > 3) {
+        map.fitBounds(store.getPositions().map((x) => [x.lat, x.lng]));
+      }
+    }, [store.nodes]);
 
     const onEditStart = () => {
       store.toggleEditing();

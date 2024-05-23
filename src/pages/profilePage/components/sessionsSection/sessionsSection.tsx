@@ -1,9 +1,9 @@
 import { useStore } from "@/app/store";
 import { View } from "@/components";
-import { useComponentDidMount } from "@/shared/hooks";
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const formatDate = (value: Date) => {
@@ -16,12 +16,16 @@ export const SessionsSection = observer(() => {
     sessionStore: store.sessionStore,
   }));
 
-  useComponentDidMount(async () => {
+  const handlePageLoad = async () => {
     const status = await sessionStore.getSessions();
     if (!status.isSuccess) {
       navigate("/login");
     }
-  });
+  };
+
+  useEffect(() => {
+    handlePageLoad();
+  }, []);
 
   return (
     <View>

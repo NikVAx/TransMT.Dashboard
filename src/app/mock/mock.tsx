@@ -40,7 +40,27 @@ function routes(
   });
 }
 
+const geoZoneTypes = [
+  { name: "Не определен", defaultColor: "" },
+  { name: "Зона хранения", defaultColor: "" },
+  { name: "Зона погрузки", defaultColor: "" },
+  { name: "Зона разгрузки", defaultColor: "" },
+  { name: "Опасная зона", defaultColor: "" },
+  { name: "Пешеходная зона", defaultColor: "" },
+];
+
+const buildingTypes = [
+  "Не указан",
+  "Склад",
+  "Порт",
+  "Офис",
+  "Техническое",
+  "Ангар",
+];
+
 export const mock = {
   cards: cards,
   routesTree: routes,
+  geoZoneTypes: geoZoneTypes,
+  buildingTypes: buildingTypes
 };

@@ -20,7 +20,6 @@ import {
 } from "@/features/entities/vehicle";
 import { IBuilding } from "@/features";
 import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
-import { useComponentDidMount } from "@/shared/hooks";
 
 export const VehicleEditPage = observer(() => {
   const { vehicleStore, buildingStore } = useStore((store) => ({
@@ -41,7 +40,7 @@ export const VehicleEditPage = observer(() => {
   });
   const navigate = useNavigate();
 
-  useComponentDidMount(async () => {
+  const handleLoadPage = async () => {
     if (!id) return navigate("/not-found");
 
     const status = await vehicleStore.getVehicleById(id);
@@ -54,6 +53,10 @@ export const VehicleEditPage = observer(() => {
       ...status.data!,
       storageArea: status.data!.storageArea,
     });
+  };
+
+  useEffect(() => {
+    handleLoadPage();
   });
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {

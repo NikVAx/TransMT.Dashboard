@@ -30,6 +30,7 @@ export const GenericVariantInput = forwardRef(
           "p-float-label mb-3": labelType === "float",
           [styles.spanFixed]: labelType === "fixed",
         })}
+        style={props.spanStyle}
       >
         <Component
           {...props}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import { observer } from "mobx-react-lite";
@@ -18,7 +18,6 @@ import {
 } from "@/components";
 import { getUserValidationSchema } from "./configs/validation.config";
 import { itemTemplate } from "./components/itemTemplate";
-import { useComponentDidMount } from "@/shared/hooks";
 
 export const UserCreatePage = observer(() => {
   const navigate = useNavigate();
@@ -31,10 +30,14 @@ export const UserCreatePage = observer(() => {
     roleStore: x.roleStore,
   }));
 
-  useComponentDidMount(async () => {
+  const handleLoadPage = async () => {
     roleStore.pagination.pageSize = 20000;
     await roleStore.getRolesPage();
     setSourceRoles(roleStore.roles);
+  };
+
+  useEffect(() => {
+    handleLoadPage();
   });
 
   const methods = useForm({

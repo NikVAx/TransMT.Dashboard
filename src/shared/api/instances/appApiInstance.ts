@@ -15,3 +15,9 @@ appApiInstance.interceptors.request.use((config) => {
   }
   return config;
 });
+
+appApiInstance.interceptors.response.use((config) => {
+  console.log("status", config.status);
+
+  return config;
+});

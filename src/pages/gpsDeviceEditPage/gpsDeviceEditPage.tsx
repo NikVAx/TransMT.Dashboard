@@ -20,7 +20,6 @@ import {
   ICreateGpsDeviceDto,
   getGpsDeviceValidationSchema,
 } from "@/features/entities/gpsDevice";
-import { useComponentDidMount } from "@/shared/hooks";
 
 export const GpsDeviceEditPage = observer(() => {
   const navigate = useNavigate();
@@ -40,7 +39,7 @@ export const GpsDeviceEditPage = observer(() => {
     resolver: yupResolver(getGpsDeviceValidationSchema()),
   });
 
-  useComponentDidMount(async () => {
+  const handleLoadPage = async () => {
     if (!id) return navigate("/not-found");
 
     const status = await deviceStore.getGpsDeviceById(id);
@@ -61,7 +60,12 @@ export const GpsDeviceEditPage = observer(() => {
       vehicle: vehicleStatus.data,
       deviceId: status.data!.id,
     });
-  });
+  };
+
+  useEffect(() => {
+    handleLoadPage();
+  }, []);
+
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     const status = await deviceStore.editGpsDeviceById(id!, {
       vehicleId: data.vehicle.id,
@@ -73,11 +77,6 @@ export const GpsDeviceEditPage = observer(() => {
     } else {
       console.log(status);
     }
-  };
-
-  const onSubmitError = (e: any) => {
-    console.log(e);
-    console.log(methods.getValues());
   };
 
   const toast = useRef<Toast>(null);
@@ -120,7 +119,6 @@ export const GpsDeviceEditPage = observer(() => {
       <Toast ref={toast} position="top-center" />
       <FormWrapper
         onSubmit={onSubmit}
-        onError={onSubmitError}
         methods={methods}
       >
         <PanelV>

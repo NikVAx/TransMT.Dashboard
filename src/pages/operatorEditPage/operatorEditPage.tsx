@@ -14,7 +14,7 @@ import {
   ICreateOperatorDto,
   getOperatorValidationSchema,
 } from "@/features/entities/operator";
-import { useComponentDidMount } from "@/shared/hooks";
+import { useEffect } from "react";
 
 export const OperatorEditPage = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export const OperatorEditPage = () => {
     resolver: yupResolver(getOperatorValidationSchema()),
   });
 
-  useComponentDidMount(async () => {
+  const handleLoadPage = async () => {
     if (!id) return navigate("/not-found");
 
     const status = await operatorStore.getOperatorById(id);
@@ -43,6 +43,10 @@ export const OperatorEditPage = () => {
     }
 
     methods.reset({ ...status.data! });
+  };
+
+  useEffect(() => {
+    handleLoadPage();
   });
 
   const onSubmit: SubmitHandler<ICreateOperatorDto> = async (data) => {
