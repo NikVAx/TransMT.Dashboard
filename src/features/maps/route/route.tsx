@@ -28,7 +28,7 @@ export interface IRouteConfig {
 }
 
 export function createDelays(positions: LatLng[]) {
-  return positions.map((_, i) => i * 10000 * (i % 2)).map(() => 0);
+  return positions.map((_, i) => i * 10000 * (i % 2));
 }
 
 export class Route implements IRouteConfig {
@@ -140,6 +140,7 @@ export class RouteModel {
   time: number;
   route: Route;
   speed: number;
+  message: string;
 
   constructor(route: Route) {
     this.isExecuting = false;
@@ -151,6 +152,7 @@ export class RouteModel {
     this.time = 0;
     this.speed = 0;
     this.route = route;
+    this.message = "";
 
     makeAutoObservable(this);
   }
@@ -192,7 +194,7 @@ export class RouteModel {
         new Segment(
           this.route.waypoints[i].latlng(),
           this.route.waypoints[i + 1].latlng(),
-          15 + 10 * i
+          3 + i * 25
         )
       );
     }
@@ -203,21 +205,81 @@ export class RouteModel {
     return this.route.getDelays();
   }
 
-  getTargetDistance(index: number, time: number) {
+  getOptionsByTime(time: number) {
+    const delays = this.route.getDelays();
     const segments = this.getSegments();
-    let sumOfDistance = 0;
-    let sumOfTime = 0;
 
-    for (let i = 0; i <= index - 1; ++i) {
-      sumOfDistance += segments[i].getDistance();
-      sumOfTime += segments[i].getTimeOfPassage();
+    let totalDelay = 0;
+    let totalPassage = 0;
+    let totalDistance = 0;
+
+    type x_point = {
+      type: "point";
+      name: string;
+      a: number;
+      b: number;
+    };
+    type x_section = {
+      type: "section";
+      name: string;
+      a: number;
+      b: number;
+      timeOn: number;
+      timeRange: number;
+      passagePercent: number;
+    };
+
+    let locationData: x_point | x_section | null = null!;
+
+    for (let i = 0; i < this.route.waypoints.length - 1; i++) {
+      const p0 = totalPassage + totalDelay; // время входа в точку
+      const p1 = p0 + delays[i]; // время выхода из точки и входа на отрезок
+      const p2 = p1 + segments[i].getTimeOfPassage(); // время выхода с отрезка
+
+      totalDelay += delays[i];
+      totalPassage += segments[i].getTimeOfPassage();
+      totalDistance += segments[i].getDistance();
+
+      if (p0 <= time && time < p1) {
+        locationData = {
+          type: "point",
+          name: `${i}`,
+          a: p0,
+          b: p1,
+        } as x_point;
+      } else if (p1 <= time && time <= p2) {
+        locationData = {
+          type: "section",
+          name: `${i}-${i + 1}`,
+          a: p1,
+          b: p2,
+          timeOn: time - p1,
+          timeRange: p2 - p1,
+          passagePercent: (time - p1) / (p2 - p1)
+        } as x_section;
+      }
+
+      if (time <= totalDelay + totalPassage) {
+        this.message = JSON.stringify(locationData, null, 2);
+
+        return {
+          index: i,
+          sumOfDelaysTime: totalDelay,
+          sumOfPassageTime: totalPassage,
+          sumOfDistance: totalDistance,
+          info: locationData
+        };
+      }
     }
 
-    if (index === this.route.waypoints.length - 1) {
-      return this.route.getDistance();
-    }
-
-    return sumOfDistance + ((time - sumOfTime) / 1000) * segments[index].speed;
+    this.message = JSON.stringify(locationData, null, 2);
+    return {
+      index: this.route.waypoints.length - 1,
+      sumOfDelaysTime: 0,
+      sumOfPassageTime: 0,
+      sumOfDistance: this.route.getDistance(),
+      info: null
+    };
   }
 }
 

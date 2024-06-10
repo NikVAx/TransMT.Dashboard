@@ -3,6 +3,7 @@ import { RouteModel } from "@/features";
 import { StoreProps } from "@/shared/types";
 import { observer } from "mobx-react-lite";
 import { Actions, ProgressSlider } from "../../modelingPage";
+import { InputTextarea } from "primereact/inputtextarea";
 
 export const RouteSimulationCard = observer(({ store }: StoreProps<RouteModel>) => {
     return (
@@ -17,6 +18,10 @@ export const RouteSimulationCard = observer(({ store }: StoreProps<RouteModel>) 
         <span>Момент симуляции: {store.time}</span>
         <span>
           Состояние симуляции: {store.isExecuting ? "выполняется" : "пауза"}
+        </span>
+        <span>
+          <InputTextarea autoResize value={store.message}  rows={9} cols={50} />
+       
         </span>
         <Actions store={store} />
         <ProgressSlider store={store} />
