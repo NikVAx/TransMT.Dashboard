@@ -45,6 +45,7 @@ const geoZoneTypes = [
   { name: "Зона хранения", defaultColor: "" },
   { name: "Зона погрузки", defaultColor: "" },
   { name: "Зона разгрузки", defaultColor: "" },
+  { name: "Зона транспортировки", defaultColor: "" },
   { name: "Опасная зона", defaultColor: "" },
   { name: "Пешеходная зона", defaultColor: "" },
 ];
@@ -55,7 +56,7 @@ const buildingTypes = [
   "Порт",
   "Офис",
   "Техническое",
-  "Ангар",
+  "Ангар/Гараж",
 ];
 
 export const mock = {

@@ -115,10 +115,10 @@ export const GeoZoneCreatePage = observer(() => {
                 positions={editPolygonStore.getPositions()}
                 pathOptions={{
                   color: editPolygonStore.isEditing
-                    ? "black"
+                    ? `#${methods.getValues("color")}`
                     : `#${methods.getValues("color")}`,
                   fillColor: editPolygonStore.isEditing
-                    ? "black"
+                    ? `#${methods.getValues("color")}`
                     : `#${methods.getValues("color")}`,
                 }}
               />

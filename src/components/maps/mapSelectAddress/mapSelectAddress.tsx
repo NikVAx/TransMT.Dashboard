@@ -1,8 +1,16 @@
 import { Marker, TileLayer, useMap, useMapEvent } from "react-leaflet";
 import { MapBox } from "../mapBox";
-import { LatLng, LeafletMouseEvent, LeafletMouseEventHandlerFn} from "leaflet";
+import { LatLng, LeafletMouseEvent, LeafletMouseEventHandlerFn } from "leaflet";
 import { useEffect, useState } from "react";
 import { ProgressSpinner } from "primereact/progressspinner";
+
+const MAPS = {
+  OSM: {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  },
+};
 
 export type MapClickProps = {
   onClick: LeafletMouseEventHandlerFn;
@@ -18,7 +26,7 @@ export const MapClickEvent = ({ onClick }: MapClickProps) => {
 export interface MapSelectAddressProps {
   onChange?: (event: LeafletMouseEvent) => void;
   position: LatLng;
-  isLoading?: boolean
+  isLoading?: boolean;
 }
 
 export const MapSelectAddressBody = ({
@@ -50,16 +58,23 @@ export const MapSelectAddressBody = ({
 };
 
 export const MapSelectAddress = (props: MapSelectAddressProps) => {
-  return (
-    !props.isLoading ? <MapBox center={props.position} zoom={13} minZoom={2} maxBounds={[[-90,-180],   [90,180]]}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+  return !props.isLoading ? (
+    <MapBox
+      center={props.position}
+      zoom={13}
+      minZoom={2}
+      maxBounds={[
+        [-90, -180],
+        [90, 180],
+      ]}
+    >
+      <TileLayer {...MAPS.OSM} />
 
       <MapSelectAddressBody {...props} />
-    </MapBox> : <div className="flex h-full w-full" style={{background: "lightgray"}}>
-    <ProgressSpinner style={{alignSelf: "center"}}/>
+    </MapBox>
+  ) : (
+    <div className="flex h-full w-full" style={{ background: "lightgray" }}>
+      <ProgressSpinner style={{ alignSelf: "center" }} />
     </div>
   );
 };

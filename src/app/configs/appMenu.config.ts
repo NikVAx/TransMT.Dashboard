@@ -54,6 +54,12 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
           }),
         ]
       ),
+      TreeNode({
+        id: "/modeling",
+        label: "Моделирование",
+        icon: "pi pi-fw pi-car",
+        to:"/modeling"
+      } as IAppMenuItem),
     ]
   ),
   TreeNode(
@@ -139,7 +145,19 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
       id: "#reports",
       label: "Отчеты",
     } as IAppMenuItem,
-    []),
+    [
+      TreeNode({
+        id: "/reports/by-geozones",
+        label: "Отчет по геозонам",
+        to: "/reports/by-geozones",
+      }),
+      TreeNode({
+        id: "/reports/vehicles",
+        label: "Отчет по ТС",
+        to: "/reports/vehicles",
+      }),
+    ]
+  ),
 ];
 
 const menuStore = new MobxTree<IAppMenuItem>(

@@ -15,7 +15,7 @@ import {
   ICreateBuildingDto,
   getBuildingValidationSchema,
 } from "@/features/entities/building";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
 import {
   ISuggestion,
@@ -66,11 +66,20 @@ export const BuildingEditPage = observer(() => {
 
   const [mapIsLoading, setMapIsLoading] = useState(true);
   const [position, setPosition] = useState<LatLng>(latLng(0, 0));
-  const [suggestion, setSuggestion] = useState<ISuggestion | null>(null);
   const toast = useRef<Toast>(null);
+
+  const handleAddressChange = useCallback(
+    (suggestion: ISuggestion | null) => {
+      methods.setValue("address", suggestion?.address ?? "", {
+        shouldValidate: true,
+      });
+    },
+    [methods]
+  );
 
   const handlePositionChange = async (latlng: LatLng) => {
     setPosition(latlng);
+    methods.setValue("location", position!.wrap(), { shouldValidate: true });
     const [status, response] = await getAddressByGeopointFromDadataRequest(
       latlng
     );
@@ -78,9 +87,9 @@ export const BuildingEditPage = observer(() => {
     const data = response as ISuggestions;
 
     if (status && data.suggestions.length > 0) {
-      setSuggestion(data.suggestions[0]);
+      handleAddressChange(data.suggestions[0]);
     } else {
-      setSuggestion(null);
+      handleAddressChange(null);
       toast.current!.show({
         severity: "warn",
         summary: "Предупреждение",
@@ -93,13 +102,6 @@ export const BuildingEditPage = observer(() => {
   const onChangePosition = async (event: LeafletMouseEvent) => {
     handlePositionChange(event.latlng);
   };
-
-  useEffect(() => {
-    methods.setValue("location", position!.wrap(), { shouldValidate: true });
-    methods.setValue("address", suggestion?.address ?? "", {
-      shouldValidate: true,
-    });
-  }, [position, suggestion]);
 
   const handleLoadPage = async () => {
     if (!id) return navigate("/not-found");
@@ -115,6 +117,7 @@ export const BuildingEditPage = observer(() => {
     });
 
     setPosition(latLng(status.data!.location.lat, status.data!.location.lng));
+    methods.setValue("location", position!.wrap(), { shouldValidate: true });
     setMapIsLoading(false);
   };
 

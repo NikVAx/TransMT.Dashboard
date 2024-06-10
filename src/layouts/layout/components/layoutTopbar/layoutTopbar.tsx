@@ -13,17 +13,17 @@ export function LayoutTopbar() {
   const navigate = useNavigate();
   const authStore = useStore((store) => store.authStore);
 
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ?? themes[0]
-  );
+  // const [theme, setTheme] = useState(
+  //   localStorage.getItem("theme") ?? themes[0]
+  // );
 
-  useEffect(() => {
-    let themeLink = document.getElementById("theme-link") as any;
-    if (themeLink) {
-      themeLink.href = `/themes/${theme}/theme.css`;
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+  // useEffect(() => {
+  //   let themeLink = document.getElementById("theme-link") as any;
+  //   if (themeLink) {
+  //     themeLink.href = `/themes/${theme}/theme.css`;
+  //   }
+  //   localStorage.setItem("theme", theme);
+  // }, [theme]);
 
   const items = [
     {
@@ -41,18 +41,18 @@ export function LayoutTopbar() {
             navigate("/login");
           },
         },
-        {
-          label: "Сменить тему",
-          icon: "pi pi-upload",
-          command: () => {
-            const currentThemeIndex = themes.indexOf(theme);
-            if (currentThemeIndex !== themes.length - 1) {
-              setTheme(themes[currentThemeIndex + 1]);
-            } else {
-              setTheme(themes[0]);
-            }
-          },
-        },
+        // {
+        //   label: "Сменить тему",
+        //   icon: "pi pi-upload",
+        //   command: () => {
+        //     const currentThemeIndex = themes.indexOf(theme);
+        //     if (currentThemeIndex !== themes.length - 1) {
+        //       setTheme(themes[currentThemeIndex + 1]);
+        //     } else {
+        //       setTheme(themes[0]);
+        //     }
+        //   },
+        // },
       ],
     },
   ];

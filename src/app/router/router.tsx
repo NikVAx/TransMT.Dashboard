@@ -5,6 +5,7 @@ import {
   BuildingCreatePage,
   BuildingEditPage,
   BuildingListPage,
+  DashboardPage,
   GeoZoneCreatePage,
   GeoZoneEditPage,
   GeoZoneListPage,
@@ -17,6 +18,7 @@ import {
   OperatorEditPage,
   OperatorListPage,
   ProfilePage,
+  ReportByGeoZonePage,
   RoleCreatePage,
   RoleEditPage,
   RoleListPage,
@@ -32,6 +34,7 @@ import {
 } from "@/pages/profilePage/components";
 import { crumb } from "@/components/breadcrumbs/bradcrumbs.types";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ModelingPage } from "@/pages/modelingPage";
 
 const DISABLED = true;
 
@@ -45,8 +48,16 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
+        path: "/",
+        element: <DashboardPage />,
+      },
+      {
         path: "map",
         element: <MapPage />,
+      },
+      {
+        path: "modeling",
+        element: <ModelingPage />,
       },
     ],
   },
@@ -177,6 +188,17 @@ export const router = createBrowserRouter([
             path: "geozones/:id/edit",
             element: <GeoZoneEditPage />,
             handle: crumb("Редактирование геозоны"),
+          },
+        ],
+      },
+      {
+        path: "/reports",
+        handle: crumb("Отчеты", DISABLED),
+        children: [
+          {
+            path: "by-geozones",
+            element: <ReportByGeoZonePage />,
+            handle: crumb("Отчет по геозонам"),
           },
         ],
       },

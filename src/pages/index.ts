@@ -29,3 +29,5 @@ export * from "./geoZoneCreatePage"
 export * from "./geoZoneEditPage"
 
 export * from "./mapPage"
+export * from "./dashboardPage"
+export * from "./reportByGeoZonePage"

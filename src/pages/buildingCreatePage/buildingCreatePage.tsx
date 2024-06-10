@@ -15,7 +15,7 @@ import {
   ICreateBuildingDto,
   getBuildingValidationSchema,
 } from "@/features/entities/building";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
 import {
   ISuggestion,
@@ -29,6 +29,26 @@ import { useNavigate } from "react-router-dom";
 import { classNames } from "primereact/utils";
 import { useLayout } from "@/layouts/layout/context/layout.hooks";
 import { mock } from "@/app/mock";
+
+// export const useGeolocator = () => {
+//   const [position, setPosition] = useState<GeolocationPosition | null>(null);
+//   const [isSuccess, setIsSuccess] = useState(false);
+
+//   useEffect(() => {
+//     navigator.geolocation.getCurrentPosition(
+//       (position: GeolocationPosition) => {
+//         setPosition(position);
+//         setIsSuccess(true);
+//       },
+//       (_error) => {
+//         setPosition(null);
+//         setIsSuccess(false);
+//       }
+//     );
+//   }, []);
+
+//   return position;
+// };
 
 export const BuildingCreatePage = observer(() => {
   const { buildingStore } = useStore((store) => ({
@@ -66,11 +86,21 @@ export const BuildingCreatePage = observer(() => {
 
   const [mapIsLoading, setMapIsLoading] = useState(true);
   const [position, setPosition] = useState<LatLng>(latLng(55.753927, 37.62082));
-  const [suggestion, setSuggestion] = useState<ISuggestion | null>(null);
   const toast = useRef<Toast>(null);
+
+  const handleAddressChange = useCallback(
+    (suggestion: ISuggestion | null) => {
+      methods.setValue("address", suggestion?.address ?? "", {
+        shouldValidate: true,
+      });
+    },
+    [methods]
+  );
 
   const handlePositionChange = async (latlng: LatLng) => {
     setPosition(latlng);
+    methods.setValue("location", position.wrap(), { shouldValidate: true });
+
     const [status, response] = await getAddressByGeopointFromDadataRequest(
       latlng
     );
@@ -78,9 +108,9 @@ export const BuildingCreatePage = observer(() => {
     const data = response as ISuggestions;
 
     if (status && data.suggestions.length > 0) {
-      setSuggestion(data.suggestions[0]);
+      handleAddressChange(data.suggestions[0]);
     } else {
-      setSuggestion(null);
+      handleAddressChange(null);
       toast.current!.show({
         severity: "warn",
         summary: "Предупреждение",
@@ -95,19 +125,12 @@ export const BuildingCreatePage = observer(() => {
   };
 
   useEffect(() => {
-    methods.setValue("location", position.wrap(), { shouldValidate: true });
-    methods.setValue("address", suggestion?.address ?? "", {
-      shouldValidate: true,
-    });
-  }, [position, suggestion]);
-
-  useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setMapIsLoading(true);
-        handlePositionChange(
-          latLng(position.coords.latitude, position.coords.longitude)
-        );
+        // handlePositionChange(
+        //   latLng(position.coords.latitude, position.coords.longitude)
+        // );
         setMapIsLoading(false);
       },
       () => {
