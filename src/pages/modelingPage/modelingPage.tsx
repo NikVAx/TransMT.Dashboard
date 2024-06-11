@@ -7,12 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { useInterval } from "primereact/hooks";
 import { Slider } from "primereact/slider";
 import { useEffect, useState } from "react";
-import {
-  CircleMarker,
-  Polyline,
-  Popup,
-  TileLayer,
-} from "react-leaflet";
+import { CircleMarker, Polyline, TileLayer } from "react-leaflet";
 import { CreateRouteDialogContent, RouteSimulationCard } from "./components";
 import { getPointOnRoute } from "./utils";
 import { InputNumber } from "primereact/inputnumber";
@@ -36,37 +31,15 @@ export const VehicleTrack = observer(({ store }: StoreProps<RouteModel>) => {
   );
 });
 
-const routeModelsStore = new RouteModelStore();
+export const routeModelsStore = new RouteModelStore();
 
-export const Actions = observer(({ store }: StoreProps<RouteModel>) => {
-  return (
-    <div className="flex gap-2">
-      <Button
-        label={store.isExecuting ? "Пауза" : "Запуск"}
-        onClick={() => {
-          store.toggleExecuting();
-        }}
-      />
-      <Button
-        label={store.isHide ? "Показать" : "Скрыть"}
-        onClick={() => {
-          store.isHide = !store.isHide;
-        }}
-      />
-      <Button
-        label="Удалить"
-        onClick={() => {
-          routeModelsStore.remove(store.route.id);
-        }}
-      />
-    </div>
-  );
-});
+
 
 export const ProgressSlider = observer(({ store }: StoreProps<RouteModel>) => {
   return (
     <div>
       <Slider
+        className="mt-3 mb-3"
         value={store.time}
         max={store.maxTime}
         onChange={(e) => {
@@ -97,6 +70,8 @@ export const ModelingPage = observer(() => {
           if (routeModel.time + interval >= routeModel.maxTime) {
             routeModel.isExecuting = false;
           }
+        } else {
+          routeModel.setStatus("Нет");
         }
       });
     },
@@ -145,13 +120,13 @@ export const ModelingPage = observer(() => {
       </div>
 
       <div
-        className="flex"
+        className="flex gap-3"
         style={{ height: "calc(100% - 50px)", width: "100%" }}
       >
         <div
           className="flex flex-column gap-3"
           style={{
-            width: "800px",
+            width: "550px",
             overflow: "auto",
           }}
         >
@@ -166,22 +141,20 @@ export const ModelingPage = observer(() => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {routeModelsStore.routes.map((routeModel) => {
-              return (
+              return routeModel.isHide ? null : (
                 <>
                   <Polyline
-                    positions={[...routeModel.route.waypoints]}
+                    positions={[...routeModel.route.points]}
                     key={routeModel.route.id}
                     pathOptions={{ weight: 14 }}
                   />
-                  {routeModel.route.waypoints.map((wp, i) => (
+                  {routeModel.route.points.map((wp) => (
                     <CircleMarker
                       color="red"
                       fillOpacity={1}
                       radius={5}
                       center={wp.latlng()}
-                    >
-                      <Popup>{i}</Popup>
-                    </CircleMarker>
+                    />
                   ))}
                 </>
               );

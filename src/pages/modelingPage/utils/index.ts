@@ -6,40 +6,22 @@ export function getPointOnRoute(routeModel: RouteModel, currentTime: number) {
   const route = routeModel.route;
   const segments = routeModel.getSegments();
 
-  if (route.waypoints.length < 2)
+  if (route.points.length < 2)
     throw new Error("Маршрут должен содержать как минимум две точки");
 
-  const { index, sumOfDistance, sumOfPassageTime, info } =
-    routeModel.getOptionsByTime(currentTime);
+  const { index, info } = routeModel.getOptionsByTime(currentTime);
 
-  const sumOfDistanceNoLast = sumOfDistance - segments[index].getDistance();
-  const sumOfTimeNoLast = sumOfPassageTime - segments[index].getTimeOfPassage();
-
-  const targetDistance =
-    index === routeModel.route.waypoints.length - 1
-      ? routeModel.route.getDistance()
-      : sumOfDistanceNoLast +
-        ((currentTime - sumOfTimeNoLast) / 1000) * segments[index].speed;
-
-  routeModel.setSpeed(segments[index] ? segments[index].speed : 0);
-
-  if (index === route.waypoints.length - 1) {
-    return route.waypoints[route.waypoints.length - 1].latlng();
-  }
-
-  if (info?.type === "point") {
-    routeModel.setSpeed(0);
-    return route.waypoints[index].latlng();
-  }
-
-  if (info?.type === "section") {
-    return segments[index].interpolate(info.passagePercent);
-  }
-
-  if (sumOfDistance >= targetDistance) {
-    const fraction =
-      (targetDistance - sumOfDistanceNoLast) / segments[index].getDistance();
-
-    return segments[index].interpolate(fraction);
+  switch (info?.type) {
+    case "point":
+      routeModel.setSpeed(0);
+      routeModel.setStatus(info.status);
+      return route.points[index].latlng();
+    case "segment":
+      routeModel.setSpeed(segments[index] ? segments[index].speed : 0);
+      routeModel.setStatus(info.status);
+      return segments[index].interpolate(info.fraction);
+    default:
+      routeModel.setSpeed(segments[index] ? segments[index].speed : 0);
+      return route.points[route.points.length - 1].latlng();
   }
 }

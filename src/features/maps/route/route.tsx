@@ -1,8 +1,9 @@
 import { ILatLng } from "@/shared/types";
 import { LatLng, latLng } from "leaflet";
 import { makeAutoObservable } from "mobx";
-import { ICreateRouteOptions } from "./route.types";
+import { ICreateRouteOptions, IDriveInfo, IRouteConfig, PointInfo, SegmentInfo } from "./route.types";
 import { sum } from "@/pages/modelingPage/utils";
+import { STORAGE_KEYS } from "@/shared/constants";
 
 export class Waypoint implements ILatLng {
   lat: number;
@@ -19,45 +20,34 @@ export class Waypoint implements ILatLng {
   }
 }
 
-export interface IRouteConfig {
-  id: string;
-  name: string;
-  // points: number[];
-  delays: number[];
-  // speeds: number[];
-}
-
-export function createDelays(positions: LatLng[]) {
-  return positions.map((_, i) => i * 10000 * (i % 2));
-}
-
 export class Route implements IRouteConfig {
   id: string;
   name: string;
-  waypoints: Waypoint[];
+  points: Waypoint[];
   delays: number[];
-  // speeds: number[];
+  speeds: IDriveInfo[];
 
-  constructor(id: string, name: string = "", waypoints: Waypoint[] = []) {
-    this.id = id;
-    this.name = name;
-    this.waypoints = waypoints;
-    this.delays = createDelays(this.latlngs());
+  constructor(config: IRouteConfig) {
+    this.id = config.id;
+    this.name = config.name;
+    this.points = config.points;
+    this.delays = config.delays;
+    this.speeds = config.speeds;
     makeAutoObservable(this);
   }
 
-  append(lat: number, lng: number) {
-    this.waypoints.push(new Waypoint(lat, lng));
-    this.delays = createDelays(this.latlngs());
+  append(lat: number, lng: number, speed: number = 10) {
+    this.points.push(new Waypoint(lat, lng));
+    this.delays.push(speed);
   }
 
   latlngs() {
-    return this.waypoints.map((waypoint) => waypoint.latlng());
+    return this.points.map((waypoint) => waypoint.latlng());
   }
 
   getDistance() {
-    return this.waypoints.slice(0, -1).reduce((acc, point, i) => {
-      return acc + point.latlng().distanceTo(this.waypoints[i + 1].latlng());
+    return this.points.slice(0, -1).reduce((acc, point, i) => {
+      return acc + point.latlng().distanceTo(this.points[i + 1].latlng());
     }, 0);
   }
 
@@ -67,7 +57,7 @@ export class Route implements IRouteConfig {
 }
 
 export class RouteStore {
-  private idgen = 1;
+  idgen = 1;
 
   routes: Route[];
 
@@ -77,32 +67,16 @@ export class RouteStore {
   }
 
   create(name: string = "") {
-    this.routes.push(new Route(this.idgen.toString(), name));
-    this.idgen += 1;
-  }
-
-  save() {
-    const string = JSON.stringify({
-      idgen: this.idgen,
-      routes: this.routes,
-    });
-    localStorage.setItem("route-data", string);
-  }
-
-  load() {
-    const string = localStorage.getItem("route-data");
-    const object = JSON.parse(string!);
-    this.idgen = object.idgen;
-    this.routes = (object.routes as Route[]).map(
-      (route) =>
-        new Route(
-          route.id,
-          route.name,
-          route.waypoints.map(
-            (waypoint) => new Waypoint(waypoint.lat, waypoint.lng)
-          )
-        )
+    this.routes.push(
+      new Route({
+        id: this.idgen.toString(),
+        name: name,
+        delays: [],
+        speeds: [],
+        points: [],
+      })
     );
+    this.idgen += 1;
   }
 }
 
@@ -140,25 +114,26 @@ export class RouteModel {
   time: number;
   route: Route;
   speed: number;
-  message: string;
+  status: string;
 
   constructor(route: Route) {
     this.isExecuting = false;
     this.isHide = false;
-    this.waypoint = new Waypoint(
-      route.waypoints[0].lat,
-      route.waypoints[0].lng
-    );
+    this.waypoint = new Waypoint(route.points[0].lat, route.points[0].lng);
     this.time = 0;
     this.speed = 0;
     this.route = route;
-    this.message = "";
+    this.status = "";
 
     makeAutoObservable(this);
   }
 
   toggleExecuting() {
     this.isExecuting = !this.isExecuting;
+  }
+  
+  toggleHide() {
+    this.isHide = !this.isHide;
   }
 
   setWaypoint(position: LatLng) {
@@ -168,6 +143,10 @@ export class RouteModel {
 
   setSpeed(speed: number) {
     this.speed = speed;
+  }
+
+  setStatus(status: string) {
+    this.status = status;
   }
 
   get maxTime() {
@@ -189,12 +168,12 @@ export class RouteModel {
 
   getSegments() {
     let segments: Segment[] = [];
-    for (let i = 0; i < this.route.waypoints.length - 1; i++) {
+    for (let i = 0; i < this.route.points.length - 1; i++) {
       segments.push(
         new Segment(
-          this.route.waypoints[i].latlng(),
-          this.route.waypoints[i + 1].latlng(),
-          3 + i * 25
+          this.route.points[i].latlng(),
+          this.route.points[i + 1].latlng(),
+          this.route.speeds[i].speed
         )
       );
     }
@@ -213,25 +192,9 @@ export class RouteModel {
     let totalPassage = 0;
     let totalDistance = 0;
 
-    type x_point = {
-      type: "point";
-      name: string;
-      a: number;
-      b: number;
-    };
-    type x_section = {
-      type: "section";
-      name: string;
-      a: number;
-      b: number;
-      timeOn: number;
-      timeRange: number;
-      passagePercent: number;
-    };
+    let locationData: PointInfo | SegmentInfo | null = null!;
 
-    let locationData: x_point | x_section | null = null!;
-
-    for (let i = 0; i < this.route.waypoints.length - 1; i++) {
+    for (let i = 0; i < this.route.points.length - 1; i++) {
       const p0 = totalPassage + totalDelay; // время входа в точку
       const p1 = p0 + delays[i]; // время выхода из точки и входа на отрезок
       const p2 = p1 + segments[i].getTimeOfPassage(); // время выхода с отрезка
@@ -246,39 +209,36 @@ export class RouteModel {
           name: `${i}`,
           a: p0,
           b: p1,
-        } as x_point;
+          status: "Не реализован"
+        } as PointInfo;
       } else if (p1 <= time && time <= p2) {
         locationData = {
-          type: "section",
+          type: "segment",
           name: `${i}-${i + 1}`,
           a: p1,
           b: p2,
-          timeOn: time - p1,
-          timeRange: p2 - p1,
-          passagePercent: (time - p1) / (p2 - p1)
-        } as x_section;
+          fraction: (time - p1) / (p2 - p1),
+          status: this.route.speeds[i].status
+        } as SegmentInfo;
       }
 
       if (time <= totalDelay + totalPassage) {
-        this.message = JSON.stringify(locationData, null, 2);
-
         return {
           index: i,
           sumOfDelaysTime: totalDelay,
           sumOfPassageTime: totalPassage,
           sumOfDistance: totalDistance,
-          info: locationData
+          info: locationData,
         };
       }
     }
 
-    this.message = JSON.stringify(locationData, null, 2);
     return {
-      index: this.route.waypoints.length - 1,
+      index: this.route.points.length - 1,
       sumOfDelaysTime: 0,
       sumOfPassageTime: 0,
       sumOfDistance: this.route.getDistance(),
-      info: null
+      info: null,
     };
   }
 }
@@ -296,11 +256,14 @@ export class RouteModelStore {
   }
 
   create(options: ICreateRouteOptions) {
+    console.log(options);
     this._store.create(options.name);
     const route = this._store.routes.at(-1)!;
     options.positions.forEach((position) => {
       route.append(position.lat, position.lng);
     });
+    route.delays = options.delays.map(info => info.duration);
+    route.speeds = options.speeds;
   }
 
   remove(id: string) {
@@ -309,10 +272,39 @@ export class RouteModelStore {
   }
 
   save() {
-    this._store.save();
+    const string = JSON.stringify({
+      idgen: this._store.idgen,
+      routeConfigs: this.routes.map(
+        (routeModel) => routeModel.route as IRouteConfig
+      ),
+    });
+    localStorage.setItem(STORAGE_KEYS.MODELING_DATA, string);
   }
 
   load() {
-    this._store.load();
+    const string = localStorage.getItem(STORAGE_KEYS.MODELING_DATA);
+
+    if (string === null) {
+      this._store.idgen = 1;
+      this._store.routes = [];
+      return;
+    }
+
+    const object = JSON.parse(string!);
+
+    this._store.idgen = object.idgen;
+    this._store.routes = (object.routeConfigs as Array<IRouteConfig>).map(
+      (config) => {
+        return new Route({
+          id: config.id,
+          name: config.name,
+          speeds: config.speeds,
+          delays: config.delays,
+          points: config.points.map(
+            (waypoint) => new Waypoint(waypoint.lat, waypoint.lng)
+          ),
+        });
+      }
+    );
   }
 }
