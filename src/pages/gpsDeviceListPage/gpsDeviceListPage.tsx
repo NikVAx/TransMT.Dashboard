@@ -28,7 +28,8 @@ export const GpsDeviceListPage = observer(() => {
         value={deviceStore.devices}
         loading={deviceStore.isLoading}
       >
-        <Column field="id" header="ID" resizeable={false}/>
+        <Column field="id" header="ID"/>
+        <Column field="vehicleId" header="Идентификатор ТС" resizeable={false}/>
         <Column
           body={actionBodyTemplate}
           exportable={false}

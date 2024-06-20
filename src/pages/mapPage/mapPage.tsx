@@ -2,7 +2,7 @@ import { useStore } from "@/app/store";
 import { observer } from "mobx-react-lite";
 import { TreeNode } from "primereact/treenode";
 import { useEffect, useMemo, useState } from "react";
-import { TileLayer } from "react-leaflet";
+import { CircleMarker, Popup, TileLayer } from "react-leaflet";
 import { defaultNodes } from "./mapPage.constants";
 import {
   Tree,
@@ -16,13 +16,48 @@ import {
   MapGeoZone,
   MapTabControl,
 } from "@/components";
-import { BuildingSideNode, GeoZoneSideNode } from "./components";
+import {
+  BuildingSideNode,
+  GeoZoneSideNode,
+  VehicleSideNode,
+} from "./components";
 import { getChildrenNodes } from "./mapPage.utils";
+import { SignalRTrackingContext } from "@/shared/api/websockets";
+import { toLatLng } from "@/features";
+import { IVehicleProps } from "@/shared/types";
+
+export const VehicleShortCard = observer(({ vehicle }: IVehicleProps) => {
+  return (
+    <div className="flex flex-column gap-2">
+      <span>Номер ТС: {vehicle.number}</span>
+      <span>Cтатус: {vehicle.operatingStatus}</span>
+    </div>
+  );
+});
+
+export const VehicleMarker = observer(({ vehicle }: IVehicleProps) => {
+  return vehicle.latlng ? (
+    <CircleMarker
+      radius={8}
+      color="black"
+      fillColor="cyan"
+      opacity={1}
+      fillOpacity={1}
+      center={toLatLng(vehicle.latlng)}
+      key={`${vehicle.id}`}
+    >
+      <Popup>
+        <VehicleShortCard vehicle={vehicle} />
+      </Popup>
+    </CircleMarker>
+  ) : null;
+});
 
 export const MapPage = observer(() => {
-  const { buildingStore, geoZoneStore } = useStore((store) => ({
+  const { buildingStore, geoZoneStore, vehicleStore } = useStore((store) => ({
     buildingStore: store.buildingStore,
     geoZoneStore: store.geoZoneStore,
+    vehicleStore: store.vehicleStore,
   }));
 
   const [nodes, setNodes] = useState<TreeNode[]>(defaultNodes);
@@ -34,12 +69,14 @@ export const MapPage = observer(() => {
     root: true,
   });
 
-  const nodeTemplate = (node: TreeNode, _options: TreeNodeTemplateOptions) => {
+  const nodeTemplate = (node: TreeNode, _: TreeNodeTemplateOptions) => {
     switch (node.data.entity) {
       case "building":
         return <BuildingSideNode building={node.data} />;
       case "geozone":
         return <GeoZoneSideNode geoZone={node.data} />;
+      case "vehicle":
+        return <VehicleSideNode vehicle={node.data} />;
       default:
         return <div>{node.label}</div>;
     }
@@ -48,8 +85,10 @@ export const MapPage = observer(() => {
   const setLoadedData = async () => {
     buildingStore.pagination.pageSize = 20000;
     geoZoneStore.pagination.pageSize = 20000;
+    vehicleStore.pagination.pageSize = 20000;
     await buildingStore.getBuildingsPage();
     await geoZoneStore.getGeoZonesPage();
+    await vehicleStore.getVehiclesPage();
 
     setNodes((node) => {
       if (node[0].children !== undefined) {
@@ -61,6 +100,10 @@ export const MapPage = observer(() => {
           geoZoneStore.geoZones,
           "geozone"
         );
+        node[0].children[2].children = getChildrenNodes(
+          vehicleStore.vehicles,
+          "vehicle"
+        );
       }
 
       return node;
@@ -70,6 +113,15 @@ export const MapPage = observer(() => {
   useEffect(() => {
     setLoadedData();
   }, []);
+
+  SignalRTrackingContext.useSignalREffect(
+    "LocationUpdate",
+    (data) => {
+      vehicleStore.update(data);
+      console.log("websockets", data);
+    },
+    []
+  );
 
   const geoZones = useMemo(() => {
     return [
@@ -140,6 +192,9 @@ export const MapPage = observer(() => {
       </MapTabControl>
       {buildings}
       {geoZones}
+      {vehicleStore.vehicles.map((vehicle, i) => {
+        return <VehicleMarker vehicle={vehicle} key={i} />;
+      })}
     </MapBox>
   );
 });

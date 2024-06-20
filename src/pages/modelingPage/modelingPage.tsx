@@ -1,22 +1,23 @@
 import { MapBox } from "@/components";
-import { Route, RouteModel, RouteModelStore } from "@/features/maps";
-import { StoreProps } from "@/shared/types";
+import { ICreateRouteOptions, Route, RouteModel, RouteModelStore } from "@/features/maps";
+import { IStoreProps } from "@/shared/types";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { useInterval } from "primereact/hooks";
 import { Slider } from "primereact/slider";
 import { useEffect, useState } from "react";
-import { CircleMarker, Polyline, TileLayer } from "react-leaflet";
+import { CircleMarker, FeatureGroup, Polyline, TileLayer } from "react-leaflet";
 import { CreateRouteDialogContent, RouteSimulationCard } from "./components";
 import { getPointOnRoute } from "./utils";
 import { InputNumber } from "primereact/inputnumber";
+import { appApiInstance } from "@/shared/api";
 
 export interface IPropsWithRoute {
   route: Route;
 }
 
-export const VehicleTrack = observer(({ store }: StoreProps<RouteModel>) => {
+export const VehicleTrack = observer(({ store }: IStoreProps<RouteModel>) => {
   return store.isHide ? null : (
     <>
       <CircleMarker
@@ -33,9 +34,7 @@ export const VehicleTrack = observer(({ store }: StoreProps<RouteModel>) => {
 
 export const routeModelsStore = new RouteModelStore();
 
-
-
-export const ProgressSlider = observer(({ store }: StoreProps<RouteModel>) => {
+export const ProgressSlider = observer(({ store }: IStoreProps<RouteModel>) => {
   return (
     <div>
       <Slider
@@ -54,6 +53,7 @@ export const ProgressSlider = observer(({ store }: StoreProps<RouteModel>) => {
 
 export const ModelingPage = observer(() => {
   const [visible, setVisible] = useState(false);
+  const [initialState, setInitialState] = useState<ICreateRouteOptions | null>(null);
   const [interval, setInterval] = useState(1000);
 
   useInterval(
@@ -67,9 +67,19 @@ export const ModelingPage = observer(() => {
             routeModel.time + interval
           );
           routeModel.setWaypoint(computedWaypoint);
+          
           if (routeModel.time + interval >= routeModel.maxTime) {
             routeModel.isExecuting = false;
           }
+
+          appApiInstance.post("/tracking", {
+            deviceId: routeModel.route.device.id,
+            status: routeModel.status,
+            lat: routeModel.waypoint.lat,
+            lng: routeModel.waypoint.lng,
+            timestamp: new Date().toISOString()
+          })
+
         } else {
           routeModel.setStatus("Нет");
         }
@@ -130,8 +140,18 @@ export const ModelingPage = observer(() => {
             overflow: "auto",
           }}
         >
-          {routeModelsStore.routes.map((route) => {
-            return <RouteSimulationCard store={route} />;
+          {routeModelsStore.routes.map((routeModel) => {
+            return <RouteSimulationCard key={routeModel.route.id} store={routeModel} onEdit={() => {
+              setInitialState({
+                delays: routeModel.route.delays,
+                speeds: routeModel.route.speeds,
+                name: routeModel.route.name,
+                positions: routeModel.route.points,
+                device: routeModel.route.device,
+                type: "edit"
+              } as ICreateRouteOptions);
+              setVisible(true);
+            }}/>;
           })}
         </div>
         <div style={{ height: "100%", width: "100%" }}>
@@ -142,26 +162,27 @@ export const ModelingPage = observer(() => {
             />
             {routeModelsStore.routes.map((routeModel) => {
               return routeModel.isHide ? null : (
-                <>
+                <FeatureGroup key={routeModel.route.id}>
                   <Polyline
                     positions={[...routeModel.route.points]}
-                    key={routeModel.route.id}
+                    key={"rcm"+routeModel.route.id}
                     pathOptions={{ weight: 14 }}
                   />
-                  {routeModel.route.points.map((wp) => (
+                  {routeModel.route.points.map((wp, i) => (
                     <CircleMarker
                       color="red"
                       fillOpacity={1}
                       radius={5}
                       center={wp.latlng()}
+                      key={`${routeModel.route.id}-${i}`}
                     />
                   ))}
-                </>
+                </FeatureGroup>
               );
             })}
 
             {routeModelsStore.routes.map((routeModel) => {
-              return <VehicleTrack store={routeModel} />;
+              return <VehicleTrack key={"vt"+routeModel.route.id} store={routeModel} />;
             })}
           </MapBox>
         </div>
@@ -171,13 +192,21 @@ export const ModelingPage = observer(() => {
         visible={visible}
         onHide={() => {
           setVisible(false);
+          setInitialState(null);
         }}
         draggable={false}
       >
         <CreateRouteDialogContent
+          initialState={initialState}
           onClick={(options) => {
             routeModelsStore.create(options);
+
+            if (options.type === "create") {
+               
+            }
+            
             setVisible(false);
+            setInitialState(null);
           }}
         />
       </Dialog>

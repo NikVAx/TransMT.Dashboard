@@ -1,4 +1,4 @@
-import { IEntity } from "@/shared/types";
+import { IEntity, ILatLng } from "@/shared/types";
 import { IBuilding } from "../building";
 
 export interface IVehicle extends IEntity {
@@ -7,6 +7,8 @@ export interface IVehicle extends IEntity {
   operatingStatus: string;
   storageAreaId: string;
   storageArea: IBuilding;
+
+  latlng?: ILatLng;
 }
 
 export interface IGetVehicleDto extends IVehicle {}

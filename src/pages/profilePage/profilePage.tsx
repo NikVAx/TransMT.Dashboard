@@ -2,15 +2,7 @@ import { TabMenu } from "primereact/tabmenu";
 import styles from "./profilePage.module.css";
 import { View } from "@/components";
 import { classNames } from "primereact/utils";
-import { useState } from "react";
-import { ProfileSection, SessionsSection } from "./components";
 import { Outlet, useNavigate } from "react-router-dom";
-
-const ImageSection = () => {
-  return (
-    <View variant="ground" style={{ margin: "1.25rem", height: "14rem" }} />
-  );
-};
 
 export const ProfilePage = () => {
   const navigate = useNavigate();

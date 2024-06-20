@@ -1,11 +1,11 @@
 import { MapPolygonStore } from "@/features/maps";
 import { useMapMouseOver } from "@/shared/hooks";
-import { StoreProps } from "@/shared/types";
+import { IStoreProps } from "@/shared/types";
 import { observer } from "mobx-react-lite";
 import { Polyline } from "react-leaflet";
 
 export const PredictZonePolyline = observer(
-  ({ store }: StoreProps<MapPolygonStore>) => {
+  ({ store }: IStoreProps<MapPolygonStore>) => {
     const [position] = useMapMouseOver();
 
     return (

@@ -1,6 +1,7 @@
 import { RootStore } from "@/app/store";
 import {
   IDeleteOptions,
+  ILatLng,
   IManyDeleteRequestOptions,
   fail,
   success,
@@ -17,19 +18,42 @@ import {
 } from "./vehicle.services";
 import { toArray } from "@/shared/utils";
 import { PaginationStore } from "@/features/pagination";
+import { IBuilding } from "../building";
 
+export class Vehicle implements IVehicle {
+  id: string;
+  number: string;
+  type: string;
+  operatingStatus: string;
+  storageAreaId: string;
+  storageArea: IBuilding;
+
+  latlng?: ILatLng;
+
+  constructor(vehicle: IVehicle) {
+    makeAutoObservable(this);
+
+    this.id = vehicle.id;
+    this.number = vehicle.number;
+    this.type = vehicle.type;
+    this.operatingStatus = vehicle.operatingStatus;
+    this.storageArea = vehicle.storageArea;
+    this.storageAreaId = vehicle.storageAreaId;
+    this.latlng = vehicle.latlng;
+  }
+}
 
 export class VehicleStore {
-  vehicles: IVehicle[];
+  vehicles: Vehicle[];
   isLoading: boolean;
   pagination: PaginationStore;
 
   constructor(public rootStore: RootStore) {
+    makeAutoObservable(this);
+
     this.isLoading = false;
     this.vehicles = [];
     this.pagination = new PaginationStore();
-
-    makeAutoObservable(this);
   }
 
   public async deleteVehicles(options: IDeleteOptions) {
@@ -67,7 +91,13 @@ export class VehicleStore {
     const [status, response] = await getVehiclesRequest(this.pagination);
     return runInAction(() => {
       if (status) {
-        this.vehicles = response.data.items;
+        this.vehicles = response.data.items.map(
+          (vehicleDto) =>
+            new Vehicle({
+              ...vehicleDto,
+              latlng: undefined,
+            })
+        );
         this.pagination.totalCount = response.data.totalCount;
         return this.success();
       } else {
@@ -95,6 +125,14 @@ export class VehicleStore {
       return this.success(response.data);
     } else {
       return this.fail();
+    }
+  }
+
+  public update(data: any) {
+    const index = this.vehicles.findIndex((x) => x.id === data.vehicleId);
+    if (index !== -1) {
+      this.vehicles[index].operatingStatus = data.vehicleStatus;
+      this.vehicles[index].latlng = { lat: data.lat, lng: data.lng } as ILatLng;
     }
   }
 

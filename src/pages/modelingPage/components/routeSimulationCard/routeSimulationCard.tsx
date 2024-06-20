@@ -1,19 +1,19 @@
 import { RouteModel } from "@/features";
-import { StoreProps } from "@/shared/types";
+import { IStoreProps } from "@/shared/types";
 import { observer } from "mobx-react-lite";
 import { ProgressSlider, routeModelsStore } from "../../modelingPage";
 import { Panel } from "primereact/panel";
 import { Button } from "primereact/button";
 
-const CardButtons = observer(({ store }: StoreProps<RouteModel>) => {
+const CardButtons = observer(({ store }: IStoreProps<RouteModel>) => {
   return (
-    <div className="flex align-items-center gap-2">
+    <>
       <Button
         text
         rounded
         onClick={() => {
           store.toggleExecuting();
-          console.log(store.route.speeds)
+          console.log(store.route.speeds);
         }}
         icon={store.isExecuting ? "pi pi-pause" : "pi pi-play"}
       />
@@ -33,20 +33,36 @@ const CardButtons = observer(({ store }: StoreProps<RouteModel>) => {
           routeModelsStore.remove(store.route.id);
         }}
       />
-    </div>
+    </>
   );
 });
 
 export const RouteSimulationCard = observer(
-  ({ store }: StoreProps<RouteModel>) => {
-    
+  ({
+    store,
+    onEdit,
+  }: IStoreProps<RouteModel> & {
+    onEdit: () => void;
+  }) => {
     const footerTemplate = (options: any) => {
       const className = `${options.className} flex flex-wrap align-items-center justify-content-between gap-3`;
 
       return (
         <div className={className}>
-          <CardButtons store={store}/>
-          <span className="p-text-secondary">Updated 2 hours ago</span>
+          <div className="flex align-items-center gap-2">
+            <CardButtons store={store}/>
+            <Button
+              rounded
+              icon="pi pi-pencil"
+              severity="secondary"
+              onClick={() => {
+                onEdit();
+              }}
+            />
+          </div>
+          <span className="p-text-secondary">
+            {(store.time / 1000).toFixed(1)} сек.
+          </span>
         </div>
       );
     };
@@ -64,8 +80,13 @@ export const RouteSimulationCard = observer(
           <div className="flex flex-column gap-2">
             <span>ID: {store.route.id}</span>
             <span>Наименование: {store.route.name}</span>
-            <span>Скорость: {store.speed} м/с</span>
+            <span>
+              Скорость: {store.speed} м/с; {store.speed * 3.6} км/ч
+            </span>
             <span>Время симуляции: {store.time.toFixed()}</span>
+            {store.route.device ? (
+              <span>Устройство: {store.route.device.id}</span>
+            ) : null}
             <span>Статус работы: {store.status}</span>
             <span>
               Состояние: {store.isExecuting ? "выполняется" : "пауза"}

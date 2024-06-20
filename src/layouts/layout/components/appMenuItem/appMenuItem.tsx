@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
-import { AppMenuItemProps, IAppMenuItem } from "./appMenuItem.types";
+import { AppMenuItemProps } from "./appMenuItem.types";
 import { useEffect, useRef } from "react";
-import { CSSTransition } from "react-transition-group";
 import { classNames } from "primereact/utils";
 import styles from "./appMenuItem.module.css";
 import { MenuLink } from "../menuLink";

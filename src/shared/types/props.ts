@@ -1,4 +1,4 @@
-import { IBuilding, IGeoZone } from "@/features";
+import { IBuilding, IGeoZone, IVehicle } from "@/features";
 import { CSSProperties } from "react";
 
 export interface IHeightSizeProps {
@@ -27,7 +27,7 @@ export interface IAs<T> {
   as?: T;
 }
 
-export interface StoreProps<T> {
+export interface IStoreProps<T> {
   store: T;
 }
 
@@ -37,4 +37,8 @@ export interface IGeoZoneProps {
 
 export interface IBuildingProps {
   building: IBuilding;
+}
+
+export interface IVehicleProps {
+  vehicle: IVehicle;
 }

@@ -1,5 +1,5 @@
 import { MapDragNode, MapPolygonStore } from "@/features/maps";
-import { StoreProps } from "@/shared/types";
+import { IStoreProps } from "@/shared/types";
 import { observer } from "mobx-react-lite";
 import { useMap, useMapEvent } from "react-leaflet";
 import { MapWidget } from "..";
@@ -12,7 +12,7 @@ import {
 import { useEffect } from "react";
 
 export const MapPolygonEdit = observer(
-  ({ store }: StoreProps<MapPolygonStore>) => {
+  ({ store }: IStoreProps<MapPolygonStore>) => {
     useMapEvent("click", (e) => {
       if (store.isEditing && !store.isComplited) {
         store.push(new MapDragNode(e.latlng, store.countOfPoints));

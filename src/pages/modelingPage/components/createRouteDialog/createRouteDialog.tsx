@@ -1,15 +1,20 @@
 import { InputText } from "primereact/inputtext";
 import { ICreateRouteDialogContentProps } from "./createRouteDialog.types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapBox } from "@/components";
-import { TileLayer } from "react-leaflet";
+import { CircleMarker, Polygon, Popup, TileLayer } from "react-leaflet";
 import { PolylineEditor } from "../polylineEditor";
 import { Button } from "primereact/button";
-import { ICreateRouteOptions } from "@/features";
+import { ICreateRouteOptions, IGpsDevice } from "@/features";
 import { DataTable } from "primereact/datatable";
 import { Column, ColumnEditorOptions, ColumnEvent } from "primereact/column";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
+import { useStore } from "@/app/store";
+import {
+  AutoComplete,
+  AutoCompleteCompleteEvent,
+} from "primereact/autocomplete";
 
 const OPERATING_STATUS = {
   DELIVERING: "Транспортировка",
@@ -19,25 +24,44 @@ const OPERATING_STATUS = {
   UNLOADING: "Разгрузка",
 };
 
-const ACTIVE_STATUSES = [
-  OPERATING_STATUS.DELIVERING,
-  OPERATING_STATUS.MOVING,
-]
+const ACTIVE_STATUSES = [OPERATING_STATUS.DELIVERING, OPERATING_STATUS.MOVING];
 const PASSIVE_STATUSES = [
   OPERATING_STATUS.WAITING,
   OPERATING_STATUS.LOADING,
   OPERATING_STATUS.UNLOADING,
-]
+];
 
 export const CreateRouteDialogContent = (
   props: ICreateRouteDialogContentProps
 ) => {
-  const [options, setOptions] = useState<ICreateRouteOptions>({
+  const [options, setOptions] = useState<ICreateRouteOptions>(
+    props.initialState ?? {
     name: "",
     positions: [],
     speeds: [],
     delays: [],
+    device: null,
+    type: "create"
   });
+
+  const { deviceStore, buildingStore, geoZoneStore } = useStore((store) => ({
+    deviceStore: store.deviceStore,
+    buildingStore: store.buildingStore,
+    geoZoneStore: store.geoZoneStore,
+  }));
+
+  useEffect(() => {
+    const prevPageSize = deviceStore.pagination.pageSize;
+    deviceStore.pagination.pageSize = 10000;
+    buildingStore.pagination.pageSize = 10000;
+    geoZoneStore.pagination.pageSize = 10000;
+    buildingStore.getBuildingsPage();
+    geoZoneStore.getGeoZonesPage();
+    deviceStore.getGpsDevicesPage();
+    return () => {
+      deviceStore.pagination.pageSize = prevPageSize;
+    };
+  }, []);
 
   const editor = (options: ColumnEditorOptions) => {
     return (
@@ -130,6 +154,26 @@ export const CreateRouteDialogContent = (
     }
   };
 
+  const itemTemplate = (device: IGpsDevice) => {    
+    return (
+      <div>
+        <div>{device.id}</div>
+      </div>
+    );
+  };
+
+  const [deviceSuggestions, setDeviceSuggestions] = useState<IGpsDevice[]>([]);
+
+  const search = (event: AutoCompleteCompleteEvent) => {
+    const filtered = deviceStore.devices.filter(
+      (x) =>
+        x.id.toUpperCase().includes(event.query.toUpperCase()) ||
+        x.vehicleId.toUpperCase().includes(event.query.toUpperCase())
+    );
+
+    setDeviceSuggestions(filtered);
+  };
+
   return (
     <div className="flex flex-column gap-2">
       <div>Название</div>
@@ -138,6 +182,19 @@ export const CreateRouteDialogContent = (
         onChange={(e) =>
           setOptions((prev) => ({ ...prev, name: e.target.value }))
         }
+      />
+      <div>GPS/ГЛОНАСС Устройство</div>
+      <AutoComplete
+        dropdown
+        field="id"
+        suggestions={deviceSuggestions}
+        completeMethod={search}
+        itemTemplate={itemTemplate}
+        forceSelection
+        value={options.device}
+        onChange={(e) => {
+          setOptions((prev) => ({ ...prev, device: e.target.value }))
+        }}
       />
       <div style={{ width: "800px", height: "600px" }}>
         <MapBox center={[59.938784, 30.314997]} zoom={13}>
@@ -174,6 +231,22 @@ export const CreateRouteDialogContent = (
               }));
             }}
           />
+          {buildingStore.buildings.map((building) => (
+            <CircleMarker
+              key={building.id}
+              center={building.location}
+              radius={8}
+              fillOpacity={0.5}
+              color="#000000"
+              fillColor="#000000"
+            >
+              <Popup>{building.name}</Popup>
+            </CircleMarker>
+          ))}
+
+          {geoZoneStore.geoZones.map((geoZone) => (
+            <Polygon key={geoZone.id} positions={geoZone.points}></Polygon>
+          ))}
         </MapBox>
       </div>
       <div className="flex gap-1 p-1">

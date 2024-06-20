@@ -61,6 +61,7 @@ export const GeoZoneCreatePage = observer(() => {
       color: data.color,
       points: editPolygonStore.getPositions(),
     });
+    console.log(editPolygonStore.getPositions());
 
     if (status.isSuccess) {
       editPolygonStore.nodes = [];

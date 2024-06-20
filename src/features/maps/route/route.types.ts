@@ -1,5 +1,6 @@
 import { ILatLng } from "@/shared/types";
 import { Waypoint } from "./route";
+import { IGpsDevice } from "@/features/entities";
 
 export interface IStatus {
   status: string;
@@ -17,6 +18,8 @@ export interface ICreateRouteOptions {
   positions: ILatLng[];
   speeds: IDriveInfo[];
   delays: IDelayInfo[];
+  device: IGpsDevice | null;
+  type: "create" | "edit";
 }
 
 export interface IRouteElement extends IStatus {
@@ -37,9 +40,10 @@ export interface SegmentInfo extends IRouteElement {
 
 export interface IRouteConfig {
   id: string;
+  device: IGpsDevice;
   name: string;
   points: Waypoint[];
-  delays: number[];
+  delays: IDelayInfo[];
   speeds: IDriveInfo[];
 }
 

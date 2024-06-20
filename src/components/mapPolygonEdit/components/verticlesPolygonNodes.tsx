@@ -1,12 +1,12 @@
 import { MapPolygonStore } from "@/features/maps";
-import { StoreProps } from "@/shared/types";
+import { IStoreProps } from "@/shared/types";
 import { LatLng } from "leaflet";
 import { observer } from "mobx-react-lite";
 import { Marker } from "react-leaflet";
 import { editSquare, editSquareMain } from "../resources/icons";
 
 export const VerticesPolygonNodes = observer(
-  ({ store }: StoreProps<MapPolygonStore>) => {
+  ({ store }: IStoreProps<MapPolygonStore>) => {
     return (
       <>
         {store.isEditing && [

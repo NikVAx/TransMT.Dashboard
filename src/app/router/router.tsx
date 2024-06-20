@@ -27,6 +27,7 @@ import {
   VehicleCreatePage,
   VehicleEditPage,
   VehicleListPage,
+  ReportByVehiclePage
 } from "@/pages";
 import {
   ProfileSection,
@@ -199,6 +200,11 @@ export const router = createBrowserRouter([
             path: "by-geozones",
             element: <ReportByGeoZonePage />,
             handle: crumb("Отчет по геозонам"),
+          },
+          {
+            path: "by-vehicles",
+            element: <ReportByVehiclePage/>,
+            handle: crumb("Отчет по ТС"),
           },
         ],
       },

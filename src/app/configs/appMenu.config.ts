@@ -152,9 +152,9 @@ export const appMenuConfig: ITreeNode<IAppMenuItem>[] = [
         to: "/reports/by-geozones",
       }),
       TreeNode({
-        id: "/reports/vehicles",
+        id: "/reports/by-vehicles",
         label: "Отчет по ТС",
-        to: "/reports/vehicles",
+        to: "/reports/by-vehicles",
       }),
     ]
   ),

@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 
 export const BuildingSideNode = ({ building }: IBuildingProps) => {
   return (
-    <div className="flex gap-1">
+    <div className="flex w-full align-items-center">
       <div>{building.name}</div>
       <MapConsumer>
         {(map) => (

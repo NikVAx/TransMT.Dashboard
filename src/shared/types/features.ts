@@ -34,3 +34,13 @@ export interface IManyDeleteRequestOptions<TKey = string> {
 export interface IEntity<T = string> {
   id: T
 }
+
+
+export interface IVehicleStatus {
+  status: string;
+}
+export interface IDuration {
+  duration: number;
+}
+
+export interface IStatusDuration extends IVehicleStatus, IDuration {}

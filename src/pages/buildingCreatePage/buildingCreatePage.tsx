@@ -15,7 +15,7 @@ import {
   ICreateBuildingDto,
   getBuildingValidationSchema,
 } from "@/features/entities/building";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { LatLng, LeafletMouseEvent, latLng } from "leaflet";
 import {
   ISuggestion,
@@ -29,26 +29,6 @@ import { useNavigate } from "react-router-dom";
 import { classNames } from "primereact/utils";
 import { useLayout } from "@/layouts/layout/context/layout.hooks";
 import { mock } from "@/app/mock";
-
-// export const useGeolocator = () => {
-//   const [position, setPosition] = useState<GeolocationPosition | null>(null);
-//   const [isSuccess, setIsSuccess] = useState(false);
-
-//   useEffect(() => {
-//     navigator.geolocation.getCurrentPosition(
-//       (position: GeolocationPosition) => {
-//         setPosition(position);
-//         setIsSuccess(true);
-//       },
-//       (_error) => {
-//         setPosition(null);
-//         setIsSuccess(false);
-//       }
-//     );
-//   }, []);
-
-//   return position;
-// };
 
 export const BuildingCreatePage = observer(() => {
   const { buildingStore } = useStore((store) => ({
@@ -84,7 +64,7 @@ export const BuildingCreatePage = observer(() => {
     console.log(e);
   };
 
-  const [mapIsLoading, setMapIsLoading] = useState(true);
+  const [mapIsLoading] = useState(true);
   const [position, setPosition] = useState<LatLng>(latLng(55.753927, 37.62082));
   const toast = useRef<Toast>(null);
 
@@ -124,20 +104,6 @@ export const BuildingCreatePage = observer(() => {
     handlePositionChange(event.latlng);
   };
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setMapIsLoading(true);
-        // handlePositionChange(
-        //   latLng(position.coords.latitude, position.coords.longitude)
-        // );
-        setMapIsLoading(false);
-      },
-      () => {
-        setMapIsLoading(false);
-      }
-    );
-  }, []);
 
   const layout = useLayout();
 

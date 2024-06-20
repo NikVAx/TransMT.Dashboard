@@ -1,5 +1,5 @@
 import { MapDragNode, MapPolygonStore } from "@/features/maps";
-import { StoreProps } from "@/shared/types";
+import { IStoreProps } from "@/shared/types";
 import { mapPairsByRing } from "@/shared/utils";
 import { latLng } from "leaflet";
 import { observer } from "mobx-react-lite";
@@ -8,7 +8,7 @@ import { Marker } from "react-leaflet";
 import { editCircle } from "../resources/icons";
 
 export const EdgePolygonNodes = observer(
-  ({ store }: StoreProps<MapPolygonStore>) => {
+  ({ store }: IStoreProps<MapPolygonStore>) => {
     const mapEdgeNode = useCallback((a: MapDragNode, b: MapDragNode) => {
       return new MapDragNode(
         latLng(
