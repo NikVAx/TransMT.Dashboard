@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerText {
+  color: #374151 /*var(--primary-text)*/;
+  font-weight: 700;
+}
+
+.header {
+  padding: var(--content-padding);
+  background: var(--surface-c);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: var(--content-padding);
+  flex: 1;
+}

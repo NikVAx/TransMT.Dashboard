@@ -1,0 +1,66 @@
+.layoutContainer {
+  background-color: var(--surface-ground);
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: 100dvh;
+  padding-top: 4rem;
+}
+
+.layoutSidebar {
+  border-radius: 0px;
+  z-index: 1;
+  padding-top: 1rem;
+  position: fixed;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  background-color: var(--surface-section);
+
+  border-color: var(--surface-border);
+  border-right-style: solid;
+  border-right-width: 1px;
+
+  transition: width 0.2s ease-in-out;
+}
+
+.sidebarMenuContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 6rem;
+}
+
+.layoutTopbar {
+  z-index: 10;
+  grid-area: topbar;
+  padding: 1rem 2rem;
+
+  background-color: var(--surface-ground);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-color: var(--surface-border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100% - var(--scrollbar-width, 0px));
+  height: 4rem;
+}
+
+.layoutContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  position: relative;
+  height: calc(100dvh - 4rem);
+  transition: padding 0.2s ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
